@@ -3,9 +3,11 @@
 A 2.5-week design sprint building a voice-based active-recall feature for Knowunity, a study app.
 Prototype scope: mobile iOS only, 390px, dark mode. The recall engine (STT, judging) is mocked.
 
-**Committed concept:** Students speak a concept aloud and Knowie replies in text, reinforcing learning through active recall with positive reinforcement to drive engagement.
+**Committed concept:** Students speak a concept aloud and Knowie replies in text — active recall with positive reinforcement to drive engagement. The loop keeps momentum: each question is its own discrete step, with a chance to review and retry before moving on, and a keyboard toggle covers can't-speak moments.
 
 **Where the recall step lives:** Launched from a stepping-stone in the study plan (once early, once at the end for full review), and separately from the main chat via an "explain out loud" option when a student names a topic.
+
+**Current build target:** the six new components in `module-5-components-to-build.md`.
 
 ## Decisions logged
 

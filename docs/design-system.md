@@ -227,7 +227,11 @@ not a Figma instance):
   `font/family/default`, which resolves to `Inter`. There is no style
   that mixes the two within itself, and no reason to reach for Greed on
   body copy or Inter on a headline — if something needs to look like an
-  exception, that's a gap to raise, not a one-off swap.
+  exception, that's a gap to raise, not a one-off swap. **Sprint
+  exception:** this prototype substitutes Inter Variable for
+  `font/family/display` and `font/family/heading` everywhere — the real
+  Greed Condensed-TRIAL can't leave the company. See
+  `docs/platform-constraints.md`. Body/Caption's `Inter` is unaffected.
 - **Weight comes from the type style, not from eyeballing "how bold it
   looks."** `font/weight/heavy` (800) is paired with `font/family/display`
   for Display L specifically and nowhere else. Headline sizes use

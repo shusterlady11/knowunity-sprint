@@ -16,6 +16,12 @@ If a decision only makes sense at a wider width, it's out of scope.
 
 ---
 
+## The committed concept
+
+See `sprint-context.md`'s "Committed concept" line — the single source for what this feature is.
+
+---
+
 ## What you're actually building
 
 Worth being blunt about this, because the gap trips people up in Module 11.
