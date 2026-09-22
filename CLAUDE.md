@@ -16,6 +16,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Naming: lowerCamelCase for components/props/tokens. `docs/design-system.md` §3 (legacy exceptions).
 - Contrast, touch-target, reduced-motion requirements. `docs/platform-constraints.md`.
 - Decisions already made: `docs/sprint-context.md` — check before re-deciding.
+- Commit messages: summary line, then one sentence on *why* (the constraint or decision driving it) before the *what* bullets — this repo may be shared publicly and should read without prior context.
 
 ## Never
 
