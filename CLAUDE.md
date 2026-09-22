@@ -9,7 +9,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Read `node_modules/next/dist/docs/` before writing any Next.js code (AGENTS.md).
 - 390px, dark mode only, web app styled as native iOS — not native. `docs/platform-constraints.md`.
 - Voice in, text out. `docs/design-brief.md`.
-- Committed concept — single source, don't restate: `docs/sprint-context.md`.
+- Concept — single source, don't restate: `docs/sprint-context.md`.
 - Recall engine is mocked: fake transcript, fake verdict, fake-but-present latency. `docs/platform-constraints.md`, `docs/sprint-context.md`.
 - Every screen is built from `scaffold`'s slots. `docs/design-system.md` §2.
 - All color/spacing/radius/type values: `docs/tokens.json`. Usage rules: `docs/design-system.md`.
@@ -29,7 +29,8 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Never build a hover-only interaction — no hover on mobile. `docs/platform-constraints.md`.
 - Never let Knowie speak, or auto-detect end-of-speech — push-to-talk with explicit stop only. `docs/design-brief.md`, `docs/voice-ux.md`.
 - Never leave a required action without an escape route or non-voice fallback — "never trap the student." `docs/design-brief.md`, `docs/voice-ux.md`.
-- Never build tablet, desktop, or RTL layouts, or real STT/AI judging — out of scope this sprint. `docs/sprint-context.md` (Not building).
+- Never build tablet or desktop layouts, or RTL — out of scope this sprint. `docs/platform-constraints.md`.
+- Never build real STT/AI judging — out of scope this sprint. `docs/sprint-context.md` (Not building).
 - Never hand-recreate the Knowie mascot freehand — export the real component from Figma. `docs/design-system.md` §1.
 - Never commit without keeping this file's first line (`@AGENTS.md`) intact.
 
@@ -45,7 +46,8 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - `docs/tokens.json` — color/spacing/radius/type values. Source of truth for every literal value in code.
 - `docs/platform-constraints.md` — canvas, touch, spacing, typography, contrast, a11y, performance, i18n rules. Read before writing any UI code.
 - `docs/voice-ux.md` — voice UX principles, states-to-build priority table. Read before building the recording/processing/result loop.
-- `docs/module-5-components-to-build.md` — spec (states, behavior, notes) for this phase's build list. Read before building any of the six new components.
+- `docs/component-spec.md` — current source of truth for component builds: per-component status (✅ ready / ⚠️ blocker / 🆕 unaudited), variant/property/binding detail. Read before building or touching any component.
+- `docs/module-5-components-to-build.md` — superseded by `docs/component-spec.md`; kept as history, not edited. Don't build against this anymore.
 - `src/app/layout.tsx` — root layout, fonts. Still the create-next-app default.
 - `src/app/page.tsx` — home page. Still the create-next-app placeholder; references `/next.svg` and `/vercel.svg`.
 - `src/app/globals.css` — global styles, currently the create-next-app default theme (not yet wired to `docs/tokens.json`).
