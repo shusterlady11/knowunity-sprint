@@ -127,9 +127,11 @@ you can sanity-check the extraction.
 
 ## Typography
 
-- **Use Inter Variable.** Knowunity's real font is custom and can't be shared
-  outside the company, so Inter Variable is the substitute for every prototype
-  in this sprint. Don't go hunting for the real one.
+- **Use Inter Variable in code.** Knowunity's real font (Greed, TRIAL build in
+  Figma) is unlicensed and can't be shared outside the company, so Inter
+  Variable is the substitute for every prototype in this sprint. Greed is
+  preferred if a license is ever obtained; the swap is two values in
+  `docs/tokens.json` (`font.family.display`, `font.family.default`).
 - **Minimum body text: 14px.** Minimum caption or helper text: 11px.
 - **Line height: 1.4–1.6 for body.** Readability matters more than usual here:
   students are reading Knowie's feedback while stressed.

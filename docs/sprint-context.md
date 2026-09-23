@@ -22,6 +22,7 @@ Web prototype styled as iOS: 390px, dark mode only.
 - XP: full unaided, partial hinted, minimal revealed, unaided "say it back" earns some back; streak counts unaided passes only, because XP and streak are the mastery signal.
 - Some session XP stays pending until the breakdown shows, because the reward should match the real result.
 - Results: XP card, then concept breakdown, because reward and mistake review shouldn't mix.
+- Code uses Inter, not Greed, because Greed is an unlicensed trial font that can't be published; Greed is preferred if licensing is ever cleared.
 - Score ring hidden at 0 correct, because results stay encouraging.
 - XP card and breakdown copy change with how the student performed (tiers such as perfect, mixed, mostly skipped; more may be added), because feedback should be encouraging and honest about the result.
 

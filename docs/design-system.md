@@ -232,14 +232,12 @@ not a Figma instance):
 
 ## 5. Typography
 
-- **Two font families, split by role, never mixed.** Display and Headline
-  sizes (the whole `type/display/*` and `type/headline/*` scale) use
-  `font/family/display` (Display L only) or `font/family/heading`
-  (everything else in that range) — both resolve to the real
-  `Greed Condensed-TRIAL` family in Figma. Body and Caption sizes use
-  `font/family/default`, which resolves to `Inter`. There is no style
-  that mixes the two within itself, and no reason to reach for Greed on
-  body copy or Inter on a headline — if something needs to look like an
+- **One family per style, from the font tokens.** Display L uses
+  `font/family/display`; every other style uses `font/family/default`.
+  Figma uses `Greed Standard-TRIAL` for both. That font is unlicensed and
+  can't ship, so in code both tokens resolve to `Inter`. If a Greed
+  license is obtained, change the two values in tokens.json; nothing else
+  moves. Don't pick a family by hand — if something needs to look like an
   exception, that's a gap to raise, not a one-off swap.
 - **Weight comes from the type style, not from eyeballing "how bold it
   looks."** `font/weight/heavy` (800) is paired with `font/family/display`
@@ -253,16 +251,14 @@ not a Figma instance):
   reason to bump the weight until it "reads right."
 - **A shared Text Style before a hardcoded font, whenever one exists.**
   All 20 Display/Headline/Body/Caption combinations are registered as
-  real Figma Text Styles on the Foundations page (named `Greed/...` for
-  historical reasons — the name doesn't imply every one of them uses the
-  Greed font; eight of the twenty, all Body and Caption, correctly use
-  Inter). Apply one of these to text rather than setting family/weight/
+  real Figma Text Styles on the Foundations page (named `Greed/...`).
+  Apply one of these to text rather than setting family/weight/
   size by hand, so a future type-scale change propagates instead of
   silently drifting. A component with a genuinely custom size outside the
   type scale (e.g. `listItem`'s 17px label, between Body S's 15 and Body
   M's 18) is a legitimate exception to the *size* — but its family and
-  weight should still match what the nearest type-scale role would use
-  (Inter, for body-ish content), not be picked independently.
+  weight should still match what the nearest type-scale role would use,
+  not be picked independently.
 
 ## 6. Spacing
 
