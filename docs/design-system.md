@@ -29,7 +29,9 @@ in Figma — read those before using a component for the first time.
   or flow screen → `CTA bevel button (Continue)`. This is a dedicated,
   single-purpose component, not a Primary button — don't reach for a
   Primary button to do this job, and don't reach for this component for
-  any action other than "Continue."
+  any action other than "Continue." Exception: on the voice-recall
+  screens, "Continue" is a Primary `button` inside `bottomCTA`, so it
+  sits in the same bottom bar as every other action in that flow.
 
 **Selection & filtering**
 - A filterable or selectable pill, especially in a group → `chips`.
@@ -88,7 +90,7 @@ in Figma — read those before using a component for the first time.
 If a situation doesn't map cleanly onto anything above, don't improvise —
 see §4, "never invent a component."
 
-For the five components built in the Module 6 voice-recall sprint (`statusPill`, `answerCards`, `bottomCTA`, `expandableResultRow`, `Results summary`), see §7 for full descriptions until they're folded into the situational index above.
+For the voice-recall components (micButton, recordingGlow, loadingDots, inputModeToggle, toggleGroup, topicPill, answerCards, statusPill, bottomCTA, progressMeter, resultsSummary, expandableResultRow, and the mic/keyboard icons), see §7.
 
 
 ## 2. Scaffold composition
@@ -112,13 +114,16 @@ delete or rename a slot to make a screen "fit."
   cards. This is the only slot that's expected to scroll or vary
   substantially in height from screen to screen.
 - **bottomContent** — the screen's primary action(s): a `button`, a
-  `buttonGroup`, or a `CTA bevel button (Continue)`. Don't put content
-  here that isn't an action — it reads to the user as "the thing to do
-  next," and anything else undermines that.
-- **bottomSheetOnly** — reserved for a bottom-sheet overlay. It's empty
-  on every example screen this system currently has, so treat "how a
-  populated bottom sheet should look" as unconfirmed rather than
-  inventing a pattern for it.
+  `buttonGroup`, a `CTA bevel button (Continue)`, or, on the voice-recall
+  screens, a `bottomCTA` or `toggleGroup`. Don't put content here that
+  isn't an action — it reads to the user as "the thing to do next," and
+  anything else undermines that.
+- **bottomSheetOnly** — holds a bottom-sheet overlay: a `bottomSheet`
+  instance over a scrim, anchored to the bottom of the screen. In use on
+  the mic-permission sheet ("Turn on" / "Not now" in a `buttonGroup`) and
+  the Reveal answer overlay (answer, context and an X to close, no
+  buttons). `bottomSheet` has S / M / L heights and grows with its
+  content.
 
 A screen is the scaffold plus what you put in its slots — it is not a
 new frame that happens to look similar.
@@ -167,14 +172,22 @@ legacy one.
   token resolves to nothing, that's a bug in the token pipeline to go
   fix, not a gap to paper over in the component.
 - **Never use anything but sentence case** on a label, button, or
-  heading — capitals are for proper nouns only, never for emphasis or
-  because a mock somewhere used Title Case.
-- **Never put an appearance word in a semantic name.** "Bold," "subtle,"
-  "light," "dark" — words that describe how a color *looks* — belong in
+  heading — capitals are for proper nouns and acronyms only (XP, DNA),
+  never for emphasis or because a mock somewhere used Title Case. That
+  includes uppercase text-case styling: a label typed in sentence case
+  but displayed in all caps still breaks this rule.
+- **Never put a hue or lightness word in a semantic name.** Words for
+  what a color *is* ("violet," "light," "dark," "LightVersion") belong in
   the primitive layer only (`color/violet/500`, not
   `text/violetLightVersion`). A semantic name describes a *role*
   (`text/primary`, `background/surface`), and it should be able to
-  survive the actual color underneath it changing completely.
+  survive the actual color underneath it changing completely. Two
+  deliberate exceptions: the emphasis modifiers `bold` / `subtle` (and
+  their `onBold` / `onSubtle` pairs) at the end of a family, because
+  they name how strongly a role is expressed, not a color
+  (`feedback/success/bold`); and the `accent/*` family, whose role *is*
+  a named decorative hue with no meaning attached (`accent/green/bold`).
+  Don't add a hue word anywhere else.
 - **Never read a primitive directly from a component.** Components
   consume the semantic layer only; the semantic layer is the only thing
   allowed to reference a primitive. If a component needs a color that
@@ -227,11 +240,7 @@ not a Figma instance):
   `font/family/default`, which resolves to `Inter`. There is no style
   that mixes the two within itself, and no reason to reach for Greed on
   body copy or Inter on a headline — if something needs to look like an
-  exception, that's a gap to raise, not a one-off swap. **Sprint
-  exception:** this prototype substitutes Inter Variable for
-  `font/family/display` and `font/family/heading` everywhere — the real
-  Greed Condensed-TRIAL can't leave the company. See
-  `docs/platform-constraints.md`. Body/Caption's `Inter` is unaffected.
+  exception, that's a gap to raise, not a one-off swap.
 - **Weight comes from the type style, not from eyeballing "how bold it
   looks."** `font/weight/heavy` (800) is paired with `font/family/display`
   for Display L specifically and nowhere else. Headline sizes use
@@ -286,283 +295,9 @@ not a Figma instance):
   fixed relationships within the centered block itself (e.g. mascot to
   headline, headline to chips).
 
-## 7. Module 6 components (voice recall sprint)
+## 7. Voice-recall components
 
-Five component sets built for the Knowie voice-recall flow, all on the
-"New components" page of this file in Figma. Descriptions below are
-reproduced verbatim from each component set's own Figma description field
--- read them there first if you want the live, most-current version;
-this section is a snapshot of them, plus properties pulled directly from
-each set's component-property definitions.
-
-### statusPill
-
-Component set. Variants -- `state`: correct / wrong / notCaught / partial.
-Other properties -- `Label` (TEXT, default "Correct"), `left icon`
-(BOOLEAN, default true).
-
-> Small colored label reporting how a spoken answer was judged, shown
-> inside the Answer feedback sheet after a student speaks a term aloud.
->
-> USE: exactly one per feedback moment, right after Knowie has judged an
-> answer -- correct, partial, wrong, or a mishearing. States: correct
-> (feedback.success), wrong (feedback.error), partial (feedback.partial,
-> its own tone -- not a downgraded success), notCaught (feedback.neutral).
-> notCaught means the app didn't hear or transcribe the answer; it's not
-> a judgment on the student, so it must never read as a failure state or
-> reuse feedback.error.
->
-> Each variant carries its own fixed label text and icon (Check /
-> ArrowCounterClockwise / ArrowsClockwise / QuestionMark) -- not editable
-> free text, since the wording is part of the state's meaning. The
-> leading icon can be hidden via the "left icon" property if a screen
-> needs the pill without one, but the icon set per state shouldn't be
-> swapped.
->
-> DON'T: don't use this for anything other than the outcome of a single
-> spoken-answer attempt (it's not a generic status/tag component -- see
-> chips for that). Don't combine states, invent a new state without a
-> matching feedback/* token pair, or pick colors by eye -- every fill and
-> text color here is bound to a feedback/* variable and should stay that
-> way.
-
-### answerCards
-
-Component set. Variants -- `Property 1`: Default / question / processing /
-answer-correct / answer-partial / answer-error / answer-notcaught. (Axis
-not yet renamed off Figma's default `Property 1` -- see conventions
-below.) No other properties.
-
-> The single scrollable card for whatever Knowie is currently saying or
-> asking in the recall flow. One instance per turn.
->
-> USE
-> Pick the Property 1 variant for the moment:
-> - Default -- generic "Knowie is talking, not posing a question" card
->   (e.g. the welcome/intro message). Plain text, no pill.
-> - question -- the question text itself.
-> - processing -- loading message + 3 skeleton bars. The message
->   ("Mashing potatoes...") is placeholder copy, meant to rotate through
->   a set of short, cheeky "what Knowie's doing" lines each time this
->   state appears -- not fixed text.
-> - answer-correct / answer-partial / answer-error / answer-notcaught --
->   a statusPill (state=correct/partial/wrong/notCaught, paired with its
->   matching icon: Check/ArrowCounterClockwise/ArrowsClockwise/
->   QuestionMark) plus a grounded feedback message.
->
-> DON'T
-> Don't put question copy in Default or vice versa. Don't hand-color the
-> statusPill or its icon -- tone comes from the pill's own state
-> property.
-
-### bottomCTA
-
-Component set. Variants -- `layout`: Two button no drawer / Two button
-drawer / Two button drawer / Secondary / One button drawer / primary /
-One button drawer / secondary. Other properties -- `Show
-secondaryButton` (BOOLEAN, default true) -- only meaningful on the
-"Two button drawer" variant; not wired to either button on "Two
-button drawer / Secondary."
-
-> The bottom action bar anchored to the base of the question/answer screen —
-> carries the primary/secondary CTAs and, in three variants, the drawer that
-> reveals the answer.
->
-> USE
-> Place at the bottom of the screen. Pick the layout variant for the moment:
-> • Two button no drawer — secondaryButton "Reveal answer" + primaryButton
->   "Next question" side by side. Both always visible (no show/hide toggle
->   by design). Gap Space/100 (4px), side padding Space/400 (16px),
->   top/bottom padding Space/600 (24px) on the outer frame — all bound.
->   Height hugs content (104px). This is the static, splash-screen pairing —
->   not mid-flow.
-> • Two button drawer — outer frame has no padding of its own and hugs to
->   112px. Its one child, "bottomSheet," is a full-bleed (edge-to-edge,
->   390px) fixed 112px panel — fill/stroke/radius all token-bound — that
->   centers the buttonRow (16px side padding, Space/100 gap, both buttons
->   FILL width) both vertically and horizontally inside it. Has an optional
->   boolean "Show secondaryButton" (default true) to hide "Reveal answer"
->   once it's been used — when hidden, primaryButton correctly re-fills the
->   full row width.
-> • Two button drawer / Secondary — same bottomSheet/buttonRow structure and
->   112px panel as "Two button drawer." Left button (layer "button") is
->   styled Tertiary, CTA "Reveal answer"; right button (layer
->   "secondaryButton") is styled Secondary, CTA "Skip" — fill verified bound
->   to interactive/secondary. The "Show secondaryButton" boolean is not
->   wired to either button in this variant; both are always visible. Reach
->   for this on screens that already have their own primary CTA elsewhere
->   (e.g. the mic) — the drawer itself needs to stay secondary/low-emphasis,
->   appearing or disappearing as the moment calls for it, and its lighter
->   treatment signals the user is inside a multi-step flow rather than
->   looking at a static, one-shot screen.
-> • One button drawer / primary — same idea, single full-width primaryButton
->   centered in its own bottomSheet panel. Frame height is fixed at 112px to
->   match "Two button drawer" (previously mismatched at 108px — fixed).
-> • One button drawer / secondary — for screens where the mic icon (not this
->   component) is the real primary CTA, e.g. the mic-tap-to-answer screen.
->   Single full-width button, but styled Secondary so it doesn't compete
->   with the mic. Currently used for "Skip."
->
-> NOTE: when switching a button instance's variant property (e.g. Primary →
-> Secondary), check its fill afterward — a leftover instance-level color
-> override from before the switch can survive the variant change and keep
-> showing the old color instead of picking up the new variant's token. Any
-> Secondary button in this set needs to resolve to interactive/secondary to
-> read correctly against the dark bottomSheet; verify that binding rather
-> than trusting the variant value alone. (Caught once on "One button drawer
-> / secondary"; confirmed clean on "Two button drawer / Secondary.")
->
-> REMAINING GAP (not yet built)
-> The bottomSheet panel is still an empty placeholder — no content or slot
-> wired up yet for the revealed answer itself.
->
-> DON'T
-> Don't add a 3rd button to buttonRow. Don't hardcode button labels — use
-> each button instance's CTA text property.
-
-### expandableResultRow
-
-Component set. Variants -- `state`: collapsed / expanded, crossed with
-`tone`: success / error / neutral (6 variants total). Other properties --
-`transcript` (TEXT, default sample sentence).
-
-> One row in the results screen's Good Explanations / Needs Practice /
-> skipped-questions lists. `state` (collapsed/expanded) controls the
-> chevron rotation and whether the transcript detail is shown --
-> accordion logic (only one row open at a time) is real interaction
-> logic to build in code, not something this static set can demonstrate
-> beyond a reference frame. `tone` (success/error/neutral) sets the
-> leading icon (Check/X/DotOutline) and the row fill from the feedback
-> token set. `transcript` holds only the raw spoken-answer text -- the
-> "What you said:" label is fixed structure, not a property. Never put a
-> summary or hint in `transcript`.
-
-### Results summary
-
-Component set. Variants -- `Property 1`: good-explanations /
-needs-practice / skipped-questions. (Axis not yet renamed -- see
-conventions below.) Other properties -- SLOT properties for each row:
-`row 1` (shared by all three variants, independent content per variant),
-plus `good-explanations row 2`, `good-explanations row 3`,
-`needs-practice row 2`, `needs-practice row 3`, `skipped row 2`,
-`skipped row 3`. Eight further SLOT properties from earlier iterations
-(`Row 4`, `error answer row 1-3`, `success answer row 5-8`) are still
-defined but unused -- not wired to any visible row, safe to delete once
-confirmed.
-
-> The end-of-session results list. Stacks up to 3 expandableResultRow
-> instances to recap how the student did.
->
-> USE
-> Show once the recall session ends. Pick the Property 1 variant for the
-> tab being shown:
-> - good-explanations -- rows "row 1" (shared slot, see below),
->   "good-explanations row 2", "good-explanations row 3".
-> - needs-practice -- rows "row 1" (shared), "needs-practice row 2",
->   "needs-practice row 3". Partial answers live here -- there's no
->   separate partial-answer card.
-> - skipped-questions -- rows "row 1" (shared), "skipped row 2",
->   "skipped row 3".
->
-> "row 1" is one shared slot property reused across all three variants
-> (same property key, independent content per variant) -- that's
-> intentional, same pattern as a shared text/boolean property on a
-> button set.
->
-> SPACING
-> Rows within one card: Space/100 (4px), bound on the Items List frame
-> -- already correct. Between separate top-level Results summary cards,
-> when more than one is shown on a screen (e.g. Good Explanations +
-> Needs Practice + Skipped Questions stacked together): Space/200
-> (8px). No screen currently places multiple instances together, so
-> this is documented here for whenever that layout gets built -- set it
-> on the parent frame that stacks the instances, not on this component
-> itself.
->
-> KNOWN ISSUE (flagged, not fixed)
-> The row-1 slot's preferredValues are still restricted to the two
-> success-tone expandableResultRow components, and every currently-filled
-> row instance across all three variants -- including needs-practice and
-> skipped-questions -- is still the success-tone "Row 1 / collapsed /
-> success" component. Until the filled instances are swapped to the
-> matching tone (partial for needs-practice, neutral for skipped) and the
-> slot's preferredValues opened up, all three tabs will visually show
-> green/success rows regardless of which tab it is.
->
-> DON'T
-> Don't exceed 3 rows per variant. Don't repurpose "row 1" for anything
-> other than each variant's first row.
-
-### Naming & structure conventions from this sprint
-
-What was actually used building these five, and where it does and
-doesn't line up with §3:
-
-- Component set names are lowerCamelCase, no spaces, matching the rest
-  of the system -- `statusPill`, `answerCards`, `bottomCTA`,
-  `expandableResultRow`. **`Results summary` is the one exception**
-  (Title Case, with a space) -- not an intentional named exception like
-  `CTA bevel button (Continue)`, just not yet conformed. Rename it to
-  `resultsSummary` next time it's touched, or decide it's a deliberate
-  exception and say why.
-- Variant axis names are lowerCamelCase where they were renamed --
-  `state` (statusPill, expandableResultRow), `tone`
-  (expandableResultRow), `layout` (bottomCTA). **`answerCards` and
-  `Results summary` still use Figma's default `Property 1`** -- neither
-  got renamed to something meaningful. Cleanup item, not a pattern to
-  copy.
-- Boolean properties didn't fully land on the established `showXxx`
-  camelCase pattern (§3): statusPill's is `left icon` (lowercase,
-  space) and bottomCTA's is `Show secondaryButton` (Title Case, space) --
-  neither matches `showLeftIcon`/`showCaption`. Worth conforming both to
-  `showXxx`-style naming next time they're touched.
-- TEXT properties are inconsistent in case: `Label` (statusPill,
-  capitalized) vs. `transcript` (expandableResultRow, lowercase). Prefer
-  lowercase, matching `transcript`.
-- SLOT properties are new to the system as of this sprint and introduce
-  a third naming style not covered by §3: lowercase words with
-  spaces, and a hyphenated variant-name prefix for tab-scoped rows --
-  `row 1`, `good-explanations row 2`, `needs-practice row 3`, `skipped
-  row 2`. Reads fine in the Figma properties panel; whether it should be
-  tightened to camelCase (`row1`, `goodExplanationsRow2`) is an open
-  decision, not yet made either way.
-
-Six structural lessons worth carrying forward:
-
-1. A variant's own component name must be exactly `propertyName=value`
-   (with the `=`). Renaming it to a plain descriptive string breaks the
-   entire component set -- Figma throws "Component set has existing
-   errors" and blocks reading *any* of its properties, not just that
-   variant's. Happened to bottomCTA today.
-2. Turning on auto layout (`layoutMode`) on a frame doesn't by itself let
-   its children take FILL/HUG sizing if that frame's *own*
-   `layoutPositioning` -- relative to *its* parent -- is still
-   `ABSOLUTE`. Reset that on the frame itself first, not just on its
-   children.
-3. Prefer a hugging (not fixed) outer frame height whenever a variant's
-   content can legitimately differ in size from its siblings in the set
-   -- a stale fixed size silently overflows or clips instead of growing
-   rather than reporting bounds that match what's actually visible.
-   (bottomCTA's "One button drawer" hit exactly this -- fixed at 108px
-   while its bottomSheet rendered at 112px -- until the height was
-   corrected to match.)
-4. A component property (including a SLOT) can be legitimately shared --
-   same name and key -- across multiple variants in one set, each
-   variant holding independent content. Results summary's `row 1` slot
-   is intentionally reused by all three tabs; that's a supported
-   pattern, not something to "fix" by splitting into three separate
-   properties.
-5. Deleting and recreating a component -- including via a page
-   duplicate/restore -- gives it a brand-new node ID, and its
-   description and any component-property renames do **not** travel
-   with the copy. Re-verify both after any such operation. (Results
-   summary lost both this way today and had to be redone.)
-6. Switching a button instance's `variant` property (e.g. Primary to
-   Secondary) does not guarantee its fill updates to match -- a
-   color override left on the instance from before the switch can
-   survive it and keep showing the old variant's color. Always verify
-   the actual bound variable on the fill after a variant swap, not just
-   the variant property's value. (bottomCTA's "One button drawer /
-   secondary" button kept showing its old color after being switched to
-   Secondary, until the fill was rebound to interactive/secondary by
-   hand.)
+The components built for the voice-recall flow are specified in
+`component-spec.md`: description, when each is used, every state, token
+bindings and known issues. That file is the source of truth for them; this
+file doesn't repeat it.
