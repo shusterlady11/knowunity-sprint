@@ -17,8 +17,9 @@
 /.next/
 /out/
 
-# production
-/build
+# production (build/css is the tracked, generated tokens file)
+/build/*
+!/build/css/
 
 # misc
 .DS_Store

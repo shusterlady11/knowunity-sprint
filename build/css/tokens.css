@@ -1,0 +1,311 @@
+/**
+ * GENERATED FILE. DO NOT EDIT BY HAND.
+ * Built by Style Dictionary from tokens/tokens.json.
+ * Change the tokens there, then run: npm run tokens
+ */
+
+:root {
+  --color-navy-800: #22242f;
+  --color-navy-900: #1a1c26;
+  --color-navy-950: #090c18;
+  --color-neutral-0: #ffffff;
+  --color-neutral-950: #0a0a0a;
+  --color-violet-50: #f4f2ff;
+  --color-violet-100: #e4e0ff;
+  --color-violet-200: #d2ccfa;
+  --color-violet-300: #a78bfa;
+  --color-violet-400: #7b65e0;
+  --color-violet-500: #9178e6;
+  --color-violet-850: #2d2546;
+  --color-violet-900: #15103a;
+  --color-violet-950: #0e0a18;
+  --color-green-300: #4ae5b0;
+  --color-green-500: #00c386;
+  --color-green-900: #0a2e22;
+  --color-green-950: #0a1f18;
+  --color-red-200: #fca5a5;
+  --color-red-300: #ff8585;
+  --color-red-400: #ff6b6b;
+  --color-red-500: #e85555;
+  --color-red-900: #532831;
+  --color-red-950: #2a0808;
+  --color-coral-200: #ffb59b;
+  --color-coral-400: #fb7e5b;
+  --color-coral-900: #512e2c;
+  --color-coral-950: #2e0f06;
+  --color-blue-300: #7ba8f2;
+  --color-blue-400: #5fa0fc;
+  --color-blue-900: #0a1635;
+  --color-blue-950: #06173b;
+  --color-magenta-200: #f7b5de;
+  --color-magenta-400: #e879c0;
+  --color-magenta-900: #380d29;
+  --color-magenta-950: #2c0a20;
+  --color-gold-300: #fcd34d;
+  --color-gold-400: #f5b53d;
+  --color-gold-900: #3a2d0b;
+  --color-gold-950: #2a1d04;
+  --color-alpha-light-10: rgba(255, 255, 255, 0.10196078431372549);
+  --color-alpha-light-18: rgba(255, 255, 255, 0.1803921568627451);
+  --color-alpha-light-24: rgba(255, 255, 255, 0.23921568627450981);
+  --color-alpha-light-25: rgba(255, 255, 255, 0.25098039215686274);
+  --color-alpha-light-40: rgba(255, 255, 255, 0.4);
+  --color-alpha-light-48: rgba(245, 243, 255, 0.47843137254901963);
+  --color-alpha-light-68: rgba(245, 243, 255, 0.6784313725490196);
+  --color-alpha-dark-10: rgba(10, 10, 10, 0.10196078431372549);
+  --color-alpha-dark-50: rgba(10, 10, 10, 0.5019607843137255);
+  --color-alpha-glass-60: rgba(61, 61, 61, 0.6);
+  --color-Homie-Inkwell: #9178e6;
+  --color-Homie-Eyes: #0a0a0a;
+  --color-Homie-Glint: #fffcf4;
+  --color-Surface-Page: #090c18;
+  --color-Surface-Stack: rgba(255, 255, 255, 0.10196078431372549);
+  --color-Ink-Body: #f4f2ff;
+  --color-State-Disabled: rgba(255, 255, 255, 0.10196078431372549);
+  --color-Border-Hairline: rgba(255, 255, 255, 0.10196078431372549);
+  --color-Overlay-Press: rgba(255, 255, 255, 0.10196078431372549);
+  --color-Pro-Badge: #fcd34d;
+  --color-Highlight-Fill: #15103a;
+  --color-Highlight-Line: #7b65e0;
+  --color-Focus-Ring: #a78bfa;
+  --color-background-page: #090c18; /** Root screen canvas. USE: Every screen's base background. DON'T: Cards, sheets, modals (use background.surface instead). PAIR: text.primary for body copy on top. */
+  --color-background-surface: #22242f; /** Elevated container fill. USE: Cards, bottom sheets, modals, dropdown menus, chat bubbles, toasts. DON'T: Page-level background (use background.page instead). PAIR: text.primary for content, border.default for edges. */
+  --color-background-surfaceQuestion: #2d2546; /** Tinted fill for the question Knowie is asking. USE: the question card (answerCards, question state) in the voice-recall flow, so the question stands apart from feedback cards. DON'T: feedback or generic cards (use background.surface instead). PAIR: text.primary. */
+  --color-background-inverse: #f4f2ff; /** Dark block on a light screen. USE: Tooltips, toasts, snackbars on light backgrounds. DON'T: Page background (use background.page instead). PAIR: text.inverse for white text on top. */
+  --color-background-scrim: rgba(10, 10, 10, 0.5019607843137255); /** Semi-transparent overlay dimming content behind a modal. USE: Behind modals, dialogs, bottom sheets. DON'T: Solid dark backgrounds (use background.inverse instead). RULE: Always paired with a foreground surface on top. */
+  --color-background-floating: rgba(61, 61, 61, 0.6); /** Elevated floating surface with translucency. USE: Dropdown menus, tooltips, popovers that float above content with a frosted-glass effect. */
+  --color-background-stacking: rgba(255, 255, 255, 0.10196078431372549); /** Additive white layer for stacking elevation on dark surfaces. USE: Toasts, snackbars, floating notifications that need subtle lift above dark backgrounds. */
+  --color-background-input: #1a1c26; /** Fill of an editable field. USE: text inputs, textareas, search fields at rest. DON'T: read-only surfaces (use background.surface instead). PAIR: text.primary when filled, text.disabled for placeholders. */
+  --color-interactive-primary: #f4f2ff; /** Main call-to-action fill. USE: 'Continue,' 'Check,' 'Start practice' buttons, progress bar fills. One primary CTA per screen. DON'T: Selected cards or active tabs (use highlight.surface instead), links (use text.link instead). PAIR: interactive.onPrimary for label text/icons on top. RULE: Max one interactive.primary button per screen. */
+  --color-interactive-secondary: rgba(255, 255, 255, 0.10196078431372549); /** Supporting action fill. USE: 'Skip,' 'Cancel,' filter chips, outlined buttons, toggles. DON'T: Primary CTA (use interactive.primary instead). PAIR: interactive.onSecondary for label text on top. */
+  --color-interactive-destructive: #ff6b6b; /** Irreversible harmful action fill. USE: Delete, remove, block buttons. DON'T: Validation errors (use feedback.error.bold instead). PAIR: text.inverse for white label text on top. */
+  --color-interactive-disabled: rgba(255, 255, 255, 0.10196078431372549); /** Non-interactive control fill signaling 'unavailable.' USE: Disabled buttons, toggles, sliders. DON'T: Active secondary buttons (use interactive.secondary instead). PAIR: text.disabled for greyed-out label text. */
+  --color-interactive-onPrimary: #090c18; /** Text and icons on interactive.primary fills. RULE: Must contrast >= 4.5:1 against interactive.primary. */
+  --color-interactive-onSecondary: #f4f2ff; /** Text and icons on interactive.secondary fills. USE: Labels inside secondary buttons, toggle text, filter chip labels. */
+  --color-interactive-pressed: rgba(255, 255, 255, 0.10196078431372549); /** Press overlay for light or vivid surfaces. USE: tap feedback on primary buttons and elements sitting on accent fills. DON'T: dark surfaces (use interactive.pressedInverse instead). RULE: applied as an overlay on the element's resting fill rather than as a standalone background. */
+  --color-interactive-pressedInverse: rgba(10, 10, 10, 0.10196078431372549); /** Press overlay for dark surfaces. USE: tap feedback on secondary buttons, icon buttons, list items and cards on background.page or background.surface. DON'T: light or vivid surfaces (use interactive.pressed instead). RULE: applied as an overlay on the element's resting fill rather than as a standalone background. */
+  --color-interactive-primaryHover: #e4e0ff; /** Hover state of interactive.primary. USE: pointer hover on primary buttons. PAIR: interactive.onPrimary. */
+  --color-interactive-primaryActive: #d2ccfa; /** Pressed state of interactive.primary. USE: the moment of click or tap on a primary button. */
+  --color-interactive-secondaryHover: rgba(255, 255, 255, 0.1803921568627451); /** Hover state of interactive.secondary. USE: pointer hover on secondary buttons, chips and toggles. */
+  --color-interactive-secondaryActive: rgba(255, 255, 255, 0.23921568627450981); /** Pressed state of interactive.secondary. */
+  --color-interactive-destructiveHover: #ff8585; /** Hover state of interactive.destructive. USE: pointer hover on delete and remove buttons. */
+  --color-interactive-destructiveActive: #e85555; /** Pressed state of interactive.destructive. */
+  --color-interactive-onDestructive: #2a0808; /** Text and icons on interactive.destructive fills. RULE: must contrast >= 4.5:1 against interactive.destructive. */
+  --color-interactive-loading: rgba(255, 255, 255, 0.10196078431372549); /** Fill for a control that's actively processing. USE: buttons and controls mid-action, e.g. the recall loop's transcribing/judging state. DON'T: a control that's simply unavailable (use interactive.disabled instead). PAIR: interactive.onLoading for spinner/label content on top. */
+  --color-interactive-onLoading: #f4f2ff; /** Text, icon, and spinner color on interactive.loading fills. */
+  --color-interactive-voiceFeedback-layer0: rgba(145, 120, 230, 0); /** color.violet.500 at 0%. Currently unused by recordingGlow. USE: recordingGlow only, behind micButton while listeningState=listening. DON'T: any other 'active' or highlight state. */
+  --color-interactive-voiceFeedback-layer1: rgba(145, 120, 230, 0.10196078431372549); /** color.violet.500 at 10%. Currently unused by recordingGlow. USE: recordingGlow only, behind micButton while listeningState=listening. DON'T: any other 'active' or highlight state. */
+  --color-interactive-voiceFeedback-layer2: rgba(145, 120, 230, 0.2); /** color.violet.500 at 20%. Outer glow fill of recordingGlow. USE: recordingGlow only, behind micButton while listeningState=listening. DON'T: any other 'active' or highlight state. */
+  --color-interactive-voiceFeedback-layer3: rgba(123, 101, 224, 0.43137254901960786); /** color.violet.400 at 43%. Inner glow fill of recordingGlow. USE: recordingGlow only, behind micButton while listeningState=listening. DON'T: any other 'active' or highlight state. */
+  --color-text-primary: #f4f2ff; /** Highest contrast text for maximum readability. USE: Headlines, body copy, titles, card labels. Default when unsure which text token to pick. DON'T: Subtle metadata (use text.secondary instead). PAIR: background.page or background.surface underneath. */
+  --color-text-secondary: rgba(245, 243, 255, 0.6784313725490196); /** Reduced emphasis text for supporting content. USE: Subtitles, captions, timestamps, helper text, metadata. DON'T: Primary headlines (use text.primary instead), disabled labels (use text.disabled instead). */
+  --color-text-inverse: #090c18; /** Dark text on light or vivid surfaces. USE: labels on background.inverse, text on bright accent fills. DON'T: text on the dark page background (use text.primary instead). PAIR: background.inverse. */
+  --color-text-link: #9178e6; /** Inline hyperlink text only. USE: Linked text in body copy, T&C links, 'Learn more' inline links. DON'T: Buttons (use interactive.primary instead), nav items, non-clickable accent text. */
+  --color-text-disabled: rgba(255, 255, 255, 0.4); /** Low-contrast text signaling 'unavailable' or 'not yet filled.' USE: Text on disabled controls, placeholder text in empty input fields. DON'T: Secondary labels or metadata (use text.secondary instead). PAIR: interactive.disabled for disabled control backgrounds, background.input for active input fields with placeholders. */
+  --color-text-tertiary: rgba(245, 243, 255, 0.47843137254901963); /** Lowest emphasis readable text. USE: timestamps, counts, inline hints beside a field. DON'T: anything a student must read to proceed (use text.secondary instead). */
+  --color-text-linkHover: #a78bfa; /** Hover state of text.link. USE: pointer hover on inline hyperlinks. */
+  --color-text-success: #4ae5b0; /** Confirmation text. USE: "Correct", validation success messages. DON'T: as a fill (use feedback.success.bold instead). */
+  --color-text-error: #fca5a5; /** Validation message text. USE: the line under a failed field. DON'T: destructive button labels (use interactive.onDestructive instead). */
+  --color-text-warning: #fcd34d; /** Caution text. USE: limits, expiry notices, "one attempt left". */
+  --color-text-onAccent: #0e0a18; /** Text on any accent.*.bold fill. RULE: must contrast >= 4.5:1 against the accent it sits on. */
+  --color-border-default: rgba(255, 255, 255, 0.10196078431372549); /** Standard container edge. USE: Card outlines, dividers, input borders at rest, separators. DON'T: Selected element borders (use highlight.border instead). */
+  --color-border-strong: rgba(255, 255, 255, 0.25098039215686274); /** Higher contrast container edge. USE: dividers that must read at a glance, table rules, edges on busy surfaces. DON'T: default card outlines (use border.default instead). */
+  --color-border-focus: #a78bfa; /** Keyboard focus ring. USE: the visible focus indicator on any focusable element. RULE: pair with Stroke/Heavy Border at 2px and never remove it without a replacement. */
+  --color-border-error: #ff6b6b; /** Invalid input edge. USE: text fields and selects that failed validation. PAIR: text.error for the message underneath. */
+  --color-border-success: #00c386; /** Validated input edge. USE: fields confirmed correct. */
+  --color-border-selected: #9178e6; /** Edge of a chosen element. USE: selected cards, active tabs, chosen answer options. PAIR: highlight.surface as the fill. */
+  --color-mascot-primary: #9178e6; /** Mascot signature violet, a character color rather than a UI one. USE: mascot illustration fill, tip banners where the mascot is present, full-screen backgrounds for mascot-hero moments like onboarding and celebration. DON'T: buttons or CTAs (use interactive.primary instead), links (use text.link instead), PRO badges (use pro.accent instead), selected states (use highlight.surface instead). RULE: only use when the Homie mascot is conceptually present on screen. */
+  --color-mascot-eyes: #ffffff; /** Homie eye whites. USE: mascot illustration only. */
+  --color-mascot-pupils: #0a0a0a; /** Homie pupils. USE: mascot illustration only. */
+  --color-mascot-glint: #fffcf4; /** Homie eye highlight/glint stroke. USE: mascot illustration only. */
+  --color-pro-bold: #f5b53d; /** Solid PRO fill. USE: PRO badges, upgrade banners. DON'T: warnings (use text.warning instead). PAIR: pro.onBold. */
+  --color-pro-onBold: #2a1d04; /** Text and icons on pro.bold. */
+  --color-pro-subtle: #3a2d0b; /** Low emphasis PRO fill. PAIR: pro.onSubtle. */
+  --color-pro-onSubtle: #fcd34d; /** Text and icons on pro.subtle. */
+  --color-accent-brand-bold: #9178e6; /** Solid brand violet fill. USE: brand moments, onboarding hero panels. DON'T: primary CTAs (use interactive.primary instead). PAIR: accent.brand.onBold. */
+  --color-accent-brand-onBold: #0e0a18; /** Text and icons on accent.brand.bold. */
+  --color-accent-brand-subtle: #15103a; /** Low emphasis brand fill. USE: tinted brand panels. PAIR: accent.brand.onSubtle. */
+  --color-accent-brand-onSubtle: #7b65e0; /** Text and icons on accent.brand.subtle. */
+  --color-accent-coral-bold: #fb7e5b; /** Solid coral accent fill. USE: decorative emphasis, category tags, illustration accents. DON'T: errors or warnings (use feedback.error.bold instead). PAIR: accent.coral.onBold. */
+  --color-accent-coral-onBold: #2e0f06; /** Text and icons on accent.coral.bold. */
+  --color-accent-coral-subtle: #512e2c; /** Low emphasis coral fill. PAIR: accent.coral.onSubtle. */
+  --color-accent-coral-onSubtle: #ffb59b; /** Text and icons on accent.coral.subtle. */
+  --color-accent-magenta-bold: #e879c0; /** Solid magenta accent fill. USE: decorative category tags. PAIR: accent.magenta.onBold. */
+  --color-accent-magenta-onBold: #2c0a20; /** Text and icons on accent.magenta.bold. */
+  --color-accent-magenta-subtle: #380d29; /** Low emphasis magenta fill. PAIR: accent.magenta.onSubtle. */
+  --color-accent-magenta-onSubtle: #f7b5de; /** Text and icons on accent.magenta.subtle. */
+  --color-accent-blue-bold: #5fa0fc; /** Solid blue accent fill. USE: informational chips, secondary category tags. DON'T: links (use text.link instead). PAIR: accent.blue.onBold. */
+  --color-accent-blue-onBold: #06173b; /** Text and icons on accent.blue.bold. */
+  --color-accent-blue-subtle: #0a1635; /** Low emphasis blue fill. PAIR: accent.blue.onSubtle. */
+  --color-accent-blue-onSubtle: #7ba8f2; /** Text and icons on accent.blue.subtle. */
+  --color-accent-green-bold: #00c386; /** Solid green accent fill. USE: streak counters, progress markers, positive stat chips. DON'T: validation success (use feedback.success.bold instead). PAIR: accent.green.onBold for text on top. */
+  --color-accent-green-onBold: #0a1f18; /** Text and icons on accent.green.bold. */
+  --color-accent-green-subtle: #0a2e22; /** Low emphasis green fill. USE: tinted background behind a green stat or chip. PAIR: accent.green.onSubtle. */
+  --color-accent-green-onSubtle: #4ae5b0; /** Text and icons on accent.green.subtle. */
+  --color-feedback-success-bold: #00c386; /** Solid success fill. USE: correct answer banners, completion states. DON'T: decorative green (use accent.green.bold instead). PAIR: feedback.success.onBold. */
+  --color-feedback-success-onBold: #0a1f18; /** Text and icons on feedback.success.bold. */
+  --color-feedback-success-subtle: #0a2e22; /** Tinted success background. USE: the panel behind a correct result. PAIR: feedback.success.onSubtle. */
+  --color-feedback-success-onSubtle: #4ae5b0; /** Text and icons on feedback.success.subtle. */
+  --color-feedback-error-bold: #ff6b6b; /** Solid error fill. USE: incorrect answer banners, failed validation summaries. DON'T: destructive buttons (use interactive.destructive instead). PAIR: feedback.error.onBold. */
+  --color-feedback-error-onBold: #2a0808; /** Text and icons on feedback.error.bold. */
+  --color-feedback-error-subtle: #532831; /** Tinted error background. USE: the panel behind a wrong result. PAIR: feedback.error.onSubtle. */
+  --color-feedback-error-onSubtle: #fca5a5; /** Text and icons on feedback.error.subtle. */
+  --color-feedback-partial-bold: #5fa0fc; /** Solid partial-credit fill. USE: answers that are partly right, e.g. the partial status pill. DON'T: wrong answers (use feedback.error.bold) or decorative blue (use accent.blue.bold). PAIR: feedback.partial.onBold. */
+  --color-feedback-partial-onBold: #06173b; /** Text and icons on feedback.partial.bold. */
+  --color-feedback-partial-subtle: #0a1635; /** Tinted partial-credit background. USE: the panel behind a partly right result. DON'T: wrong answers (use feedback.error.subtle instead). PAIR: feedback.partial.onSubtle. */
+  --color-feedback-partial-onSubtle: #7ba8f2; /** Text and icons on feedback.partial.subtle. */
+  --color-feedback-neutral-bold: #f4f2ff; /** Solid neutral fill. USE: states where the app didn't understand or capture the input, e.g. a mishearing, not a wrong answer. DON'T: incorrect answers (use feedback.error.bold instead). PAIR: feedback.neutral.onBold. */
+  --color-feedback-neutral-onBold: #090c18; /** Text and icons on feedback.neutral.bold. */
+  --color-feedback-neutral-subtle: #22242f; /** Tinted neutral background. USE: the panel behind a result the app didn't capture, e.g. a mishearing. DON'T: wrong answers (use feedback.error.subtle instead). PAIR: feedback.neutral.onSubtle. */
+  --color-feedback-neutral-onSubtle: #f4f2ff; /** Text and icons on feedback.neutral.subtle. */
+  --color-highlight-surface: #15103a; /** Fill of a chosen element. USE: selected cards, active tabs, the answer a student picked. DON'T: primary CTAs (use interactive.primary instead). PAIR: highlight.border and text.primary. */
+  --color-highlight-border: #7b65e0; /** Edge of a chosen element on a highlight.surface fill. USE: paired with highlight.surface, never alone. */
+  --space-0: 0px; /** 0px spacing step. USE: gaps and padding in auto layout. */
+  --space-100: 4px; /** 4px spacing step. USE: gaps and padding in auto layout. */
+  --space-150: 6px; /** 6px spacing step. USE: gaps and padding in auto layout. */
+  --space-200: 8px; /** 8px spacing step. USE: gaps and padding in auto layout. */
+  --space-300: 12px; /** 12px spacing step. USE: gaps and padding in auto layout. */
+  --space-400: 16px; /** 16px spacing step. USE: gaps and padding in auto layout. */
+  --space-600: 24px; /** 24px spacing step. USE: gaps and padding in auto layout. */
+  --space-700: 28px; /** 28px spacing step. USE: gaps and padding in auto layout. */
+  --space-800: 32px; /** 32px spacing step. USE: gaps and padding in auto layout. */
+  --space-1200: 48px; /** 48px spacing step. USE: gaps and padding in auto layout. */
+  --space-1600: 64px; /** 64px spacing step. USE: gaps and padding in auto layout. */
+  --space-2400: 96px; /** 96px spacing step. USE: gaps and padding in auto layout. */
+  --space-4000: 160px; /** 160px spacing step. USE: gaps and padding in auto layout. */
+  --space-050: 2px; /** 2px spacing step. USE: gaps and padding in auto layout. */
+  --space-negative-100: -4px; /** -4px spacing step. USE: gaps and padding in auto layout. */
+  --space-negative-200: -8px; /** -8px spacing step. USE: gaps and padding in auto layout. */
+  --space-negative-300: -12px; /** -12px spacing step. USE: gaps and padding in auto layout. */
+  --space-negative-400: -16px; /** -16px spacing step. USE: gaps and padding in auto layout. */
+  --space-negative-600: -24px; /** -24px spacing step. USE: gaps and padding in auto layout. */
+  --radius-100: 4px; /** 4px corner radius. */
+  --radius-150: 6px; /** 6px corner radius. */
+  --radius-200: 8px; /** 8px corner radius. */
+  --radius-400: 16px; /** 16px corner radius. */
+  --radius-600: 24px; /** 24px corner radius. */
+  --radius-800: 32px; /** 32px corner radius. */
+  --radius-900: 36px; /** 36px corner radius. */
+  --radius-full: 9999px; /** Fully rounded corner radius. */
+  --stroke-border: 1px; /** 1px stroke weight. */
+  --stroke-heavy-border: 2px; /** 2px stroke weight. */
+  --icon-100: 8px; /** 8px icon box. USE: width and height of an icon frame. */
+  --icon-150: 12px; /** 12px icon box. USE: width and height of an icon frame. */
+  --icon-200: 16px; /** 16px icon box. USE: width and height of an icon frame. */
+  --icon-250: 20px; /** 20px icon box. USE: width and height of an icon frame. */
+  --icon-300: 24px; /** 24px icon box. USE: width and height of an icon frame. */
+  --icon-400: 32px; /** 32px icon box. USE: width and height of an icon frame. */
+  --color-icon-primary: #f4f2ff; /** Default icon color: bright and solid. USE: standalone icons, icons on buttons (e.g. the send arrow), the selected option in a toggle or segmented control (the icon on inputModeToggle's knob). Mirrors text.primary. PAIR: interactive.secondary or background.surface fills. */
+  --color-icon-secondary: rgba(245, 243, 255, 0.6784313725490196); /** Lower-emphasis icon at 68%. USE: supporting icons beside text.secondary, icons inside inputs (e.g. the mic in the text field). Mirrors text.secondary. DON'T: the main action on a button (use icon.primary instead). */
+  --color-icon-tertiary: rgba(245, 243, 255, 0.47843137254901963); /** Icon for an unselected option that can still be tapped, at 48%. USE: the icon off the knob in inputModeToggle, unselected tabs or segments. Mirrors text.tertiary. RULE: must stay >= 3:1 against its fill; it is the only cue for the other option. DON'T: unavailable controls (use icon.disabled instead). */
+  --color-icon-disabled: rgba(255, 255, 255, 0.25098039215686274); /** Icon on a control that can't be used right now, at 25%. USE: micButton's disabled state (while Knowie processes the answer), blocked options. DON'T: an option that is merely unselected (use icon.tertiary instead). */
+  --color-icon-decorative: rgba(255, 255, 255, 0.1803921568627451); /** Purely ornamental glyph at 18%. USE: decoration nobody has to find or tap. DON'T: anything interactive or meaningful, since at ~1.8:1 on dark fills it fails the 3:1 non-text contrast minimum (use icon.tertiary instead). */
+  --illustration-500: 40px; /** 40px illustration box. USE: mascot and spot illustration sizing. */
+  --illustration-800: 64px; /** 64px illustration box. USE: mascot and spot illustration sizing. */
+  --illustration-1500: 120px; /** 120px illustration box. USE: mascot and spot illustration sizing. */
+  --illustration-2500: 200px; /** 200px illustration box. USE: mascot and spot illustration sizing. */
+  --illustration-4000: 320px; /** 320px illustration box. USE: mascot and spot illustration sizing. */
+  --font-size-2xs: 9px; /** 9px. USE: Caption S Bold and Caption S Regular. */
+  --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */
+  --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */
+  --font-size-md: 18px; /** 18px. USE: Headline XS and Body M, both weights. */
+  --font-size-lg: 21px; /** 21px. USE: Headline S. */
+  --font-size-xl: 28px; /** 28px. USE: Headline M. */
+  --font-size-2xl: 33px; /** 33px. USE: Headline L. */
+  --font-size-3xl: 44px; /** 44px. USE: Headline XL. */
+  --font-size-4xl: 59px; /** 59px. USE: Display S. */
+  --font-size-5xl: 76px; /** 76px. USE: Display M. */
+  --font-size-6xl: 103px; /** 103px. USE: Display L, Heavy only. */
+  --font-lineHeight-2xs: 12px; /** 12px. Set in pixels, not percent. */
+  --font-lineHeight-xs: 16px; /** 16px. Set in pixels, not percent. */
+  --font-lineHeight-sm: 20px; /** 20px. Set in pixels, not percent. */
+  --font-lineHeight-md: 24px; /** 24px. Set in pixels, not percent. */
+  --font-lineHeight-lg: 28px; /** 28px. Set in pixels, not percent. */
+  --font-lineHeight-xl: 36px; /** 36px. Set in pixels, not percent. */
+  --font-lineHeight-2xl: 44px; /** 44px. Set in pixels, not percent. */
+  --font-lineHeight-3xl: 60px; /** 60px. Set in pixels, not percent. */
+  --font-lineHeight-4xl: 76px; /** 76px. Set in pixels, not percent. */
+  --font-lineHeight-5xl: 104px; /** 104px. Set in pixels, not percent. */
+  --font-family-display: Inter; /** USE: Display L only. Figma uses Greed Standard-TRIAL, which is unlicensed and can't ship, so code resolves to Inter. Switch this value if a Greed license is obtained. */
+  --font-family-default: Inter; /** USE: every style except Display L. Figma uses Greed Standard-TRIAL, which is unlicensed and can't ship, so code resolves to Inter. Switch this value if a Greed license is obtained. */
+  --font-weight-regular: 400; /** USE: body copy and the Regular variants of Headline XS and XXS. (file weight name: "Regular", mapped to numeric 400.) */
+  --font-weight-semibold: 600; /** USE: the Bold variants of Headline XS and XXS, Body and Caption. (file weight name: "SemiBold", mapped to numeric 600.) */
+  --font-weight-bold: 700; /** USE: Display M and S, Headline XL through S. (file weight name: "Bold", mapped to numeric 700.) */
+  --font-weight-heavy: 800; /** USE: Display L only, paired with font/family/display. (file weight name: "Heavy", mapped to numeric 800.) */
+  --type-display-l-fontFamily: Inter;
+  --type-display-l-fontWeight: 800;
+  --type-display-l-fontSize: 103px;
+  --type-display-l-lineHeight: 104px;
+  --type-display-m-fontFamily: Inter;
+  --type-display-m-fontWeight: 700;
+  --type-display-m-fontSize: 76px;
+  --type-display-m-lineHeight: 76px;
+  --type-display-s-fontFamily: Inter;
+  --type-display-s-fontWeight: 700;
+  --type-display-s-fontSize: 59px;
+  --type-display-s-lineHeight: 60px;
+  --type-headline-xl-fontFamily: Inter;
+  --type-headline-xl-fontWeight: 700;
+  --type-headline-xl-fontSize: 44px;
+  --type-headline-xl-lineHeight: 44px;
+  --type-headline-l-fontFamily: Inter;
+  --type-headline-l-fontWeight: 700;
+  --type-headline-l-fontSize: 33px;
+  --type-headline-l-lineHeight: 36px;
+  --type-headline-m-fontFamily: Inter;
+  --type-headline-m-fontWeight: 700;
+  --type-headline-m-fontSize: 28px;
+  --type-headline-m-lineHeight: 28px;
+  --type-headline-s-fontFamily: Inter;
+  --type-headline-s-fontWeight: 700;
+  --type-headline-s-fontSize: 21px;
+  --type-headline-s-lineHeight: 24px;
+  --type-headline-xs-bold-fontFamily: Inter;
+  --type-headline-xs-bold-fontWeight: 600;
+  --type-headline-xs-bold-fontSize: 18px;
+  --type-headline-xs-bold-lineHeight: 20px;
+  --type-headline-xs-regular-fontFamily: Inter;
+  --type-headline-xs-regular-fontWeight: 400;
+  --type-headline-xs-regular-fontSize: 18px;
+  --type-headline-xs-regular-lineHeight: 20px;
+  --type-headline-xxs-bold-fontFamily: Inter;
+  --type-headline-xxs-bold-fontWeight: 600;
+  --type-headline-xxs-bold-fontSize: 15px;
+  --type-headline-xxs-bold-lineHeight: 16px;
+  --type-headline-xxs-regular-fontFamily: Inter;
+  --type-headline-xxs-regular-fontWeight: 400;
+  --type-headline-xxs-regular-fontSize: 15px;
+  --type-headline-xxs-regular-lineHeight: 16px;
+  --type-body-m-bold-fontFamily: Inter;
+  --type-body-m-bold-fontWeight: 600;
+  --type-body-m-bold-fontSize: 18px;
+  --type-body-m-bold-lineHeight: 24px;
+  --type-body-m-regular-fontFamily: Inter;
+  --type-body-m-regular-fontWeight: 400;
+  --type-body-m-regular-fontSize: 18px;
+  --type-body-m-regular-lineHeight: 24px;
+  --type-body-s-bold-fontFamily: Inter;
+  --type-body-s-bold-fontWeight: 600;
+  --type-body-s-bold-fontSize: 15px;
+  --type-body-s-bold-lineHeight: 20px;
+  --type-body-s-regular-fontFamily: Inter;
+  --type-body-s-regular-fontWeight: 400;
+  --type-body-s-regular-fontSize: 15px;
+  --type-body-s-regular-lineHeight: 20px;
+  --type-caption-m-bold-fontFamily: Inter;
+  --type-caption-m-bold-fontWeight: 600;
+  --type-caption-m-bold-fontSize: 12px;
+  --type-caption-m-bold-lineHeight: 16px;
+  --type-caption-m-regular-fontFamily: Inter;
+  --type-caption-m-regular-fontWeight: 400;
+  --type-caption-m-regular-fontSize: 12px;
+  --type-caption-m-regular-lineHeight: 16px;
+  --type-caption-s-bold-fontFamily: Inter;
+  --type-caption-s-bold-fontWeight: 600;
+  --type-caption-s-bold-fontSize: 9px;
+  --type-caption-s-bold-lineHeight: 12px;
+  --type-caption-s-regular-fontFamily: Inter;
+  --type-caption-s-regular-fontWeight: 400;
+  --type-caption-s-regular-fontSize: 9px;
+  --type-caption-s-regular-lineHeight: 12px;
+}

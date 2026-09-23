@@ -12,7 +12,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Concept — single source, don't restate: `docs/sprint-context.md`.
 - Recall engine is mocked: fake transcript, fake verdict, fake-but-present latency. `docs/platform-constraints.md`, `docs/sprint-context.md`.
 - Every screen is built from `scaffold`'s slots. `docs/design-system.md` §2.
-- All color/spacing/radius/type values: `docs/tokens.json`. Usage rules: `docs/design-system.md`.
+- All color/spacing/radius/type values: `tokens/tokens.json`. Usage rules: `docs/design-system.md`.
 - Naming: lowerCamelCase for components/props/tokens. `docs/design-system.md` §3 (legacy exceptions).
 - Contrast, touch-target, reduced-motion requirements. `docs/platform-constraints.md`.
 - Decisions already made: `docs/sprint-context.md` — check before re-deciding.
@@ -20,7 +20,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 
 ## Never
 
-- Never invent a color/spacing/radius/type value not in `docs/tokens.json`.
+- Never invent a color/spacing/radius/type value not in `tokens/tokens.json`.
 - No CSS fallback values (`var(--token, #fallback)`). `docs/design-system.md` §4.
 - Never build a screen outside `scaffold` (`docs/design-system.md` §2).
 - Never build a new component when an existing one covers it, or invent one to fill a gap — flag the gap instead (`docs/design-system.md` §4).
@@ -44,14 +44,16 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - `docs/design-brief.md` — user problem, hard constraints, open design questions. Read before designing any new flow.
 - `docs/sprint-context.md` — scope, decision log, what's not being built. Check before redeciding.
 - `docs/design-system.md` — component index, `scaffold` composition, naming conventions, Module 6 specs. Read before building or styling any screen.
-- `docs/tokens.json` — color/spacing/radius/type values. Source of truth for every literal value in code.
+- `tokens/tokens.json` — color/spacing/radius/type values. Source of truth for every literal value in code. Edit here, then run `npm run tokens`.
+- `style-dictionary.config.mjs` — Style Dictionary config; turns `tokens/*.json` into CSS variables.
+- `build/css/tokens.css` — generated CSS variables (`--color-interactive-primary` etc.). Tracked in git so a fresh clone builds. Never edit by hand; regenerate with `npm run tokens`.
 - `docs/platform-constraints.md` — canvas, touch, spacing, typography, contrast, a11y, performance, i18n rules. Read before writing any UI code.
 - `docs/voice-ux.md` — voice UX principles, states-to-build priority table. Read before building the recording/processing/result loop.
 - `docs/component-spec.md` — current source of truth for component builds: per-component status (✅ ready / ⚠️ blocker / 🆕 unaudited), variant/property/binding detail. Read before building or touching any component.
 - `docs/module-5-components-to-build.md` — superseded by `docs/component-spec.md`; kept as history, not edited. Don't build against this anymore.
 - `src/app/layout.tsx` — root layout, fonts. Still the create-next-app default.
 - `src/app/page.tsx` — home page. Still the create-next-app placeholder; references `/next.svg` and `/vercel.svg`.
-- `src/app/globals.css` — global styles, currently the create-next-app default theme (not yet wired to `docs/tokens.json`).
+- `src/app/globals.css` — global styles, currently the create-next-app default theme (not yet wired to `tokens/tokens.json`).
 - `public/images/*` — shipped Knowie mascot expression icons (9 svg + 3 png, intentional mix).
 - `reference/*.PNG` — 43 Figma mockup exports for visual reference only; not served assets, not final.
 - `.claude/skills/ux-designer/SKILL.md` — flow/IA/usability strategy; read before designing a new flow.
