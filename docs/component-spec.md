@@ -1,53 +1,303 @@
 # Component spec (source of truth)
 
-Consolidates and supersedes `module-5-components-to-build.md`, `module-5-components-to-build-1.md`, and `module-6-component-spec.md`. Those three stay on disk as history but stop being edited, this file is what Claude Code and Figma work should be checked against going forward.
+This file is the source of truth for the voice-recall components. Check Claude Code and Figma work against it.
 
-Legend: ✅ spec confirmed live, ready to build — ⚠️ open blocker, don't build yet — 🆕 needs a first Figma audit
+Last verified against the live Figma file (Yummy__Knowie Design System (Copy), `1fSfWxZSPoaFQ8Dg36EGXs`) on 2026-09-23. The voice-recall components in this file live on "New components". Core design-system components they build on (appBar, button, buttonGroup, chips, iconSlot, bottomSheet, scaffold, mascot and others) live on "🎨 Mascot & components". Screens that use them are on "Core flow for Claude Code".
 
-## Why there were three files
+Every component below has the same sections: **Description** (what it is), **When it's used** (the moment in the flow and the screens it appears on), **States** (every variant and what each one means). Build notes follow where relevant. Figma housekeeping and token gaps are collected at the end.
 
-`module-5-components-to-build.md` was the first pass: components pulled from the Module 5 screens, brief-level, not yet checked against the live Figma component definitions.
+Legend: ✅ confirmed live, ready to build · ◐ built, has a known issue listed in the section · ○ needs a first Figma audit
 
-`module-5-components-to-build-1.md` was a revision of that same brief after the results screen got built, added `expandableResultRow`, dropped the Lifebuoy note because Direction B had just been picked.
+## Working notes
 
-`module-6-component-spec.md` was the buildable spec: each component re-verified against the live Figma file and tokens.json, with real variant/property/binding definitions. It explicitly superseded the module-5 files. This document now supersedes it in turn, mainly because `micButton` has since been rebuilt and needs re-verification, and a new component (the input-mode toggle) didn't exist yet when module-6 was written.
+- `accent/neutral/surface` is a deprecated placeholder. Don't use it. "Didn't catch that" states use `feedback/neutral/*`.
+- Icons come from the shared library set (`<Name>/Format=Stroke, Weight=Regular`), e.g. Check, X, CaretRight, QuestionMark. Don't redraw icons as one-off vectors.
+- Sessions are a fixed 5 questions. Results summary and Progress meter assume this.
+
+## The flow at a glance
+
+| Moment | Screen(s) on "Core flow for Claude Code" | Key components |
+|---|---|---|
+| Question, ready to speak | QUESTION / activeState micOn | topicPill, answerCards (question), micButton (idle + ready), Toggle group (voice) |
+| Question, typing | Question / activeState keyboard option selected, Question / activeState keyboard open | topicPill, answerCards (question), Toggle group (keyboard) or inputModeToggle (keyboard), input field, Keyboard |
+| Recording | Question / listeningState | micButton (listening + ready), recordingGlow |
+| Processing | Question / processingState | answerCards (processing), micButton (idle + disabled), loadingDots |
+| Feedback | Answering / correctState, correctState finish, partialState, wrongState, notCaughtState | answerCards (answer-*), statusPill, bottomCTA |
+| Reveal answer | Reveal answer | bottomSheet overlay (answer + X), over the answer screen |
+| Last question | Lastquestion / activeState | answerCards (question), micButton (idle + ready), Toggle group (voice) |
+| Results | Three "Results" frames: perfect score, mixed ("Here's how it went"), 2 of 5 | Progress meter (perfect and 2-of-5 frames), Results summary + expandableResultRow (mixed frame), bottomCTA |
+| Mic permission | SPLASH-FIRST-TIME, PERMISSION-MIC, SPLASH-SKIP-MIC | SPLASH-FIRST-TIME: scaffold + button ("Let's go!"). PERMISSION-MIC: bottomSheet with buttonGroup ("Turn on" / "Not now") over the question screen. SPLASH-SKIP-MIC: bottomCTA ("No thanks" / "Continue") |
+
+topicPill sits at the top of every question, answer and permission screen.
 
 ## Components
 
-### micButton — ⚠️ needs re-audit
-Rebuilt in Figma since the last spec was written, so the variant/binding details below are unverified, not just old. Confirm against the live component before building.
+### micButton ✅
 
-Last known spec: variant `state` (Ready / Listening / Denied / Disabled), property `icon` (instance swap). Ready/Listening fill → `interactive/primary`; Disabled fill → `background/surface`, stroke → `border/default`; Denied stroke was unbound black on the pre-rebuild version and needed binding to `border/default`, check whether the rebuild carried that fix over. Disabled is specifically "mic access still resolving," pair with `loadingDots`, not a generic greyed-out state.
+Component set `15878:19554`, page "New components". Documented in Figma.
 
-### inputModeToggle — 🆕 new, not yet audited
-Lets the student switch between voice and keyboard input at any point in the loop. Defaults to keyboard when mic permission is denied; the mic option stays selectable and, when tapped in that state, routes to re-enabling the permission rather than recording. Replaces the earlier can't-speak quiz-swap direction. Resolves the open Lifebuoy-icon question from the original module-5 notes: that icon was reserved for a voluntary "can't talk right now" trigger that never got a job, this toggle is that trigger. Decide whether the toggle reuses the Lifebuoy icon or introduces its own.
+**Description:** the round mic button students tap to start and stop a voice answer (push-to-talk, explicit stop). Icon is set per variant; there is no icon swap property on purpose, because a shared instance-swap property forces every variant onto one icon.
 
-### Typing input screen — 🆕 new, not yet audited
-Dedicated screen opened by the toggle for entering the current answer by keyboard. No existing spec to check against.
+**When it's used:** centered above the bottom row on every voice question and answer screen. Not shown when mic permission is denied at the OS level; the Toggle group / inputModeToggle blocked state owns that case.
 
-### recordingGlow — ✅
-Separate instance from `micButton`, triggered by its Listening state, not a variant of it, so the two can change independently. Three stacked ellipses with layer blur. Fill (layer 1) → `interactive/voice feedback/layer 1`; confirm layers 2/3 are bound the same way rather than just matching visually. Add a boolean (e.g. `active`) only if code needs to query "off" as a real state.
+**States:** `listeningState` (idle / listening) × `interactionState` (ready / pressed / disabled). 5 of 6 combinations exist; listening + disabled is intentionally omitted.
+- idle + ready: resting, tap to speak. Icon micFilledIcon. QUESTION / activeState micOn, Lastquestion / activeState, answer screens (retry), Reveal answer, PERMISSION-MIC.
+- listening + ready: recording. Icon micFilledIcon. Question / listeningState, always with recordingGlow behind it.
+- idle + disabled: waiting while Knowie processes the answer. Icon micDisabledIcon. Question / processingState, paired with loadingDots.
+- idle + pressed, listening + pressed: momentary press feedback only. Not placed on any screen.
 
-### statusPill — ⚠️ open blocker
-Built on a `chips` instance. Needs its own `tone` variant (success / partial / error / unclear) bound to the feedback semantic tokens, not an extension of `chips`' existing `color` variant, which is shared with every other `chips` usage in the file. Current raw VariableID bindings (Correct, Partial, Wrong, Didn't-catch) need resolving to names before the tone mapping is built. Blocker: whether `accent/neutral/surface` is the real intended token for the "unclear" tone or a placeholder is unconfirmed, don't build that mapping on a guess.
+**Bindings:**
+- idle + ready fill → `interactive/primary`
+- idle + pressed, listening + ready, listening + pressed fill → `interactive/primaryActive`
+- idle + disabled fill → `background/surface`, stroke → `border/strong`
 
-### loadingDots — ✅
-Three ellipses, `itemSpacing: 4`, animated opacity/scale pulse. Rename the generic "Ellipse" layers to `dot1`/`dot2`/`dot3` so an animation handoff isn't guessing. Pairs with `micButton`'s Disabled state.
+**Build note:** listening + ready has the same fill as pressed, so the button alone doesn't show that recording is on. recordingGlow must always render with listeningState=listening.
 
-### answerFeedbackCard — ✅ (depends on statusPill's blocker clearing)
-Two components, not one monolithic sheet: `previewCard` (statusPill + message) and `bottomCTA` (the two buttons), matching how the live file already splits them. `previewCard` gets a `result` variant (correct / incorrect) driving tone, secondary-button label, and message together so they can't drift apart. Secondary label: Correct → "Review answer," anything else → "Reveal answer." `bottomCTA` gets a `showNextQuestion` boolean, default false, since there's currently no way to represent "before the student has reviewed or revealed." Rename the message text layer (currently named after its own copy) to `message`.
+### recordingGlow ◐
 
-### expandableResultRow — ⚠️ open blocker
-Variant `state` (collapsed / expanded / error). Property `transcript` (text), split out of the current single baked-in string so the label stays fixed and only the spoken words are swappable. Row fill bindings (success/error) are raw VariableIDs, need resolving to names. Blocker: whether a real Check/X icon component exists to use here is unconfirmed, a Figma plugin API error previously blocked reading the page that would answer it.
+Figma name `micButton listening background`, component `15878:19671`, page "New components", 174×174.
 
-## Cleanup, not new builds
+**Description:** the halo behind micButton that shows the mic is recording. A separate component, not a micButton variant, so the two can animate independently.
 
-Real `button` components already exist in the system but are hand-built frames with off-scale text on these screens: "Turn on"/"Not now" (permission modal), "Let's go!"/"Skip" (first-encounter primer). Swap for real instances, wrap paired buttons in a real `buttonGroup`.
+**When it's used:** only while recording. Question / listeningState, centered behind micButton (listening + ready).
 
-"No thanks"/"Start quiz" on the mic-denied screen belonged to the quiz-swap direction. That screen's premise no longer applies now that the toggle handles mic-denied, confirm whether it still ships in any form before cleaning it up.
+**States:** none. It's either on the screen (recording) or not.
 
-## Also still open, not re-verified recently
+**Structure (outer to inner):**
+- 174px circle, fill → `interactive/voice feedback/layer 2`
+- 142px circle, fill → `interactive/voice feedback/layer 3`
+- 124px ring, no fill, 0.5px stroke → `interactive/secondary`
+- 110px ring, no fill, 0.5px stroke → `interactive/secondary`
 
-- 2 remaining hand-built `chips` frames
-- 1 remaining hand-set 14px chip label
-- Back-button icon on the Permission custom modal, still a plain frame, not a `button` instance
+No blur.
+
+### loadingDots ✅
+
+Component `15795:39964`, page "New components". Documented in Figma.
+
+**Description:** three pulsing dots, an indeterminate "working on it" indicator. Horizontal auto layout, gap 4, three 6px circles, fill → `accent/brand/bold`.
+
+**When it's used:** while Knowie processes a spoken answer. Question / processingState, paired with micButton (idle + disabled). Not a progress meter; don't use it anywhere a percentage or step count is knowable.
+
+**States:** none. The opacity/scale pulse is applied in code, not as component states.
+
+### inputModeToggle ✅
+
+Component set `15878:17809` (variants `15878:21975`, `15878:21976`, `15903:16781`), page "New components". Documented in Figma.
+
+**Description:** a 96×48 pill that switches the answer input between speaking and typing. The whole pill is one tap target; the knob slides to the chosen side. Active side icon `icon/primary`, inactive side `icon/tertiary`. Icons: micIcon, keyboardIcon, micBlockedIcon.
+
+**When it's used:** bottom-left on every question and answer screen, so the student can switch input at any point. Placed through Toggle group on the question screens; placed on its own on the answer screens, Reveal answer and Question / activeState keyboard open.
+
+**States:** `inputMode` (voice / keyboard) × `micBlocked` (false / true). No voice + blocked variant.
+- voice, not blocked: default when mic permission is granted. QUESTION / activeState micOn, Lastquestion / activeState, answer screens, Reveal answer.
+- keyboard, not blocked: student switched to typing, or declined the mic primer (mic can still be requested). Typing screens.
+- keyboard, blocked: mic denied at OS level. Slashed mic; tapping it opens the re-enable-permission flow instead of switching modes. The knob stays on keyboard until permission is granted. Not placed on any screen yet.
+
+**Accessibility:** expose as a two-option segmented control ("Speak" / "Type") with the selected state announced. When blocked, the Speak label says mic access is off.
+
+### Toggle group ✅
+
+Component set `15878:22602`, page "New components". Documented in Figma.
+
+**Description:** the bottom row on the question screens: inputModeToggle on the left, a "Skip" `button` (Tertiary, S) on the right. Horizontal auto layout, fixed 358 wide (matches the question card, 16px from each screen edge), hug height (48), space-between (gap Auto), padding bound to `Space/0`. Place at x=16. Don't bind a variable to the gap; a bound gap overrides space-between and packs Skip against the toggle.
+
+**When it's used:** on question screens before the student answers. QUESTION / activeState micOn (voice), Lastquestion / activeState (voice), Question / activeState keyboard option selected (keyboard).
+
+**States (mirror inputModeToggle):** `inputMode` (voice / keyboard) × `micBlocked` (false / true).
+- voice, not blocked: mic granted, student is speaking.
+- keyboard, not blocked: student switched to typing or declined the mic primer.
+- keyboard, blocked: mic denied at OS level. Slashed mic; tapping it opens the re-enable-permission flow. micButton is hidden.
+
+**Skip:** available before the first attempt. Tapping it records the question as skipped (skipped-questions card on Results).
+
+**Usage rule:** pick this component's variant. Don't override the nested inputModeToggle's properties on an instance, or the row and toggle can disagree.
+
+### topicPill ✅
+
+Component `15850:10081`, page "New components".
+
+**Description:** a small outlined label with a leading dot that names the topic being studied (e.g. "ENERGY FLOW IN ECOSYSTEMS"). Text property `Label`, displayed in uppercase. Fill `background/surface`, stroke `accent/brand/bold`, fully rounded.
+
+**When it's used:** top of the middle content on every question, answer and permission screen, above the mascot.
+
+**States:** none.
+
+### answerCards ✅
+
+Component set `15804:41153`, page "New components". Documented in Figma.
+
+**Description:** the card for whatever Knowie is currently saying or asking. One instance per turn; an answer screen shows two (the question plus the feedback).
+
+**When it's used:** on every question and answer screen, under the mascot.
+
+**States:** `Property 1`.
+- Default: Knowie talking without asking a question (e.g. a welcome message). Plain text, no pill. Not placed on any screen.
+- question: the question text. Every question and answer screen.
+- processing: loading message + 3 skeleton bars. Question / processingState. Default copy is "Thinking...". Keep wait copy calm and literal (e.g. "Thinking...", "Checking your answer..."); no jokes or playful lines.
+- answer-correct: statusPill correct + feedback message. Answering / correctState, correctState finish.
+- answer-partial: statusPill partial + feedback message. Answering / partialState.
+- answer-error: statusPill wrong + feedback message. Answering / wrongState.
+- answer-notcaught: statusPill notCaught + "I couldn't understand that take." Answering / notCaughtState, Reveal answer.
+
+### statusPill ◐
+
+Component set `15762:36623`, page "New components". Built with its own variant, not an extension of `chips`' color variant.
+
+**Description:** a small colored label at the top of a feedback card that says how the answer went. Properties: `Label` (text), `left icon` (boolean, default true).
+
+**When it's used:** inside answerCards' answer-* variants on the feedback screens and Reveal answer. Tone comes from `state`; never hand-color it.
+
+**States:** `state`.
+- correct: "Correct". `feedback/success/bold`, label `feedback/success/onBold`, icon Check. Answering / correctState, correctState finish.
+- partial: "Almost there". `feedback/partial/bold`, label `feedback/partial/onBold`, icon ArrowCounterClockwise. Answering / partialState.
+- wrong: "Try again". `feedback/error/bold`, label `feedback/error/onBold`, icon ArrowsClockwise. Answering / wrongState.
+- notCaught: "Didn't catch that". `feedback/neutral/bold`, label `feedback/neutral/onBold`, icon QuestionMark. The app misheard; not the student being wrong. Answering / notCaughtState, Reveal answer.
+
+**Known issue:** wrong and partial use near-identical rotating-arrow icons, so color is the only real difference. See "Open design questions."
+
+### bottomCTA ◐
+
+Component set `15808:41818`, page "New components". Documented in Figma.
+
+**Description:** the action bar anchored to the bottom of the screen. Drawer layouts sit in a full-bleed 390×112 panel. Button labels come from each button's CTA text property; don't hardcode them. `Show secondaryButton` (boolean, default true) hides the secondary button in "Two button drawer" once it's been used.
+
+**When it's used:** answer screens (before and after reveal), Results and SPLASH-SKIP-MIC. Question screens use Toggle group instead.
+
+**States:** `layout`.
+- Two button no drawer: Secondary + Primary side by side, no panel, 104 tall. SPLASH-SKIP-MIC ("No thanks" + "Continue").
+- Two button drawer: Secondary + Primary. Correct answer ("More info" + "Next question", or "Finish" on the last question), Results ("Review all" or "Review 3 concepts" + "Continue").
+- Two button drawer / Secondary: Tertiary + Secondary, low emphasis because the mic is the primary action. Partial / wrong, before and after reveal ("Reveal answer" + "Next question"). Didn't catch, before and after reveal ("Reveal answer" + "Skip"). "Next question" stays Secondary so it doesn't compete with the mic for a retry.
+- One button drawer / primary: single full-width Primary. Not placed on any screen.
+- One button drawer / secondary: single full-width Secondary. Not placed on any screen.
+
+**Flow by result:**
+
+| Result | Layout | Buttons | Retry |
+|---|---|---|---|
+| Correct | Two button drawer | "More info" + "Next question" ("Finish" on last question) | none |
+| Partial / wrong, before reveal | Two button drawer / Secondary | "Reveal answer" + "Next question" | mic, "Tap to dictate" |
+| Partial / wrong, after reveal | Two button drawer / Secondary | "Reveal answer" + "Next question" | mic, "Tap to try again" |
+| Didn't catch, before reveal | Two button drawer / Secondary | "Reveal answer" + "Skip" | mic, "Tap to dictate" |
+| Didn't catch, after reveal | Two button drawer / Secondary | "Reveal answer" + "Skip" | mic, "Tap to try again" |
+
+**Skip vs Next question:** "Skip" records the question as skipped (skipped-questions card on Results). It appears in two places: before the first attempt (Toggle group on the question screens), and after "Didn't catch that", because the app misheard and nothing was judged. After a partial or wrong answer the way forward is "Next question" (or dictating again), and moving on counts as needs practice, not a skip.
+
+**Known issue:** `Show secondaryButton` is on in every instance, so hiding a button after it's used isn't shown on any screen.
+
+### Reveal answer overlay ✅
+
+Not its own component: a `bottomSheet` instance (component set `3675:30952`, page "🎨 Mascot & components", `height=M`) over a scrim. Figma frame `15878:20014`.
+
+**Description:** a panel with the answer and any context the student needs (title, body copy) and an X to close. No action buttons: the student reads the answer, closes the sheet, then chooses to dictate again or skip. The sheet's empty bottom section slot is hidden, and the sheet hugs its content, so it grows to fit longer answers.
+
+**When it's used:**
+- "Reveal answer" on a partial, wrong or didn't-catch answer.
+- "More info" on a correct answer, so the student can see Knowie's answer if they want to.
+
+It sits over whichever answer screen opened it; the Figma frame only shows it over the didn't-catch-that state.
+
+**States:**
+- Open: answer, context and X.
+- X: closes the overlay and returns to the answer screen. For incorrect answers that screen is in its after-reveal state (statusPill, micButton idle + ready, inputModeToggle voice, bottomCTA "Reveal answer" + "Next question" after partial or wrong, "Reveal answer" + "Skip" after didn't catch). For a correct answer it's unchanged.
+
+### Typing input screen ◐
+
+Not a component: two screens, "Question / activeState keyboard option selected" (`15878:19708`) and "Question / activeState keyboard open" (`15878:19734`).
+
+**Description:** where the student types the current answer instead of speaking. A "Type your answer" field replaces the mic.
+
+**When it's used:** whenever inputModeToggle is on keyboard, whether the student chose it, declined the mic primer, or has the mic blocked.
+
+**States:**
+- keyboard selected: Toggle group (keyboard) above the input field, system keyboard closed. No bottomCTA.
+- keyboard open: system keyboard up (the `Keyboard` component, page "New components"), answer being typed. No bottomCTA; the keyboard covers the bottom of the screen.
+
+Both screens also use the `Tap to answer` component (page "New components").
+
+**Known issue:** the input field is a hand-built frame ("Frame 1171277417"), not a component. `Chat Input` (component set in the file) may be the right one.
+
+### Progress meter ✅
+
+Component set `15862:14684`, page "New components". Documented in Figma.
+
+**Description:** an 80×80 ring at the top of Results that shows the session score, with the score in the middle. Track `background/surface`, partial fill `accent/brand/bold`, full fill `accent/green/bold`, label text style `Greed/Body M Bold` (`type.body.m.bold` in tokens.json).
+
+**When it's used:** in the "Stats Header" of the perfect-score and 2-of-5 Results frames. The mixed "Here's how it went" frame doesn't show it. Omit it entirely when the student got 0 correct (encouraging-tone rule), which is why there is no score=0 variant.
+
+**States:** `score` 1 to 5.
+- score=1 to 4: label shows the fraction (e.g. "2/5"), partial fill.
+- score=5: label shows "100%", full green fill.
+
+The denominator is fixed at /5 (fixed session length).
+
+### Results summary ◐
+
+Component set `15815:43943`, page "New components". Documented in Figma.
+
+**Description:** a titled card on the end-of-session results screen that lists concepts in one category, one expandableResultRow per concept, up to 5 rows (the fixed session length).
+
+**When it's used:** Results, once the session ends. Stack cards with 8px (`Space/200`) between them on the parent, not on this component.
+
+**States:** `Property 1`.
+- good-explanations: concepts explained well. Rows are tone=success.
+- needs-practice: questions with a partial or wrong answer that the student moved on from with "Next question". Rows are tone=error.
+- skipped-questions: questions skipped before any attempt, or skipped after "Didn't catch that". Rows are tone=neutral.
+
+**Rules:** don't show a card that has zero items. Hide any empty trailing row slot (`visible = false`), don't just leave it empty. All rows default to collapsed.
+
+**Known issue:** only the mixed "Here's how it went" frame uses this component (skipped-questions + needs-practice). The perfect-score and 2-of-5 frames have hand-built "Good explanations" lists.
+
+### expandableResultRow ✅
+
+Component set `15815:43883`, page "New components".
+
+**Description:** one concept row inside a Results summary card. Collapsed it shows the concept name; expanded it also shows what the student said (verbatim transcript), so they can tell "misheard" from "wrong." Property: `transcript` (text), holding only the spoken words.
+
+**When it's used:** inside Results summary on the Results screen, never on its own.
+
+**States:** `state` (collapsed / expanded) × `tone` (success / error / neutral).
+- success: fill `feedback/success/subtle`, icon Check. Used in good-explanations.
+- error: fill `feedback/error/subtle`, icon X. Used in needs-practice.
+- neutral: fill `background/surface`, icon DotOutline. Used in skipped-questions.
+- collapsed (default): concept name + trailing CaretRight.
+- expanded: adds the transcript detail.
+
+Label → `text/primary`.
+
+### Mic and keyboard icons ✅
+
+Components on "New components": `micIcon` (`15878:17726`), `micFilledIcon` (`15750:36175`), `micDisabledIcon` (`15753:36361`), `micBlockedIcon` (`15903:16777`), `keyboardIcon` (`15903:16824`).
+
+**Description:** the glyphs used inside micButton and inputModeToggle.
+
+**When it's used:**
+- micIcon, keyboardIcon: inputModeToggle, voice and keyboard sides.
+- micFilledIcon: micButton (idle + ready, idle + pressed, listening).
+- micDisabledIcon: micButton (idle + disabled).
+- micBlockedIcon: inputModeToggle blocked state.
+
+**States:** none.
+
+## Open design questions
+
+- **statusPill icons for wrong vs partial.** Proposal: switch wrong to `X` (same icon expandableResultRow already uses for the error tone, and already in the library) and keep `ArrowCounterClockwise` for partial. Correct = Check, partial = arrow, wrong = X, didn't catch = QuestionMark: four different shapes, so the states read without color.
+- **Mic blocked** isn't shown on any screen yet (Toggle group or inputModeToggle, keyboard + blocked).
+
+## Tokens
+
+Every token named in this file is in tokens.json, except the deprecated `accent/neutral/surface` (don't use it). `Space/0` and `Space/200` are `space.0` and `space.200`. Figma path `a/b/c` is `a.b.c` in tokens.json (e.g. `feedback/partial/bold` is `feedback.partial.bold`). The recording glow tokens keep Figma's spaces: `interactive["voice feedback"]["layer 2"]`. Figma text style `Greed/Body M Bold` is `type.body.m.bold`.
+
+## Figma cleanup
+
+Housekeeping in the Figma file. Doesn't change what gets built.
+
+- **appBar:** the XP counter (lightning + "2") is a hand-built "chips" frame inside the appBar main component (`15725:32304`, "🎨 Mascot & components"), not a `chips` instance. It shows on every screen.
+- **SPLASH-FIRST-TIME:** "Skip" is a 14px label with no text style, inside a `Button` component (capital B) that's separate from the design system's `button`.
+- **recordingGlow:** rename the component to `recordingGlow`, give the ellipses meaningful names, add a description. `interactive/voice feedback/layer 0` and `layer 1` exist but aren't used; use or delete them.
+- **expandableResultRow:** icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
+- **Results summary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
+- **topicPill:** has no component description.
+- **middleSection** (`15851:10099`) isn't used anywhere. **keyboardOutline (legacy)** (`15878:17569`) is only used on the backup page.
+- **"New components - backup" page** holds duplicate sets of statusPill, answerCards, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
+- **Plugin tip:** when querying this file through the Figma plugin API, use `findAllWithCriteria`. `findAll` throws "Unknown node type" on this file.
