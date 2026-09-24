@@ -255,3 +255,8 @@
 .fd-space-row-wide {
   grid-template-columns: var(--illustration-4000) 1fr;
 }
+
+.fd-indicator-dot {
+  border-radius: var(--radius-full);
+  background: var(--color-accent-brand-bold);
+}

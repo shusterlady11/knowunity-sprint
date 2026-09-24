@@ -92,6 +92,8 @@ export const shadowTokens = () => allTokens.filter((t) => t.type === 'shadow');
 
 export const illustrationTokens = () => allTokens.filter((t) => t.path[0] === 'illustration');
 
+export const indicatorTokens = () => allTokens.filter((t) => t.path[0] === 'indicator');
+
 export const strokeTokens = () => allTokens.filter((t) => t.path[0] === 'stroke');
 
 export const motionTokens = () => allTokens.filter((t) => t.path[0] === 'motion');

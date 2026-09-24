@@ -1,4 +1,4 @@
-import { controlTokens, iconSizeTokens, illustrationTokens, strokeTokens } from './tokenData';
+import { controlTokens, iconSizeTokens, illustrationTokens, indicatorTokens, strokeTokens } from './tokenData';
 import { TokenRow } from './parts';
 import './foundations.css';
 
@@ -6,7 +6,7 @@ export function Sizes() {
   return (
     <div className="fd-page">
       <p className="fd-intro">
-        Fixed sizes for controls, icons, illustrations and border lines. These are sizes, not
+        Fixed sizes for controls, icons, illustrations, indicator dots and border lines. These are sizes, not
         spacing, so they are not part of the spacing scale. Values are read from
         build/css/tokens.css and descriptions from tokens/tokens.json.
       </p>
@@ -52,6 +52,18 @@ export function Sizes() {
               visual={
                 <div className="fd-icon-box" style={{ width: `var(${token.cssVar})`, height: `var(${token.cssVar})` }} />
               }
+            />
+          ))}
+        </div>
+      </section>
+      <section className="fd-section">
+        <h2 className="fd-section-title">Indicator</h2>
+        <div className="fd-list">
+          {indicatorTokens().map((token) => (
+            <TokenRow
+              key={token.dotName}
+              token={token}
+              visual={<div className="fd-indicator-dot" style={{ width: `var(${token.cssVar})`, height: `var(${token.cssVar})` }} />}
             />
           ))}
         </div>
