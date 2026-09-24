@@ -254,6 +254,16 @@ It sits over whichever answer screen opened it; the Figma frame only shows it ov
 - Open: answer, context and X.
 - X: closes the overlay and returns to the answer screen. For incorrect answers that screen is in its after-reveal state (statusPill, micButton idle + ready, inputModeToggle voice, bottomCTA "Reveal answer" + "Next" after partial or wrong, "Reveal answer" + "Skip" after didn't catch). For a correct answer it's unchanged.
 
+### tapToAnswer ✅
+
+Component `15808:41585`, page "New components". No description in Figma.
+
+**Description (from its use):** one line of dimmed, centered text that tells the student how to answer. One property, `Text`, "Tap to answer" by default. On the core flow screens it appears in the keyboard states (the typing screen, and the typing screen with the keyboard open), with the text changed to a "Type an answer" hint.
+
+**States:** none.
+
+**Built** (`src/components/tapToAnswer`, 2026-09-24). Prop `text` (Figma's "Text", same default). A plain paragraph, not a button: the input field is what the student taps. Fills its container, centered; Body S Regular in `text/secondary` with the line height (`font/lineHeight/sm`) and letter spacing Figma binds.
+
 ### Typing input screen ◐
 
 Not a component: two screens, "Question / activeState keyboard option selected" (`15878:19708`) and "Question / activeState keyboard open" (`15878:19734`).
@@ -402,6 +412,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **expandableResultRow:** the rows inside `resultsSummary` come from a deleted copy (`15808:42383`). The documented set (`15815:43883`, "New components") has the same variants, properties and description, but the two haven't been compared layer by layer.
 - **bottomSheetAppBar / bottomSheet:** the side buttons (`dismissButton`, `actionButton`) are still the old `App Bar Button Icon` (24px icon, local x-close and arrow-right icons), not `buttonIcon`; the local `x-close` is a filled glyph, not the library X. The `Default` type is a fixed 64px tall in the set but 72px inside a bottomSheet. The handle's corner radius (2) and its 6px offset from the top are typed in (`Radius/Full`, `Space/150`). The app bar sets are 375px wide but the bottomSheet master is 350px. The stories/variants of `height` only differ by placeholder content.
 - **Deleted source components still in use** (they render, but can't be edited centrally): `progressIndicator` (13 uses, inside appBar), the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), and the `x-close` icon. `progressIndicator` needs a proper, documented component before it's built in code.
+- **tapToAnswer:** add a description. Every instance on the core flow screens reads "Tyoe an answer" (a typo for "Type an answer"). The text layer sits 20px down inside a 21px frame; it renders correctly in use, but the frame is worth tidying.
 - **recordingGlow:** give the ellipses meaningful names (they're still "Ellipse 3902" to "3905"). `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** no text layer is linked to a property: the `transcript` property exists but changing it does nothing, and the concept name and question are typed into the layers. Link `transcript` to the transcript layer and expose the concept name and question as properties (code adds `label` and `question`). The transcript's quote marks are typed in and inconsistent (a straight opening quote, a curly closing one); the property's default text also differs from the text shown in the variants. The two quote frames are a fixed 313px, wider than the detail's 290px; make them fill. The detail's left padding is a raw 28 in the success variant (`Space/700` in the others). Icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** rename the variant property "Property 1" (code calls it `category`). Title contrast on the green and coral cards is about 2.1:1 and 2.5:1; the neutral card already uses the dark `interactive/onPrimary`. The top padding (16) and the gap (12) are typed-in numbers (`Space/400`, `Space/300`). In needs-practice and skipped-questions each row sits in an extra nested "Items List" frame (the good-explanations card doesn't). In the needs-practice card the error icon on the rows renders nearly invisible. 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.

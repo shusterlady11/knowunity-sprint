@@ -1,0 +1,12 @@
+.tapToAnswer {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-family: var(--type-body-s-regular-fontFamily);
+  font-weight: var(--type-body-s-regular-fontWeight);
+  font-size: var(--type-body-s-regular-fontSize);
+  line-height: var(--font-lineHeight-sm);
+  letter-spacing: var(--type-body-s-regular-letterSpacing);
+  text-align: center;
+}
