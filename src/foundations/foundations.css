@@ -1,0 +1,135 @@
+.fd-page {
+  padding: var(--space-600) var(--space-800);
+  font-family: var(--type-body-s-regular-fontFamily);
+}
+
+.fd-intro {
+  margin: 0 0 var(--space-800);
+  color: var(--color-text-secondary);
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+}
+
+.fd-section {
+  margin-bottom: var(--space-1200);
+}
+
+.fd-section-title {
+  margin: 0 0 var(--space-400);
+  color: var(--color-text-primary);
+  font-family: var(--type-headline-m-fontFamily);
+  font-weight: var(--type-headline-m-fontWeight);
+  font-size: var(--type-headline-m-fontSize);
+  line-height: var(--type-headline-m-lineHeight);
+}
+
+.fd-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(var(--space-4000) * 2), 1fr));
+  gap: var(--space-400);
+}
+
+.fd-card {
+  overflow: hidden;
+  background: var(--color-background-surface);
+  border: var(--stroke-border) solid var(--color-border-default);
+  border-radius: var(--radius-400);
+}
+
+.fd-card-body {
+  padding: var(--space-300) var(--space-400) var(--space-400);
+}
+
+.fd-swatch {
+  height: var(--space-1600);
+  border-bottom: var(--stroke-border) solid var(--color-border-default);
+}
+
+.fd-name {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--type-body-s-bold-fontFamily);
+  font-weight: var(--type-body-s-bold-fontWeight);
+  font-size: var(--type-body-s-bold-fontSize);
+  line-height: var(--type-body-s-bold-lineHeight);
+  overflow-wrap: anywhere;
+}
+
+.fd-value {
+  margin: var(--space-050) 0 0;
+  color: var(--color-text-tertiary);
+  font-family: var(--type-caption-m-regular-fontFamily);
+  font-weight: var(--type-caption-m-regular-fontWeight);
+  font-size: var(--type-caption-m-regular-fontSize);
+  line-height: var(--type-caption-m-regular-lineHeight);
+  overflow-wrap: anywhere;
+}
+
+.fd-text {
+  margin: var(--space-200) 0 0;
+  color: var(--color-text-secondary);
+  font-family: var(--type-body-s-regular-fontFamily);
+  font-weight: var(--type-body-s-regular-fontWeight);
+  font-size: var(--type-body-s-regular-fontSize);
+  line-height: var(--type-body-s-regular-lineHeight);
+}
+
+.fd-missing {
+  color: var(--color-text-tertiary);
+}
+
+.fd-error {
+  color: var(--color-text-error);
+}
+
+.fd-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.fd-type-row {
+  padding: var(--space-600) 0;
+  border-bottom: var(--stroke-border) solid var(--color-border-default);
+}
+
+.fd-sample {
+  margin: 0 0 var(--space-300);
+  color: var(--color-text-primary);
+  overflow-wrap: anywhere;
+}
+
+.fd-space-row {
+  display: grid;
+  grid-template-columns: calc(var(--space-4000) * 1.25) 1fr;
+  gap: var(--space-600);
+  align-items: start;
+  padding: var(--space-300) 0;
+  border-bottom: var(--stroke-border) solid var(--color-border-default);
+}
+
+.fd-bar-track {
+  padding: var(--space-150) 0;
+  border-left: var(--stroke-border) solid var(--color-border-strong);
+}
+
+.fd-bar {
+  box-sizing: border-box;
+  height: var(--space-400);
+  background: var(--color-interactive-primary);
+}
+
+.fd-bar-negative {
+  background: transparent;
+  border: var(--stroke-border) dashed var(--color-interactive-primary);
+}
+
+.fd-radius-box {
+  box-sizing: border-box;
+  width: var(--space-2400);
+  height: var(--space-2400);
+  margin-bottom: var(--space-300);
+  background: var(--color-background-surface);
+  border: var(--stroke-heavy-border) solid var(--color-interactive-primary);
+}
