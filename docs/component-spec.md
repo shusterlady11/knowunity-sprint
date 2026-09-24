@@ -254,6 +254,32 @@ It sits over whichever answer screen opened it; the Figma frame only shows it ov
 - Open: answer, context and X.
 - X: closes the overlay and returns to the answer screen. For incorrect answers that screen is in its after-reveal state (statusPill, micButton idle + ready, inputModeToggle voice, bottomCTA "Reveal answer" + "Next" after partial or wrong, "Reveal answer" + "Skip" after didn't catch). For a correct answer it's unchanged.
 
+### progressIndicator ✅
+
+Component set `15961:17510`, page "🎨 Mascot & components". Documented in Figma. Replaces an older ring-style set of the same name (`9003:8923`).
+
+**Description:** shows how far through the current question set the student is; used in the top app bar during a question set. Not for loading states, and not for the score (that's `progressMeter` on Results). One property, `progress` (0, 25, 50, 75, 100); in code the fill is a percentage of the bar's width and the bar fills the space it's given.
+
+**States:** `progress` 0 / 25 / 50 / 75 / 100. At 0 the fill is a round dot as wide as the bar is tall.
+
+**Built** (`src/components/progressIndicator`, 2026-09-24). Prop `progress` is a number from 0 to 100 (Figma's five steps, plus any percentage in between; values outside are held to 0 to 100), and an optional `aria-label` (default "Progress"). 16px tall (`Indicator/Progress Height`, a new token), a `Radius/Full` pill in `background/stacking`, with a 1px `border/subtle` outline inside its edge; the fill is `accent/brand/bold`, `Radius/Full`, never narrower than the bar is tall. It's a progress bar for screen readers. `border/subtle` was in Figma but missing from `tokens.json`; it was added with Figma's value and description.
+
+### textBlock ✅
+
+Component set `9003:9039`, page "🎨 Mascot & components". Documented in Figma.
+
+**Description:** a title with an optional caption under it, in four sizes. Use it as a section or screen heading with a supporting caption; don't turn `showCaption` on without real caption text. Figma notes it has no instances on the Example Screens page (one demo on the components overview), so its guidance comes from its structure. The design system names it for the text in a screen's content area.
+
+**States:** `variant` XL / L / M / S; properties `showCaption` (on by default), `title` ("Header"), `caption` ("Caption").
+- XL: Headline XL (76px) title and a Headline XS caption, centered, `Space/100` between.
+- L: Headline L (44px) title and a Headline XS caption, centered, `Space/100` between.
+- M: Body M Bold title and Caption M Regular caption, left-aligned, `Space/050` between.
+- S: Body S Bold title and Caption S Regular (9px) caption, left-aligned, `Space/050` between.
+
+**Built** (`src/components/textBlock`, 2026-09-24). Same properties and defaults as Figma. The block hugs its text and both lines fill its width. Colors `text/primary` and `text/secondary`. Measured against Figma: the same heights with the default text (100, 60, 42, 34px). XL and L titles are Inter, not Greed Condensed (unlicensed trial font), so they're wider than in Figma (XL "Header" 265px against 247px). The text is a pair of paragraphs and doesn't pick a heading level.
+
+**The other "textBlock" set** (`15725:33034`, one variant named `variant5`, used 12 times inside "Mascot Segment" frames) is a different design: a question card (`background/surfaceQuestion` fill, "Q: ..." text) that `answerCard` in its `question` state already covers. It isn't built.
+
 ### tapToAnswer ✅
 
 Component `15808:41585`, page "New components". No description in Figma.
@@ -411,7 +437,8 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **appBar:** its 9 back and action buttons are a legacy `App Bar Button Icon` whose source component is deleted. The swap to `buttonIcon` is not invisible: the legacy button shows a 24px icon, while `buttonIcon` Tertiary M shows 20px (Tertiary L keeps 24px but has a 56px tap area). appBar appears on 13 of the core flow screens.
 - **expandableResultRow:** the rows inside `resultsSummary` come from a deleted copy (`15808:42383`). The documented set (`15815:43883`, "New components") has the same variants, properties and description, but the two haven't been compared layer by layer.
 - **bottomSheetAppBar / bottomSheet:** the side buttons (`dismissButton`, `actionButton`) are still the old `App Bar Button Icon` (24px icon, local x-close and arrow-right icons), not `buttonIcon`; the local `x-close` is a filled glyph, not the library X. The `Default` type is a fixed 64px tall in the set but 72px inside a bottomSheet. The handle's corner radius (2) and its 6px offset from the top are typed in (`Radius/Full`, `Space/150`). The app bar sets are 375px wide but the bottomSheet master is 350px. The stories/variants of `height` only differ by placeholder content.
-- **Deleted source components still in use** (they render, but can't be edited centrally): `progressIndicator` (13 uses, inside appBar), the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), and the `x-close` icon. `progressIndicator` needs a proper, documented component before it's built in code.
+- **Deleted source components still in use** (they render, but can't be edited centrally): `progressIndicator` (13 uses, inside appBar; the new set exists and appBar will use it once it's built), the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), and the `x-close` icon. The old ring-style `progressIndicator` set (`9003:8923`: Primary and Coral, 24 and 16 thickness, optional label) is still in the file next to the new one; delete or rename it so nobody instances it by mistake.
+- **textBlock:** the second set named `textBlock` (`15725:33034`, variant `variant5`, 12 uses in "Mascot Segment" frames) duplicates `answerCard`'s question state and uses the deleted `Padding/lg` variable; swap those instances to `answerCard` and delete the set, or rename it so nobody instances it by mistake. The S caption is 9px, under the 11px caption minimum in the platform rules; Caption M (12px) would pass. The variants use the Greed Condensed trial font for XL and L.
 - **tapToAnswer:** add a description. Every instance on the core flow screens reads "Tyoe an answer" (a typo for "Type an answer"). The text layer sits 20px down inside a 21px frame; it renders correctly in use, but the frame is worth tidying.
 - **recordingGlow:** give the ellipses meaningful names (they're still "Ellipse 3902" to "3905"). `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** no text layer is linked to a property: the `transcript` property exists but changing it does nothing, and the concept name and question are typed into the layers. Link `transcript` to the transcript layer and expose the concept name and question as properties (code adds `label` and `question`). The transcript's quote marks are typed in and inconsistent (a straight opening quote, a curly closing one); the property's default text also differs from the text shown in the variants. The two quote frames are a fixed 313px, wider than the detail's 290px; make them fill. The detail's left padding is a raw 28 in the success variant (`Space/700` in the others). Icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.

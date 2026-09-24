@@ -118,6 +118,7 @@
   --color-text-warning: #fcd34d; /** Caution text. USE: limits, expiry notices, "one attempt left". */
   --color-text-onAccent: #0e0a18; /** Text on any accent.*.bold fill. RULE: must contrast >= 4.5:1 against the accent it sits on. */
   --color-border-default: rgba(255, 255, 255, 0.10196078431372549); /** Standard container edge. USE: Card outlines, dividers, input borders at rest, separators. DON'T: Selected element borders (use highlight.border instead). */
+  --color-border-subtle: rgba(255, 255, 255, 0.10196078431372549); /** Nearly invisible divider for minimal separation. USE: Hairline dividers between list items, table rows, section breaks. DON'T: Card outlines that need to be visible (use border.default instead). */
   --color-border-strong: rgba(255, 255, 255, 0.25098039215686274); /** Higher contrast container edge. USE: dividers that must read at a glance, table rules, edges on busy surfaces. DON'T: default card outlines (use border.default instead). */
   --color-border-focus: #a78bfa; /** Keyboard focus ring. USE: the visible focus indicator on any focusable element. RULE: pair with Stroke/Heavy Border at 2px and never remove it without a replacement. */
   --color-border-error: #ff6b6b; /** Invalid input edge. USE: text fields and selects that failed validation. PAIR: text.error for the message underneath. */
@@ -224,6 +225,7 @@
   --indicator-meter: 80px; /** 80px circular meter. USE: progressMeter on the results screen. DON'T: use as spacing, or for the mic button (Control/Mic). */
   --indicator-handle-width: 32px; /** Width of a bottom sheet's drag handle. USE: the Handle in bottomSheetAppBar. DON'T: use as spacing. */
   --indicator-handle-height: 4px; /** Height of a bottom sheet's drag handle. USE: the Handle in bottomSheetAppBar. DON'T: use as spacing. */
+  --indicator-progress-height: 16px; /** Height of the progress bar. USE: progressIndicator. DON'T: use as spacing. */
   --font-size-2xs: 9px; /** 9px. USE: Caption S Bold and Caption S Regular. */
   --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */
   --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */
