@@ -217,6 +217,7 @@
   --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */
   --font-size-md: 18px; /** 18px. USE: Headline XS and Body M, both weights. */
   --font-size-lg: 21px; /** 21px. USE: Headline S. */
+  --font-size-lg-plus: 24px; /** 24px. Sits between lg (21) and xl (28). USE: Headline S, including L button labels. DON'T: use for body text. */
   --font-size-xl: 28px; /** 28px. USE: Headline M. */
   --font-size-2xl: 33px; /** 33px. USE: Headline L. */
   --font-size-3xl: 44px; /** 44px. USE: Headline XL. */
@@ -265,7 +266,7 @@
   --type-headline-m-lineHeight: 28px;
   --type-headline-s-fontFamily: Inter;
   --type-headline-s-fontWeight: 700;
-  --type-headline-s-fontSize: 21px;
+  --type-headline-s-fontSize: 24px;
   --type-headline-s-lineHeight: 24px;
   --type-headline-xs-bold-fontFamily: Inter;
   --type-headline-xs-bold-fontWeight: 600;
