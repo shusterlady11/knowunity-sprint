@@ -1,0 +1,73 @@
+/* One screen: a column that fills the space it's given, with the content in the middle taking what the
+   other parts leave. Rounded corners and a clipped edge, as in Figma's frame. */
+.scaffold {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-0);
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  border-radius: var(--radius-600);
+  background-color: var(--color-background-page);
+}
+
+/* The status bar's place: kept empty, 48px tall. */
+.scaffold__statusArea {
+  flex: none;
+  height: var(--space-1200);
+}
+
+.scaffold__topNavigation {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-100);
+}
+
+/* The content: takes the remaining height and scrolls. Space/200 above and below, Space/400 at the sides. */
+.scaffold__middleContent {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-200);
+  min-height: 0;
+  padding: var(--space-200) var(--space-400);
+  overflow-y: auto;
+}
+
+/* The actions: pinned to the bottom, Space/400 all round. */
+.scaffold__bottomContent {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: var(--space-100);
+  padding: var(--space-400);
+}
+
+/* The scrim covers the whole screen; the sheet sits above it at the bottom. */
+.scaffold__scrim {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-background-scrim);
+}
+
+.scaffold__bottomSheetOnly {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-100);
+}

@@ -238,6 +238,16 @@ Component `15725:32304`, page "🎨 Mascot & components". Documented in Figma. T
 
 **Built** (`src/components/appBar`, 2026-09-24). Props `progress` (0 to 100, default 25) and `xp` (default 2), the exposed properties of the parts inside; plus `onClose` and `closeLabel` ("Close"). Built from `buttonIcon` Tertiary M with the `x-close` icon (`src/icons/XCloseIcon.tsx`, exported from Figma), `progressIndicator` and `xpCounter`. It fills its container. The X is the filled `x-close` glyph Figma uses here, not the library X. The XP counter is 48px wide against Figma's 45 because Inter's digits are wider than Greed Condensed's.
 
+### scaffold ✅
+
+Component set `3085:9242`, page "🎨 Mascot & components". Documented in Figma. Eight sizes exist (iPhone 13, 17 Pro Max, iPhone SE, four tablet and iPad layouts, a laptop); only `iPhone 13` is built.
+
+**Description:** used to quickly create screens from components using Figma Slots. Every screen is a scaffold plus what goes in its four slots (see `docs/design-system.md` §2): `topNavigation`, `middleContent`, `bottomContent` and `bottomSheetOnly`. Switches: `showTopNavSlot` (on), `showBottomNavSlot` (on), `showBottomSheetBackground` (off, the scrim).
+
+**Layout (iPhone 13):** a 390×844 column on `background/page`, corners `Radius/600`, clipped. From the top: a 48px status bar area, `topNavigation` (gap `Space/100`), `middleContent` (fills the rest; padding `Space/200` above and below and `Space/400` at the sides, gap `Space/200`), `bottomContent` (pinned to the bottom, padding `Space/400`, gap `Space/100`). The scrim (`background/scrim`) covers the whole screen and `bottomSheetOnly` sits at the bottom above it.
+
+**Built** (`src/components/scaffold`, 2026-09-24). Slots as props with Figma's names, the three switches with Figma's names and defaults, and `size` with its one built option. It fills the width it's given and is one screen tall (`100dvh`), so the content slot scrolls and the other parts stay put. The status bar isn't built (system UI) but its 48px (`Space/1200`) is kept empty so everything lines up with Figma. The sheet slot shows whenever a sheet is passed (in Figma its visibility is wired to `showBottomNavSlot`, which looks like a mistake). Figma's hidden gradient "Scrim" at the bottom of the content slot (a scroll fade) isn't wired to a property and isn't built. Stories include a question screen (voice) and the mic permission sheet over the scrim, assembled from the built components.
+
 ### mascotSlot ✅
 
 Component set `9003:8873`, page "🎨 Mascot & components". Documented in Figma.
@@ -478,7 +488,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **topicPill:** padding (6/12), gap (6), corner radius (100) and outline width (1) are typed-in numbers; bind them to `Space/150`, `Space/300`, `Radius/Full` and `Stroke/Border`.
 - **middleSection** (`15851:10099`) isn't used anywhere. **keyboardOutline (legacy)** (`15878:17569`) is only used on the backup page.
 - **"New components - backup" page** holds duplicate sets of statusPill, answerCard, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
-- **scaffold sizes:** the scaffold component has 8 size variants in Figma. design-system.md only uses two (iPhone 13 and 17 Pro Max); ignore the others. The voice screens use iPhone 13.
+- **scaffold:** the sheet slot's visibility (`bottomSheetOnly`) is wired to `showBottomNavSlot`; give it its own switch or none. A hidden gradient "Scrim" inside the content slot isn't tied to anything (delete it or add a property). The set has eight sizes; code builds only iPhone 13, and design-system.md §2 (two variants) is out of date.
 - **Moving components into slots:** moving an existing component instance straight into a scaffold slot corrupts it. Wrap it in a plain frame first.
 - **bottomCTA labels:** the screens still show "Next question" and "Review 3 concepts"; the code uses "Next" and "Review" (see bottomCTA). Update the designs to match.
 - **Plugin tip:** when querying this file through the Figma plugin API, use `findAllWithCriteria`. `findAll` throws "Unknown node type" on this file.

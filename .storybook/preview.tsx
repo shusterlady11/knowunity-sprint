@@ -24,7 +24,8 @@ const preview: Preview = {
 
     controls: {
       matchers: {
-       color: /(background|color)$/i,
+       // Exact names only: a prop like showBottomSheetBackground is a boolean, not a color.
+       color: /^(background|color)$/i,
        date: /Date$/i,
       },
     },

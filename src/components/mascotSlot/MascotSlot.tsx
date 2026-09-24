@@ -43,6 +43,8 @@ export function MascotSlot({ size = 'XL', expression = 'standby', alt = '' }: Ma
           fill
           sizes="320px"
           unoptimized
+          // The mascot is hero art near the top of a screen, so it loads straight away.
+          loading="eager"
         />
       </span>
     </span>
