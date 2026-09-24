@@ -212,6 +212,7 @@
   --control-m: 40px; /** Visible height of a medium control. USE: button size=M (inner Button frame). DON'T: use as spacing or padding. PAIR: Control/Touch Target on the outer tap area. */
   --control-l: 56px; /** Visible height of a large control. USE: button size=L (inner Button frame), e.g. the primary bottom CTA. DON'T: use as spacing or padding. */
   --control-touch-target: 48px; /** Minimum tappable height for any interactive control, regardless of its visible size. USE: min-height on the outer tap area of buttons and other controls. DON'T: shrink below 48 or use as a visible size. */
+  --control-mic: 96px; /** Size of the primary mic button (visible circle and its outer frame). USE: micButton only. DON'T: use for other controls; use Control/S, M or L. The 96px circle is well above Control/Touch Target, so it needs no separate tap area. */
   --indicator-dot: 6px; /** 6px dot. USE: small status/progress dots (topicPill marker, loadingDots). DON'T: use as spacing; use Space/* for gaps. */
   --font-size-2xs: 9px; /** 9px. USE: Caption S Bold and Caption S Regular. */
   --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */

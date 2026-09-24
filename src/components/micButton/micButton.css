@@ -1,0 +1,75 @@
+/* Outer frame: a fixed square that holds the face. Pressed adds top padding to it, which shifts
+   the centered face down (as in Figma and the main button). */
+.micButton {
+  appearance: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-mic);
+  height: var(--control-mic);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-accent-brand-bold);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.micButton:focus-visible {
+  outline: var(--stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--space-050);
+}
+
+.micButton__face {
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-mic);
+  height: var(--control-mic);
+  border-radius: var(--radius-full);
+  background-color: var(--color-interactive-primary);
+  box-shadow: var(--bevel-300);
+}
+
+.micButton__icon {
+  display: block;
+  width: auto;
+  height: var(--icon-400);
+}
+
+/* Listening: the darker fill is the only cue on the button itself, so the recording glow
+   must always be shown behind it. */
+.micButton[data-listening-state='listening'] .micButton__face {
+  background-color: var(--color-interactive-primaryActive);
+}
+
+/* Pressed (shown with interactionState, or by a real press): the bevel flattens, the face sits
+   lower, the fill is darker and the icon takes its pressed color. */
+.micButton[data-interaction-state='pressed'],
+.micButton[data-interaction-state='ready']:active {
+  padding-top: var(--space-100);
+  color: var(--color-accent-brand-onSubtle);
+}
+
+.micButton[data-interaction-state='pressed'] .micButton__face,
+.micButton[data-interaction-state='ready']:active .micButton__face {
+  background-color: var(--color-interactive-primaryActive);
+  box-shadow: none;
+}
+
+/* Disabled: the button is waiting while Knowie processes the answer. */
+.micButton[data-interaction-state='disabled'] {
+  color: var(--color-icon-disabled);
+  cursor: progress;
+}
+
+.micButton[data-interaction-state='disabled'] .micButton__face {
+  background-color: var(--color-background-surface);
+  box-shadow: inset 0 0 0 var(--stroke-border) var(--color-border-strong);
+}

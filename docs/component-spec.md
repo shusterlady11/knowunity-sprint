@@ -56,6 +56,10 @@ Component set `15878:19554`, page "New components". Documented in Figma.
 
 **Build note:** listening + ready has the same fill as pressed, so the button alone doesn't show that recording is on. recordingGlow must always render with listeningState=listening.
 
+**Built** (`src/components/micButton`, 2026-09-24, rebuilt after Figma added the pressed shift and the `Control/Mic` token). Props `listeningState` and `interactionState` with Figma's names and options; the types don't allow listening + disabled. Icons `micFilledIcon` / `micDisabledIcon` exported from Figma into `src/icons/` (no icon prop, as in Figma). Size: `Control/Mic` (96px) for the outer frame and the face, no separate tap area. Structure matches Figma: a fixed 96px frame holding a 96px face. Pressed adds `Space/100` top padding to the frame, which centers the face 2px lower, and removes the bevel, like the main button. Icon color: `accent/brand/bold`, `accent/brand/onSubtle` when pressed, `icon/disabled` when disabled. Disabled keeps focus, sets `aria-disabled` and `aria-busy`, and ignores taps. Also `aria-pressed` = listening, and the accessible name is "Record answer".
+
+**Contrast finding:** the violet icon on the resting fill is about 3.1:1, and on the `primaryActive` fill (listening and pressed) about 2.3:1, under the 3:1 minimum for graphics. It's built as Figma specifies; the fix (icon color or fill) is a Figma decision.
+
 ### recordingGlow ◐
 
 Component `15878:19671`, page "New components", 174×174.
@@ -321,6 +325,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **recordingGlow:** give the ellipses meaningful names and add a description. `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
+- **micButton:** the listening/pressed icon contrast is about 2.3:1 (needs 3:1).
 - **topicPill:** padding (6/12), gap (6), corner radius (100) and outline width (1) are typed-in numbers; bind them to `Space/150`, `Space/300`, `Radius/Full` and `Stroke/Border`.
 - **middleSection** (`15851:10099`) isn't used anywhere. **keyboardOutline (legacy)** (`15878:17569`) is only used on the backup page.
 - **"New components - backup" page** holds duplicate sets of statusPill, answerCard, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
