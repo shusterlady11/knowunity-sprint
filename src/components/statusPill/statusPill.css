@@ -1,0 +1,37 @@
+.statusPill {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-100);
+  padding: var(--space-100) var(--space-200);
+  border-radius: var(--radius-full);
+}
+
+.statusPill__label {
+  white-space: nowrap;
+  font-family: var(--type-body-s-bold-fontFamily);
+  font-weight: var(--type-body-s-bold-fontWeight);
+  font-size: var(--type-body-s-bold-fontSize);
+  line-height: var(--type-body-s-bold-lineHeight);
+  letter-spacing: var(--type-body-s-bold-letterSpacing);
+}
+
+.statusPill[data-state='correct'] {
+  background-color: var(--color-feedback-success-bold);
+  color: var(--color-feedback-success-onBold);
+}
+
+.statusPill[data-state='partial'] {
+  background-color: var(--color-feedback-partial-bold);
+  color: var(--color-feedback-partial-onBold);
+}
+
+.statusPill[data-state='wrong'] {
+  background-color: var(--color-feedback-error-bold);
+  color: var(--color-feedback-error-onBold);
+}
+
+.statusPill[data-state='notCaught'] {
+  background-color: var(--color-feedback-neutral-bold);
+  color: var(--color-feedback-neutral-onBold);
+}
