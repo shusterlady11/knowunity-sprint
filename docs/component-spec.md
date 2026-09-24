@@ -177,8 +177,8 @@ Component set `15808:41818`, page "New components". Documented in Figma.
 
 **States:** `layout`.
 - Two button no drawer: Secondary + Primary side by side, no panel, 104 tall. SPLASH-SKIP-MIC ("No thanks" + "Continue").
-- Two button drawer: Secondary + Primary. Correct answer ("More info" + "Next question", or "Finish" on the last question), Results ("Review all" or "Review 3 concepts" + "Continue").
-- Two button drawer / Secondary: Tertiary + Secondary, low emphasis because the mic is the primary action. Partial / wrong, before and after reveal ("Reveal answer" + "Next question"). Didn't catch, before and after reveal ("Reveal answer" + "Skip"). "Next question" stays Secondary so it doesn't compete with the mic for a retry.
+- Two button drawer: Secondary + Primary. Correct answer ("More info" + "Next", or "Finish" on the last question), Results ("Review all" or "Review" + "Continue").
+- Two button drawer / Secondary: Tertiary + Secondary, low emphasis because the mic is the primary action. Partial / wrong, before and after reveal ("Reveal answer" + "Next"). Didn't catch, before and after reveal ("Reveal answer" + "Skip"). "Next" stays Secondary so it doesn't compete with the mic for a retry.
 - One button drawer / primary: single full-width Primary. Not placed on any screen.
 - One button drawer / secondary: single full-width Secondary. Not placed on any screen.
 
@@ -186,15 +186,23 @@ Component set `15808:41818`, page "New components". Documented in Figma.
 
 | Result | Layout | Buttons | Retry |
 |---|---|---|---|
-| Correct | Two button drawer | "More info" + "Next question" ("Finish" on last question) | none |
-| Partial / wrong, before reveal | Two button drawer / Secondary | "Reveal answer" + "Next question" | mic, "Tap to dictate" |
-| Partial / wrong, after reveal | Two button drawer / Secondary | "Reveal answer" + "Next question" | mic, "Tap to try again" |
+| Correct | Two button drawer | "More info" + "Next" ("Finish" on last question) | none |
+| Partial / wrong, before reveal | Two button drawer / Secondary | "Reveal answer" + "Next" | mic, "Tap to dictate" |
+| Partial / wrong, after reveal | Two button drawer / Secondary | "Reveal answer" + "Next" | mic, "Tap to try again" |
 | Didn't catch, before reveal | Two button drawer / Secondary | "Reveal answer" + "Skip" | mic, "Tap to dictate" |
 | Didn't catch, after reveal | Two button drawer / Secondary | "Reveal answer" + "Skip" | mic, "Tap to try again" |
 
-**Skip vs Next question:** "Skip" records the question as skipped (skipped-questions card on Results). It appears in two places: before the first attempt (toggleGroup on the question screens), and after "Didn't catch that", because the app misheard and nothing was judged. After a partial or wrong answer the way forward is "Next question" (or dictating again), and moving on counts as needs practice, not a skip.
+**Skip vs Next:** "Skip" records the question as skipped (skipped-questions card on Results). It appears in two places: before the first attempt (toggleGroup on the question screens), and after "Didn't catch that", because the app misheard and nothing was judged. After a partial or wrong answer the way forward is "Next" (or dictating again), and moving on counts as needs practice, not a skip.
 
 **Known issue:** `Show secondaryButton` is on in every instance, so hiding a button after it's used isn't shown on any screen.
+
+**Built** (`src/components/bottomCTA`, 2026-09-23). Notes and decisions:
+- Labels are shorter than in the Figma designs, because L labels are set in Inter (wider than Greed Condensed) and some pairs didn't fit the 358px row: "More info" + "Next", "Reveal answer" + "Next", "Review" + "Continue". Every pair in the table above fits.
+- Button widths: the two buttons share the row equally; a button whose label needs more than half grows past the center and the other fills what's left.
+- Inside the drawer panel, Secondary buttons are filled with `interactive/secondary` (Figma overrides the fill on those instances); outside it they keep the button's own `background/surface`.
+- The panel is sized by `Space/700` above and below the 56px buttons (112px; Figma sets a raw 112px); its top line is `border/default` at `stroke/border` (Figma: raw 1px).
+- The one-button layouts are built like the two-button drawers. In Figma their outer frame also has 24/16px padding, but the panel still renders full-width at 0,0, so the result is the same.
+- Props: `layout` (Figma's five options), `showSecondaryButton` (Figma's "Show secondaryButton", "Two button drawer" only), `leftCTA` / `rightCTA`, `onLeftClick` / `onRightClick`.
 
 ### Reveal answer overlay ✅
 
@@ -210,7 +218,7 @@ It sits over whichever answer screen opened it; the Figma frame only shows it ov
 
 **States:**
 - Open: answer, context and X.
-- X: closes the overlay and returns to the answer screen. For incorrect answers that screen is in its after-reveal state (statusPill, micButton idle + ready, inputModeToggle voice, bottomCTA "Reveal answer" + "Next question" after partial or wrong, "Reveal answer" + "Skip" after didn't catch). For a correct answer it's unchanged.
+- X: closes the overlay and returns to the answer screen. For incorrect answers that screen is in its after-reveal state (statusPill, micButton idle + ready, inputModeToggle voice, bottomCTA "Reveal answer" + "Next" after partial or wrong, "Reveal answer" + "Skip" after didn't catch). For a correct answer it's unchanged.
 
 ### Typing input screen ◐
 
@@ -252,7 +260,7 @@ Component set `15815:43943`, page "New components". Documented in Figma.
 
 **States:** `Property 1`.
 - good-explanations: concepts explained well. Rows are tone=success.
-- needs-practice: questions with a partial or wrong answer that the student moved on from with "Next question". Rows are tone=error.
+- needs-practice: questions with a partial or wrong answer that the student moved on from with "Next". Rows are tone=error.
 - skipped-questions: questions skipped before any attempt, or skipped after "Didn't catch that". Rows are tone=neutral.
 
 **Rules:** don't show a card that has zero items. Hide any empty trailing row slot (`visible = false`), don't just leave it empty. All rows default to collapsed.
@@ -316,4 +324,5 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **"New components - backup" page** holds duplicate sets of statusPill, answerCard, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
 - **scaffold sizes:** the scaffold component has 8 size variants in Figma. design-system.md only uses two (iPhone 13 and 17 Pro Max); ignore the others. The voice screens use iPhone 13.
 - **Moving components into slots:** moving an existing component instance straight into a scaffold slot corrupts it. Wrap it in a plain frame first.
+- **bottomCTA labels:** the screens still show "Next question" and "Review 3 concepts"; the code uses "Next" and "Review" (see bottomCTA). Update the designs to match.
 - **Plugin tip:** when querying this file through the Figma plugin API, use `findAllWithCriteria`. `findAll` throws "Unknown node type" on this file.

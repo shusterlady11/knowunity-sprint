@@ -1,0 +1,36 @@
+.bottomCTA {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.bottomCTA[data-layout='Two button no drawer'] {
+  padding: var(--space-600) var(--space-400);
+}
+
+/* Drawer panel: 28px above and below the 56px buttons (112px in all), full-bleed, rounded top */
+.bottomCTA__panel {
+  box-sizing: border-box;
+  padding: var(--space-700) var(--space-400);
+  border-radius: var(--radius-900) var(--radius-900) 0 0;
+  background-color: var(--color-background-surface);
+  box-shadow: inset 0 var(--stroke-border) 0 0 var(--color-border-default);
+}
+
+/* Inside the panel, Secondary buttons use interactive/secondary so they read against the
+   panel's surface fill (Figma overrides the fill on these instances). */
+.bottomCTA__panel .button[data-variant='Secondary'] .button__face {
+  background-color: var(--color-interactive-secondary);
+}
+
+/* Buttons share the row equally; a button whose label needs more room grows past the
+   center and the other shrinks to fill what's left. */
+.bottomCTA__row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+}
+
+.bottomCTA__row > .button {
+  flex: 1 1 0;
+  min-width: max-content;
+}

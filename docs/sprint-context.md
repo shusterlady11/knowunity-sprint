@@ -14,10 +14,11 @@ Web prototype styled as iOS: 390px, dark mode only.
 - "No thanks" on the confirm screen returns to the launching screen, because the student is never trapped.
 - Processing copy is "Thinking...", because the wait should feel calm and literal.
 - Answers show the verbatim transcript, because a paraphrase hides "misheard" vs. "wrong."
-- Correct: "More info" + "Next question", because there's nothing to fix.
-- Partial or wrong: "Reveal answer" + "Next question" with the mic live, because the student can retry or move on.
+- Bottom bar labels are short ("Next", not "Next question"; "Review", not "Review 3 concepts"), because L labels are set in Inter, which is wider than Greed Condensed, and the longer pairs don't fit side by side at 390px.
+- Correct: "More info" + "Next", because there's nothing to fix.
+- Partial or wrong: "Reveal answer" + "Next" with the mic live, because the student can retry or move on.
 - "Didn't catch that": neutral tone, "Reveal answer" + "Skip", because the app misheard, not the student.
-- Skip (before first attempt, or after "Didn't catch that") counts as skipped; "Next question" after partial or wrong counts as needs practice, because Results separate "didn't try" from "tried and missed."
+- Skip (before first attempt, or after "Didn't catch that") counts as skipped; "Next" after partial or wrong counts as needs practice, because Results separate "didn't try" from "tried and missed."
 - "Reveal answer" / "More info" open a bottom sheet (answer, context, X, no buttons), because the student reads, then retries or moves on.
 - XP: full unaided, partial hinted, minimal revealed, unaided "say it back" earns some back; streak counts unaided passes only, because XP and streak are the mastery signal.
 - Some session XP stays pending until the breakdown shows, because the reward should match the real result.
