@@ -1,0 +1,55 @@
+/* A colored card with a centered title and a list of concept rows. The tight side and bottom padding
+   (Space/100) lets the rows sit close to the card's edge, as in Figma. */
+.resultsSummary {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-300);
+  width: 100%;
+  padding: var(--space-400) var(--space-100) var(--space-100);
+  border-radius: var(--radius-600);
+}
+
+.resultsSummary[data-category='good-explanations'] {
+  background-color: var(--color-accent-green-bold);
+}
+
+.resultsSummary[data-category='needs-practice'] {
+  background-color: var(--color-feedback-error-bold);
+}
+
+.resultsSummary[data-category='skipped-questions'] {
+  background-color: var(--color-feedback-neutral-bold);
+}
+
+/* Figma sets the title in the Button L style, with its line height and letter spacing taken from the
+   font tokens. */
+.resultsSummary__title {
+  margin: 0;
+  color: var(--color-interactive-primary);
+  font-family: var(--type-headline-s-fontFamily);
+  font-weight: var(--type-headline-s-fontWeight);
+  font-size: var(--type-headline-s-fontSize);
+  line-height: var(--font-lineHeight-sm);
+  letter-spacing: var(--font-tracking-loose);
+  text-align: center;
+}
+
+/* The neutral card is near-white, so its title is the dark on-primary color. */
+.resultsSummary[data-category='skipped-questions'] .resultsSummary__title {
+  color: var(--color-interactive-onPrimary);
+}
+
+.resultsSummary__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-100);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resultsSummary__item {
+  margin: 0;
+  padding: 0;
+}
