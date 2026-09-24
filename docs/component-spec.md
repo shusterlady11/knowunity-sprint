@@ -319,6 +319,18 @@ Components on "New components": `micIcon` (`15878:17726`), `micFilledIcon` (`157
 
 **Built** (`src/icons/`, 2026-09-24): `MicIcon`, `KeyboardIcon`, `MicBlockedIcon`, exported from Figma with `currentColor`, without the baked-in 48% opacity on the blocked mic and its slash (the `icon/tertiary` token carries it). `MicFilledIcon` and `MicDisabledIcon` were built with micButton.
 
+### Shared library icons ✅
+
+`X` (`15776:37347`), `CaretRight` (`15719:27474`), `DotOutline` (`15776:37499`) and `ArrowRight` (`15905:17412`), all `Format=Stroke, Weight=Regular` from the shared icon library (remote components, 32px masters).
+
+**When it's used:**
+- X: expandableResultRow (error tone, 16px); the close on bottomSheet overlays through buttonIcon.
+- CaretRight: expandableResultRow, trailing. It's shown rotated 90° (pointing down) when the row is expanded.
+- DotOutline: expandableResultRow (neutral tone, 16px).
+- ArrowRight: the core flow's forward action (20px). The Bold weight in the library isn't used.
+
+**Built** (`src/icons/XIcon.tsx`, `CaretRightIcon.tsx`, `DotOutlineIcon.tsx`, `ArrowRightIcon.tsx`, 2026-09-24). Exported from Figma with `currentColor` and a 2px stroke that stays 2px at any size, like `CheckIcon`. Passed into `iconSlot`. The local `x-close` (`3248:81244`, deleted source) is a different drawing (a filled glyph, not a 2px stroke), so it isn't built; the sheet close uses `buttonIcon` with the library X, as decided.
+
 ## Open design questions
 
 - **statusPill icons for wrong vs partial.** Proposal: switch wrong to `X` (same icon expandableResultRow already uses for the error tone, and already in the library) and keep `ArrowCounterClockwise` for partial. Correct = Check, partial = arrow, wrong = X, didn't catch = QuestionMark: four different shapes, so the states read without color.
