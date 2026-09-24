@@ -6,7 +6,9 @@
 
 :root {
   --motion-duration-spinner: 800ms; /** 800ms for one full turn of a loading spinner. USE: rotating the loading icon in button and buttonIcon while state=Loading. DON'T: transitions or one-off state changes (this is for repeating loops only). PAIR: motion.easing.linear. RULE: under prefers-reduced-motion, stop the rotation but keep the icon visible and mark the control busy (aria-busy) so the status stays readable. */
+  --motion-duration-toggle: 200ms; /** 200ms for a control's knob or thumb to slide to its other position. USE: the knob in inputModeToggle moving between voice and keyboard (48px of travel). DON'T: repeating loops (use motion.duration.spinner) or button press feedback. PAIR: motion.easing.standard. RULE: under prefers-reduced-motion, skip the slide and move the knob instantly; the active icon color still shows the mode. */
   --motion-easing-linear: cubic-bezier(0, 0, 1, 1); /** Constant-speed curve. USE: continuous loops such as the loading spinner, where speed must not change during a turn. DON'T: entrances, exits or position changes, which need acceleration or deceleration. PAIR: motion.duration.spinner. */
+  --motion-easing-standard: cubic-bezier(0.2, 0, 0, 1); /** Fast start, long gentle stop. USE: position changes of a control that stays on screen, such as the inputModeToggle knob. DON'T: continuous loops (use motion.easing.linear). PAIR: motion.duration.toggle. */
   --color-navy-800: #22242f;
   --color-navy-900: #1a1c26;
   --color-navy-950: #090c18;

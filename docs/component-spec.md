@@ -103,6 +103,8 @@ Component set `15878:17809` (variants `15878:21975`, `15878:21976`, `15903:16781
 
 **Accessibility:** expose as a two-option segmented control ("Speak" / "Type") with the selected state announced. When blocked, the Speak label says mic access is off.
 
+**Built** (`src/components/inputModeToggle`, 2026-09-24). Props `inputMode` and `micBlocked` (a boolean for Figma's "false" / "true"); the types don't allow voice + blocked. Callbacks: `onInputModeChange(mode)` and `onBlockedMicClick()`. A radio group named "Answer input" with "Speak" ("Speak, mic access is off" when blocked) and "Type", and the Arrow keys switch sides. A tap on either side switches to the other mode, as the Figma description says; when blocked, a tap on either side opens the re-enable-permission flow (Figma only says the mic side does; the keyboard side has nowhere else to go). Slots `Space/1200`, knob inset `Space/100` (Figma's knob is a typed-in 40px), bevel `Bevel/100`, icons `Icon/200` tall. Contrast: the dimmed icon is about 4.3:1 on the pill and the bright one about 10:1 on the knob. Motion: the knob slides in `motion.duration.toggle` (200ms) with `motion.easing.standard`, two code-only tokens in `tokens/motion.json`; under reduced motion it moves instantly.
+
 ### toggleGroup ✅
 
 Component set `15878:22602`, page "New components". Documented in Figma.
@@ -303,6 +305,8 @@ Components on "New components": `micIcon` (`15878:17726`), `micFilledIcon` (`157
 - micBlockedIcon: inputModeToggle blocked state.
 
 **States:** none.
+
+**Built** (`src/icons/`, 2026-09-24): `MicIcon`, `KeyboardIcon`, `MicBlockedIcon`, exported from Figma with `currentColor`, without the baked-in 48% opacity on the blocked mic and its slash (the `icon/tertiary` token carries it). `MicFilledIcon` and `MicDisabledIcon` were built with micButton.
 
 ## Open design questions
 

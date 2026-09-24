@@ -1,0 +1,78 @@
+/* The pill: two square slots side by side, with the knob behind the active one. */
+.inputModeToggle {
+  position: relative;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--space-1200);
+  padding: var(--space-0);
+  gap: var(--space-0);
+  border-radius: var(--radius-full);
+  background-color: var(--color-interactive-secondary);
+}
+
+/* Focus shows as one ring around the whole pill, not around a single slot. */
+.inputModeToggle__slot:focus-visible {
+  outline: none;
+}
+
+.inputModeToggle:has(.inputModeToggle__slot:focus-visible) {
+  outline: var(--stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--space-050);
+}
+
+/* The knob is inset by Space/100 from its slot (48px slot, 40px knob) and rides on the pill, so it can
+   move between the two slots. */
+.inputModeToggle__knob {
+  position: absolute;
+  top: var(--space-100);
+  bottom: var(--space-100);
+  left: var(--space-100);
+  width: calc(var(--space-1200) - 2 * var(--space-100));
+  border-radius: var(--radius-full);
+  background-color: var(--color-interactive-secondary);
+  box-shadow: var(--bevel-100);
+  transition: transform var(--motion-duration-toggle) var(--motion-easing-standard);
+}
+
+.inputModeToggle[data-input-mode='keyboard'] .inputModeToggle__knob {
+  transform: translateX(var(--space-1200));
+}
+
+.inputModeToggle__slot {
+  appearance: none;
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-1200);
+  height: var(--space-1200);
+  margin: 0;
+  padding: var(--space-0);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: none;
+  color: var(--color-icon-tertiary);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.inputModeToggle__slot[data-active='true'] {
+  color: var(--color-icon-primary);
+}
+
+.inputModeToggle__icon {
+  display: block;
+  width: auto;
+  height: var(--icon-200);
+}
+
+/* Reduced motion: the knob moves instantly; the active icon color still shows the mode. */
+@media (prefers-reduced-motion: reduce) {
+  .inputModeToggle__knob {
+    transition: none;
+  }
+}
