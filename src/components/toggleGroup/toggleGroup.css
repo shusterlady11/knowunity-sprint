@@ -1,0 +1,10 @@
+/* The bottom row on the question screens: the toggle on the left, Skip on the right. Space-between
+   pushes them to opposite edges, so no gap is set. */
+.toggleGroup {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-0);
+}

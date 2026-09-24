@@ -122,6 +122,9 @@ Component set `15878:22602`, page "New components". Documented in Figma.
 
 **Usage rule:** pick this component's variant. Don't override the nested inputModeToggle's properties on an instance, or the row and toggle can disagree.
 
+**Built** (`src/components/toggleGroup`, 2026-09-24). Built from `inputModeToggle` and `button` (Tertiary, S, "Skip"). Props `inputMode` and `micBlocked` (same rules as inputModeToggle) are passed straight down; callbacks `onInputModeChange`, `onBlockedMicClick` and `onSkip`. The label is fixed to "Skip". The row fills its container (358px inside the screen's 16px gutters) and space-between puts the toggle at the left edge and Skip at the right, with no gap set. Measured: 358×48 row, 96×48 toggle. Skip is 59.6px wide where Figma's is 48, because the code uses Inter, which is wider than Greed Condensed (see the decision log); its right edge still sits on the row's edge.
+
+
 ### topicPill ✅
 
 Component `15850:10081`, page "New components".
