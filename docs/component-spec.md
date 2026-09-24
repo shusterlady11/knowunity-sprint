@@ -296,7 +296,10 @@ Every token named in this file is in tokens.json, except the deprecated `accent/
 Housekeeping in the Figma file. Doesn't change what gets built.
 
 - **appBar:** the XP counter (lightning + "2") is a hand-built "chips" frame inside the appBar main component (`15725:32304`, "🎨 Mascot & components"), not a `chips` instance. It shows on every screen.
-- **SPLASH-FIRST-TIME:** "Skip" is a 14px label with no text style, inside a `Button` component (capital B) that's separate from the design system's `button`.
+- **SPLASH-FIRST-TIME:** "Skip" is now a `button` (Tertiary, S). Its "Right buttons" group is hidden in the design, so it doesn't show.
+- **appBar:** its 9 back and action buttons are a legacy `App Bar Button Icon` whose source component is deleted. The swap to `buttonIcon` is not invisible: the legacy button shows a 24px icon, while `buttonIcon` Tertiary M shows 20px (Tertiary L keeps 24px but has a 56px tap area). appBar appears on 13 of the core flow screens.
+- **expandableResultRow:** the rows inside `resultsSummary` come from a deleted copy (`15808:42383`). The documented set (`15815:43883`, "New components") has the same variants, properties and description, but the two haven't been compared layer by layer.
+- **Deleted source components still in use** (they render, but can't be edited centrally): `progressIndicator` (13 uses, inside appBar), the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), `Bottom-sheet App Bar` (2), and the `x-close` icon. `progressIndicator` needs a proper, documented component before it's built in code.
 - **recordingGlow:** give the ellipses meaningful names and add a description. `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
