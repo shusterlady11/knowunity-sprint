@@ -339,6 +339,18 @@ Components on "New components": `micIcon` (`15878:17726`), `micFilledIcon` (`157
 
 **Built** (`src/icons/XIcon.tsx`, `CaretRightIcon.tsx`, `DotOutlineIcon.tsx`, `ArrowRightIcon.tsx`, 2026-09-24). Exported from Figma with `currentColor` and a 2px stroke that stays 2px at any size, like `CheckIcon`. Passed into `iconSlot`. The local `x-close` (`3248:81244`, deleted source) is a different drawing (a filled glyph, not a 2px stroke), so it isn't built; the sheet close uses `buttonIcon` with the library X, as decided.
 
+### buttonGroup ✅
+
+Component set `9003:8455`, page "🎨  Mascot & components". Documented in Figma.
+
+**Description:** a container that arranges a row or column of `button` / `buttonIcon` instances with consistent spacing. `variant` (Horizontal / Vertical) × `size` (M / L). Use it to group related actions, such as a bottom CTA row or the mic-permission pair ("Turn on" / "Not now"); don't put unrelated actions in one group. Figma notes only Horizontal / L was seen in use; Vertical and M are unconfirmed.
+
+**When it's used:** the mic-permission sheet (PERMISSION-MIC, Vertical) and bottom action rows. Not used by `bottomCTA`, which has its own row.
+
+**States:** none beyond the four variants. Vertical stacks a Primary and a Secondary button at full width; Horizontal puts a Secondary `buttonIcon` first and a Primary button filling the rest. Figma's group has no properties for its contents (the buttons inside carry placeholder text).
+
+**Built** (`src/components/buttonGroup`, 2026-09-24). Props `variant` and `size` as in Figma, plus `children` (the buttons), since Figma edits the nested buttons per use. It fills its container (Figma's fixed 319px is a bottom sheet's content width). Gap between the buttons' tap areas: Vertical M `Space/0`, Horizontal M `Space/100`, both L `Space/200`; because a size M button's 48px tap area is taller than its 40px face, all four give about 8px between visible buttons (tested). In a Horizontal group text buttons share the width and an icon button keeps its own size. Children should use the group's size; the group doesn't force it. Measured against Figma: same heights (96, 48, 120, 56) and the same spacing.
+
 ### buttonIcon ✅
 
 Component set `9003:8235`, page "🎨  Mascot & components". Documented in Figma.
@@ -374,6 +386,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **recordingGlow:** give the ellipses meaningful names (they're still "Ellipse 3902" to "3905"). `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** no text layer is linked to a property: the `transcript` property exists but changing it does nothing, and the concept name and question are typed into the layers. Link `transcript` to the transcript layer and expose the concept name and question as properties (code adds `label` and `question`). The transcript's quote marks are typed in and inconsistent (a straight opening quote, a curly closing one); the property's default text also differs from the text shown in the variants. The two quote frames are a fixed 313px, wider than the detail's 290px; make them fill. The detail's left padding is a raw 28 in the success variant (`Space/700` in the others). Icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** rename the variant property "Property 1" (code calls it `category`). Title contrast on the green and coral cards is about 2.1:1 and 2.5:1; the neutral card already uses the dark `interactive/onPrimary`. The top padding (16) and the gap (12) are typed-in numbers (`Space/400`, `Space/300`). In needs-practice and skipped-questions each row sits in an extra nested "Items List" frame (the good-explanations card doesn't). In the needs-practice card the error icon on the rows renders nearly invisible. 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
+- **buttonGroup:** the group's width is a fixed 319 (not fill), and the gap isn't the same across variants (Vertical M is `Space/0`, Horizontal M `Space/100`, both L `Space/200`); it works out to about 8px visible in each, but a comment on the component would say so. There's no way to set the buttons' text from the group.
 - **buttonIcon:** Primary has a 1px `border/default` outline that `button` Primary doesn't. The icon container is empty and the icon color is set per instance (Secondary uses `icon/primary`, the appBar's Tertiary uses `text/primary`); consider a documented icon color per variant.
 - **micButton:** the listening/pressed icon contrast is about 2.3:1 (needs 3:1).
 - **topicPill:** padding (6/12), gap (6), corner radius (100) and outline width (1) are typed-in numbers; bind them to `Space/150`, `Space/300`, `Radius/Full` and `Stroke/Border`.
