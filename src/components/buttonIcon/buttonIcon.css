@@ -1,0 +1,60 @@
+/* buttonIcon is the button without a label: same tap area, bevel, pressed shift and spinner, so those
+   come from button.css. Everything below is what differs. Selectors are chained with [data-size] so
+   they win over button.css regardless of load order. */
+
+/* The face is a circle of the control's size with the icon in the middle: no side padding, and no
+   lift, because there's no text to sit above center. */
+.button.buttonIcon[data-size='S'] .button__face,
+.button.buttonIcon[data-size='M'] .button__face,
+.button.buttonIcon[data-size='L'] .button__face {
+  flex: none;
+  padding: var(--space-0);
+  gap: var(--space-0);
+}
+
+.button.buttonIcon[data-size='S'] .button__face {
+  width: var(--control-s);
+}
+
+.button.buttonIcon[data-size='M'] .button__face {
+  width: var(--control-m);
+}
+
+.button.buttonIcon[data-size='L'] .button__face {
+  width: var(--control-l);
+}
+
+/* Icon colors (Figma leaves the icon to each instance): bright on Secondary and Tertiary, the dark
+   on-primary color on the Primary fill, dimmed when disabled. */
+.button.buttonIcon[data-variant='Secondary'],
+.button.buttonIcon[data-variant='Tertiary'] {
+  color: var(--color-icon-primary);
+}
+
+.button.buttonIcon[data-state='Disabled'] {
+  color: var(--color-icon-disabled);
+}
+
+/* Primary has a 1px inside outline (border/default) in every state but Disabled, drawn together with
+   the bevel. The bevel flattens when pressed; the outline stays. */
+.button.buttonIcon {
+  --buttonIcon-bevel: var(--bevel-100);
+  --buttonIcon-outline: inset 0 0 0 var(--stroke-border) var(--color-border-default);
+}
+
+.button.buttonIcon[data-size='L'] {
+  --buttonIcon-bevel: var(--bevel-200);
+}
+
+.button.buttonIcon[data-variant='Primary'][data-size] .button__face {
+  box-shadow: var(--buttonIcon-bevel), var(--buttonIcon-outline);
+}
+
+.button.buttonIcon[data-variant='Primary'][data-state='Disabled'][data-size] .button__face {
+  box-shadow: var(--buttonIcon-bevel);
+}
+
+.button.buttonIcon[data-variant='Primary'][data-state='Pressed'][data-size] .button__face,
+.button.buttonIcon[data-variant='Primary'][data-state='Default'][data-size]:active .button__face {
+  box-shadow: var(--buttonIcon-outline);
+}

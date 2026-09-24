@@ -331,6 +331,20 @@ Components on "New components": `micIcon` (`15878:17726`), `micFilledIcon` (`157
 
 **Built** (`src/icons/XIcon.tsx`, `CaretRightIcon.tsx`, `DotOutlineIcon.tsx`, `ArrowRightIcon.tsx`, 2026-09-24). Exported from Figma with `currentColor` and a 2px stroke that stays 2px at any size, like `CheckIcon`. Passed into `iconSlot`. The local `x-close` (`3248:81244`, deleted source) is a different drawing (a filled glyph, not a 2px stroke), so it isn't built; the sheet close uses `buttonIcon` with the library X, as decided.
 
+### buttonIcon ✅
+
+Component set `9003:8235`, page "🎨  Mascot & components". Documented in Figma.
+
+**Description:** an icon-only button with the same Primary/Secondary/Tertiary × S/M/L × Default/Pressed/Disabled/Loading structure as `button`, for compact, self-explanatory icon actions in a top nav bar or button group. Don't use it where the icon alone doesn't make the action obvious. Figma notes only Secondary was seen in use (inside buttonGroup and topNavigation); Primary and Tertiary are inferred from `button`.
+
+**When it's used:** the back and action buttons in appBar, and the close on bottomSheet overlays (Tertiary, M, with the library X).
+
+**States:** `variant` × `size` × `state`, all 36 combinations exist. The visible circle is Control/S, M or L (32, 40, 56px) with a 16, 20 or 24px icon; the tap area is at least Control/Touch Target (48px).
+
+**Built** (`src/components/buttonIcon`, 2026-09-24). Same props as Figma, plus an `icon` prop (Figma's icon container is empty in the component; each instance puts its own icon in) and a required `aria-label`. It reuses the `button` styles (tap area, bevel, pressed shift, spinner) and overrides only the face size, padding, icon colors and the Primary outline. Icon colors, which Figma sets per instance: `icon/primary` on Secondary and Tertiary, `interactive/onPrimary` on the Primary fill, `icon/disabled` when disabled. Loading swaps the icon for the spinner, as in `button`.
+
+**Figma differences:** `buttonIcon` Primary has a 1px inside outline (`border/default`) in every state except Disabled; the text `button` Primary has none. Built as Figma has it for each; worth deciding which is intended.
+
 ## Open design questions
 
 - **statusPill icons for wrong vs partial.** Proposal: switch wrong to `X` (same icon expandableResultRow already uses for the error tone, and already in the library) and keep `ArrowCounterClockwise` for partial. Correct = Check, partial = arrow, wrong = X, didn't catch = QuestionMark: four different shapes, so the states read without color.
@@ -352,6 +366,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **recordingGlow:** give the ellipses meaningful names (they're still "Ellipse 3902" to "3905"). `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
+- **buttonIcon:** Primary has a 1px `border/default` outline that `button` Primary doesn't. The icon container is empty and the icon color is set per instance (Secondary uses `icon/primary`, the appBar's Tertiary uses `text/primary`); consider a documented icon color per variant.
 - **micButton:** the listening/pressed icon contrast is about 2.3:1 (needs 3:1).
 - **topicPill:** padding (6/12), gap (6), corner radius (100) and outline width (1) are typed-in numbers; bind them to `Space/150`, `Space/300`, `Radius/Full` and `Stroke/Border`.
 - **middleSection** (`15851:10099`) isn't used anywhere. **keyboardOutline (legacy)** (`15878:17569`) is only used on the backup page.
