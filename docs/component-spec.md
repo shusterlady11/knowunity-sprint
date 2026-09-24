@@ -145,11 +145,11 @@ Component set `15804:41153`, page "New components". Documented in Figma.
 
 **Built** (`src/components/answerCard`, 2026-09-23). Decisions behind the differences from Figma:
 - Padding and gaps: Figma now binds the card to `Space/400` and `Space/100` (`Padding/lg` was retired).
-- Skeleton bars: `Space/300` (12px) tall, since 14px has no token; widths 100%, 88% and 60% of the card; one `font/lineHeight/md` (24px) apart; fill `interactive/secondary` alone (Figma adds an extra 10% opacity, making the bars ~1% white).
-- "Thinking..." uses `text/secondary` alone (Figma adds an extra 68% opacity, about 4:1 contrast, under the 4.5:1 minimum).
+- Skeleton bars: `Space/300` (12px) tall, since 14px has no token; widths 100%, 88% and 60% of the card; one `font/lineHeight/md` (24px) apart; fill `interactive/secondary`, as in Figma.
+- "Thinking..." uses `text/secondary`, as in Figma. (An earlier reading said Figma added extra opacity to both; that was a misreading: Figma stores a variable's own transparency separately from its color, and the script counted it twice.)
 - The property is `state`, with Figma's seven options named exactly as in Figma.
 - Figma has no text property for the message, so the code adds `message`. Emphasised words (the question's "Q:", "producers", "consumers") are bold overrides on Body M Regular in Figma; in code they're `<strong>` in `font/weight/bold`.
-- Still in Figma: the set's description says "Property 1" (the property's old name), and the skeleton bars carry an extra 10% opacity on their fill.
+- Still in Figma: the set's description says "Property 1" (the property's old name).
 
 ### statusPill ◐
 
