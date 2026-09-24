@@ -60,23 +60,25 @@ Component set `15878:19554`, page "New components". Documented in Figma.
 
 **Contrast finding:** the violet icon on the resting fill is about 3.1:1, and on the `primaryActive` fill (listening and pressed) about 2.3:1, under the 3:1 minimum for graphics. It's built as Figma specifies; the fix (icon color or fill) is a Figma decision.
 
-### recordingGlow ◐
+### recordingGlow ✅
 
-Component `15878:19671`, page "New components", 174×174.
+Component `15878:19671`, page "New components", 168×168. Documented in Figma.
 
-**Description:** the halo behind micButton that shows the mic is recording. A separate component, not a micButton variant, so the two can animate independently.
+**Description:** the animated halo behind micButton that shows the mic is recording. A separate component, not a micButton variant, so the two can animate independently. Use it only behind micButton while listeningState=listening; never for idle or disabled.
 
 **When it's used:** only while recording. Question / listeningState, centered behind micButton (listening + ready).
 
 **States:** none. It's either on the screen (recording) or not.
 
-**Structure (outer to inner):**
-- 174px circle, fill → `interactive/voiceFeedback/layer2`
-- 142px circle, fill → `interactive/voiceFeedback/layer3`
-- 124px ring, no fill, 0.5px stroke → `interactive/secondary`
-- 110px ring, no fill, 0.5px stroke → `interactive/secondary`
+**Structure (outer to inner):** every size is a multiple of `Control/Mic` (96): Figma rounds them to whole pixels.
+- 1.74× (168px) circle, fill → `interactive/voiceFeedback/layer2`
+- 1.42× (136px) circle, fill → `interactive/voiceFeedback/layer3`
+- 1.24× (120px) ring, no fill, `Stroke/Hairline` (0.5px) → `interactive/secondary`
+- 1.1× (106px) ring, no fill, `Stroke/Hairline` → `interactive/secondary`
 
 No blur.
+
+**Built** (`src/components/recordingGlow`, 2026-09-24). No props, as in Figma; hidden from screen readers. Each ring is `Control/Mic` times its ratio (so 167.04, 136.32, 119.04 and 105.6px exactly), concentric. The outlines are inset shadows at `Stroke/Hairline`, because browsers round a border this thin to whole device pixels. It also has a "Behind micButton (listening)" story that isn't a Figma variant. Not animated yet: the Figma description says "animated" but doesn't say how, so a motion decision is needed first.
 
 ### loadingDots ✅
 
@@ -87,6 +89,9 @@ Component `15795:39964`, page "New components". Documented in Figma.
 **When it's used:** while Knowie processes a spoken answer. Question / processingState, paired with micButton (idle + disabled). Not a progress meter; don't use it anywhere a percentage or step count is knowable.
 
 **States:** none. The opacity/scale pulse is applied in code, not as component states.
+
+**Built** (`src/components/loadingDots`, 2026-09-24). No props, as in Figma. Three `Indicator/Dot` circles in `accent/brand/bold`, gap `Space/100`, hugging to 26×6. Pulse (decided with the user): each dot fades dim to full and back in `motion.duration.pulse` (1200ms) with `motion.easing.inOut`, dimmest at `motion.opacity.pulseDim` (30%), and each dot starts `motion.duration.pulseStagger` (150ms) after the last, so it travels left to right. All four are code-only tokens in `tokens/motion.json`. Reduced motion: the pulse stops and the dots stay at full brightness. It's a status region labelled "Thinking" (the processing copy in the decision log), so the wait is announced.
+
 
 ### inputModeToggle ✅
 
@@ -261,6 +266,9 @@ Component set `15862:14684`, page "New components". Documented in Figma.
 
 The denominator is fixed at /5 (fixed session length).
 
+**Built** (`src/components/progressMeter`, 2026-09-24). Prop `score` 1 to 5 (no 0). Size `Indicator/Meter` (80px). Ring thickness is 15% of the radius (Figma's inner radius is 85%), worked out from the size (6px at 80px), so it needs no token. Drawn as an SVG ring from the top, clockwise, filling score/5; green for score 5. Label in Body M Bold, `interactive/primary`. Exposed as an image labelled "N out of 5" (", 100%" for a perfect score). The denominator is fixed at 5, as in Figma.
+
+
 ### resultsSummary ◐
 
 Component set `15815:43943`, page "New components". Documented in Figma.
@@ -329,7 +337,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **appBar:** its 9 back and action buttons are a legacy `App Bar Button Icon` whose source component is deleted. The swap to `buttonIcon` is not invisible: the legacy button shows a 24px icon, while `buttonIcon` Tertiary M shows 20px (Tertiary L keeps 24px but has a 56px tap area). appBar appears on 13 of the core flow screens.
 - **expandableResultRow:** the rows inside `resultsSummary` come from a deleted copy (`15808:42383`). The documented set (`15815:43883`, "New components") has the same variants, properties and description, but the two haven't been compared layer by layer.
 - **Deleted source components still in use** (they render, but can't be edited centrally): `progressIndicator` (13 uses, inside appBar), the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), `Bottom-sheet App Bar` (2), and the `x-close` icon. `progressIndicator` needs a proper, documented component before it's built in code.
-- **recordingGlow:** give the ellipses meaningful names and add a description. `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
+- **recordingGlow:** give the ellipses meaningful names (they're still "Ellipse 3902" to "3905"). `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
 - **micButton:** the listening/pressed icon contrast is about 2.3:1 (needs 3:1).

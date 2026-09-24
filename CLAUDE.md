@@ -51,14 +51,14 @@ When working on UI, use the storybook tools to read the component library before
 - `docs/sprint-context.md` — scope, decision log, what's not being built. Check before redeciding.
 - `docs/design-system.md` — component index, `scaffold` composition, naming conventions, Module 6 specs. Read before building or styling any screen.
 - `tokens/tokens.json` — color/spacing/radius/type values. Source of truth for every literal value in code. Synced from Figma; edit here, then run `npm run tokens`.
-- `tokens/motion.json` — duration and easing values (spinner). Code-only: Figma can't hold them, so keep them out of `tokens.json`, which a Figma sync can overwrite. Run `npm run tokens` after editing.
+- `tokens/motion.json` — duration, easing and opacity values (spinner, toggle, pulse). Code-only: Figma can't hold them, so keep them out of `tokens.json`, which a Figma sync can overwrite. Run `npm run tokens` after editing.
 - `style-dictionary.config.mjs` — Style Dictionary config; turns `tokens/*.json` into CSS variables.
 - `build/css/tokens.css` — generated CSS variables (`--color-interactive-primary` etc.). Tracked in git so a fresh clone builds.
 - `docs/platform-constraints.md` — canvas, touch, spacing, typography, contrast, a11y, performance, i18n rules. Read before writing any UI code.
 - `docs/voice-ux.md` — voice UX principles, states-to-build priority table. Read before building the recording/processing/result loop.
 - `docs/component-spec.md` — current source of truth for component builds: per-component status (✅ ready / ⚠️ blocker / 🆕 unaudited), variant/property/binding detail. Read before building or touching any component.
 - `docs/module-5-components-to-build.md` — superseded by `docs/component-spec.md`; kept as history, not edited. Don't build against this anymore.
-- `src/components/*` — built components, one folder each with its CSS and stories: `iconSlot`, `button`, `statusPill`, `answerCard`, `bottomCTA`, `topicPill`, `micButton`, `inputModeToggle`, `toggleGroup`. Values come from tokens only; check Storybook before building a new one.
+- `src/components/*` — built components, one folder each with its CSS and stories: `iconSlot`, `button`, `statusPill`, `answerCard`, `bottomCTA`, `topicPill`, `micButton`, `inputModeToggle`, `toggleGroup`, `loadingDots`, `recordingGlow`, `progressMeter`. Values come from tokens only; check Storybook before building a new one.
 - `src/icons/*` — icons exported from Figma (`currentColor` fill), passed into `iconSlot`.
 - `src/foundations/*` — Storybook pages that show the tokens (colors, type, spacing, radius, sizes, shadows, motion).
 - `src/app/layout.tsx` — root layout, fonts. Still the create-next-app default.

@@ -233,9 +233,46 @@
   animation: fdSlide calc(var(--motion-duration-spinner) * 2) var(--motion-easing-linear) infinite alternate;
 }
 
+.fd-motion-knob {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: var(--icon-200);
+  border-radius: var(--radius-full);
+  background: var(--color-interactive-primary);
+  animation: fdKnob calc(var(--motion-duration-toggle) * 8) var(--motion-easing-standard) infinite;
+}
+
+.fd-motion-opacity {
+  display: flex;
+  gap: var(--space-200);
+}
+
+.fd-motion-dot-static {
+  width: var(--icon-200);
+  height: var(--icon-200);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-brand-bold);
+}
+
 @keyframes fdSpin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+/* One slide takes one duration (12.5% of the 8-duration loop), with a rest between slides. */
+@keyframes fdKnob {
+  0%,
+  37.5% {
+    left: 0;
+  }
+  50%,
+  87.5% {
+    left: calc(100% - var(--icon-200));
+  }
+  100% {
+    left: 0;
   }
 }
 
@@ -247,7 +284,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .fd-motion-spin,
-  .fd-motion-dot {
+  .fd-motion-dot,
+  .fd-motion-knob {
     animation: none;
   }
 }

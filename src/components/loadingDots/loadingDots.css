@@ -1,0 +1,41 @@
+.loadingDots {
+  display: inline-flex;
+  flex: none;
+  align-items: flex-start;
+  gap: var(--space-100);
+}
+
+.loadingDots__dot {
+  width: var(--indicator-dot);
+  height: var(--indicator-dot);
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-brand-bold);
+  /* "backwards" keeps the later dots dim while they wait for their turn. */
+  animation: loadingDotsPulse var(--motion-duration-pulse) var(--motion-easing-inOut) infinite backwards;
+}
+
+/* Each dot starts one step after the last, so the pulse travels left to right. */
+.loadingDots__dot:nth-child(2) {
+  animation-delay: var(--motion-duration-pulseStagger);
+}
+
+.loadingDots__dot:nth-child(3) {
+  animation-delay: calc(var(--motion-duration-pulseStagger) * 2);
+}
+
+@keyframes loadingDotsPulse {
+  0%,
+  100% {
+    opacity: var(--motion-opacity-pulseDim);
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+/* Reduced motion: no pulse; the dots stay at full brightness and the status role still announces the wait. */
+@media (prefers-reduced-motion: reduce) {
+  .loadingDots__dot {
+    animation: none;
+  }
+}

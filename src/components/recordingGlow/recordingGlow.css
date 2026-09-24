@@ -1,0 +1,49 @@
+/* Every ring is a multiple of the mic button's size (Control/Mic), as in the Figma description:
+   1.1x, 1.24x, 1.42x and 1.74x the mic diameter. */
+.recordingGlow {
+  --recordingGlow-scale-innerLine: 1.1;
+  --recordingGlow-scale-outerLine: 1.24;
+  --recordingGlow-scale-innerFill: 1.42;
+  --recordingGlow-scale-outerFill: 1.74;
+
+  position: relative;
+  display: block;
+  flex: none;
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
+}
+
+/* Rings are centered on each other, so the halo stays centered on the mic button behind it. */
+.recordingGlow__ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  box-sizing: border-box;
+  border-radius: var(--radius-full);
+}
+
+.recordingGlow__ring--outerFill {
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
+  background-color: var(--color-interactive-voiceFeedback-layer2);
+}
+
+.recordingGlow__ring--innerFill {
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-innerFill));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-innerFill));
+  background-color: var(--color-interactive-voiceFeedback-layer3);
+}
+
+/* The outlines are drawn inside the edge, like Figma's inside stroke. A shadow is used instead of a
+   border because browsers round a border this thin to whole device pixels. */
+.recordingGlow__ring--outerLine {
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-outerLine));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-outerLine));
+  box-shadow: inset 0 0 0 var(--stroke-hairline) var(--color-interactive-secondary);
+}
+
+.recordingGlow__ring--innerLine {
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-innerLine));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-innerLine));
+  box-shadow: inset 0 0 0 var(--stroke-hairline) var(--color-interactive-secondary);
+}
