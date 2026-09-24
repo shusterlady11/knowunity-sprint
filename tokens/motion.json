@@ -1,0 +1,21 @@
+{
+  "motion": {
+    "duration": {
+      "spinner": {
+        "$type": "duration",
+        "$value": {
+          "value": 800,
+          "unit": "ms"
+        },
+        "$description": "800ms for one full turn of a loading spinner. USE: rotating the loading icon in button and buttonIcon while state=Loading. DON'T: transitions or one-off state changes (this is for repeating loops only). PAIR: motion.easing.linear. RULE: under prefers-reduced-motion, stop the rotation but keep the icon visible and mark the control busy (aria-busy) so the status stays readable."
+      }
+    },
+    "easing": {
+      "linear": {
+        "$type": "cubicBezier",
+        "$value": [0, 0, 1, 1],
+        "$description": "Constant-speed curve. USE: continuous loops such as the loading spinner, where speed must not change during a turn. DON'T: entrances, exits or position changes, which need acceleration or deceleration. PAIR: motion.duration.spinner."
+      }
+    }
+  }
+}

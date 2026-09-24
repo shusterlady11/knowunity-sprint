@@ -12,7 +12,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Concept — single source, don't restate: `docs/sprint-context.md`.
 - Recall engine is mocked: fake transcript, fake verdict, fake-but-present latency. `docs/platform-constraints.md`, `docs/sprint-context.md`.
 - Every screen is built from `scaffold`'s slots. `docs/design-system.md` §2.
-- All color/spacing/radius/type values: `tokens/tokens.json`. Usage rules: `docs/design-system.md`.
+- All color/spacing/radius/type/motion values: `tokens/` (`tokens.json` is synced from Figma; `motion.json` is code-only). Usage rules: `docs/design-system.md`.
 - Naming: lowerCamelCase for components/props/tokens. `docs/design-system.md` §3 (legacy exceptions).
 - Contrast, touch-target, reduced-motion requirements. `docs/platform-constraints.md`.
 - Decisions already made: `docs/sprint-context.md` — check before re-deciding.
@@ -20,7 +20,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 
 ## Never
 
-- Never invent a color/spacing/radius/type value not in `tokens/tokens.json`.
+- Never invent a color/spacing/radius/type/motion value not in `tokens/`.
 - No CSS fallback values (`var(--token, #fallback)`). `docs/design-system.md` §4.
 - Never build a screen outside `scaffold` (`docs/design-system.md` §2).
 - Never build a new component when an existing one covers it, or invent one to fill a gap — flag the gap instead (`docs/design-system.md` §4).
@@ -33,7 +33,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Never build tablet or desktop layouts, or RTL — out of scope this sprint. `docs/platform-constraints.md`.
 - Never build real STT/AI judging — out of scope this sprint. `docs/sprint-context.md` (Not building).
 - Never hand-recreate the Knowie mascot freehand — export the real component from Figma. `docs/design-system.md` §1.
-- Never edit `build/css/tokens.css` — it's generated. Edit `tokens/tokens.json` and run `npm run tokens`.
+- Never edit `build/css/tokens.css` — it's generated. Edit the source file in `tokens/` and run `npm run tokens`.
 - Never commit without keeping this file's first line (`@AGENTS.md`) intact.
 
 ## Storybook
@@ -49,7 +49,8 @@ When working on UI, use the storybook tools to read the component library before
 - `docs/design-brief.md` — user problem, hard constraints, open design questions. Read before designing any new flow.
 - `docs/sprint-context.md` — scope, decision log, what's not being built. Check before redeciding.
 - `docs/design-system.md` — component index, `scaffold` composition, naming conventions, Module 6 specs. Read before building or styling any screen.
-- `tokens/tokens.json` — color/spacing/radius/type values. Source of truth for every literal value in code. Edit here, then run `npm run tokens`.
+- `tokens/tokens.json` — color/spacing/radius/type values. Source of truth for every literal value in code. Synced from Figma; edit here, then run `npm run tokens`.
+- `tokens/motion.json` — duration and easing values (spinner). Code-only: Figma can't hold them, so keep them out of `tokens.json`, which a Figma sync can overwrite. Run `npm run tokens` after editing.
 - `style-dictionary.config.mjs` — Style Dictionary config; turns `tokens/*.json` into CSS variables.
 - `build/css/tokens.css` — generated CSS variables (`--color-interactive-primary` etc.). Tracked in git so a fresh clone builds.
 - `docs/platform-constraints.md` — canvas, touch, spacing, typography, contrast, a11y, performance, i18n rules. Read before writing any UI code.

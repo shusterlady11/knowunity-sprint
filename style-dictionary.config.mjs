@@ -13,6 +13,13 @@ StyleDictionary.registerTransform({
   },
 });
 
+StyleDictionary.registerTransform({
+  name: 'duration/css',
+  type: 'value',
+  filter: (token) => token.$type === 'duration',
+  transform: (token) => `${token.$value.value}${token.$value.unit}`,
+});
+
 StyleDictionary.registerTransformGroup({
   name: 'css/tokens',
   transforms: [
@@ -20,6 +27,8 @@ StyleDictionary.registerTransformGroup({
     'color/css',
     'fontFamily/css',
     'size/px',
+    'duration/css',
+    'cubicBezier/css',
     'shadow/css/shorthand',
   ],
 });
