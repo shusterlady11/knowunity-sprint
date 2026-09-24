@@ -57,6 +57,9 @@ When working on UI, use the storybook tools to read the component library before
 - `docs/voice-ux.md` — voice UX principles, states-to-build priority table. Read before building the recording/processing/result loop.
 - `docs/component-spec.md` — current source of truth for component builds: per-component status (✅ ready / ⚠️ blocker / 🆕 unaudited), variant/property/binding detail. Read before building or touching any component.
 - `docs/module-5-components-to-build.md` — superseded by `docs/component-spec.md`; kept as history, not edited. Don't build against this anymore.
+- `src/components/*` — built components, one folder each with its CSS and stories: `iconSlot`, `button`. Values come from tokens only; check Storybook before building a new one.
+- `src/icons/*` — icons exported from Figma (`currentColor` fill), passed into `iconSlot`.
+- `src/foundations/*` — Storybook pages that show the tokens (colors, type, spacing, radius, sizes, shadows).
 - `src/app/layout.tsx` — root layout, fonts. Still the create-next-app default.
 - `src/app/page.tsx` — home page. Still the create-next-app placeholder; references `/next.svg` and `/vercel.svg`.
 - `src/app/globals.css` — global styles; imports `build/css/tokens.css`. The rest is still the create-next-app default theme.

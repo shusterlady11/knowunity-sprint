@@ -1,0 +1,165 @@
+.button {
+  appearance: none;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-touch-target);
+  min-height: var(--control-touch-target);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: none;
+}
+
+.button:focus-visible .button__face {
+  outline: var(--stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--space-050);
+}
+
+.button__face {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+}
+
+.button__label {
+  white-space: nowrap;
+  font-family: var(--type-body-s-bold-fontFamily);
+  font-weight: var(--type-body-s-bold-fontWeight);
+  font-size: var(--type-body-s-bold-fontSize);
+  line-height: var(--type-body-s-bold-lineHeight);
+}
+
+/* Sizes: the outer button is the tap area, the face is the visible shape */
+.button[data-size='S'],
+.button[data-size='M'] {
+  height: var(--control-touch-target);
+}
+
+.button[data-size='L'] {
+  height: var(--control-l);
+}
+
+.button[data-size='S'] .button__face {
+  height: var(--control-s);
+  padding-inline: var(--space-300);
+  gap: var(--space-150);
+}
+
+.button[data-size='M'] .button__face {
+  height: var(--control-m);
+  padding-inline: var(--space-400);
+  gap: var(--space-150);
+}
+
+.button[data-size='L'] .button__face {
+  height: var(--control-l);
+  padding-inline: var(--space-600);
+  gap: var(--space-200);
+}
+
+.button[data-size='L'] .button__label {
+  font-family: var(--type-headline-s-fontFamily);
+  font-weight: var(--type-headline-s-fontWeight);
+  font-size: var(--type-headline-s-fontSize);
+  line-height: var(--type-headline-s-lineHeight);
+}
+
+/* Bottom bevel on filled buttons */
+.button:is([data-variant='Primary'], [data-variant='Secondary']) .button__face {
+  box-shadow: var(--bevel-100);
+}
+
+.button:is([data-variant='Primary'], [data-variant='Secondary'])[data-size='L'] .button__face {
+  box-shadow: var(--bevel-200);
+}
+
+/* Pressed: the bevel flattens and the face sits lower (top padding on the tap area) */
+.button[data-state='Pressed'],
+.button[data-state='Default']:active {
+  padding-top: var(--space-050);
+}
+
+.button[data-size='L'][data-state='Pressed'],
+.button[data-size='L'][data-state='Default']:active {
+  padding-top: var(--space-100);
+}
+
+.button[data-state='Pressed'][data-size] .button__face,
+.button[data-state='Default'][data-size]:active .button__face {
+  box-shadow: none;
+}
+
+/* Primary */
+.button[data-variant='Primary'] {
+  color: var(--color-interactive-onPrimary);
+}
+
+.button[data-variant='Primary'] .button__face {
+  background-color: var(--color-interactive-primary);
+}
+
+.button[data-variant='Primary'][data-state='Disabled'] {
+  color: var(--color-text-disabled);
+}
+
+.button[data-variant='Primary'][data-state='Disabled'] .button__face {
+  background-color: var(--color-background-surface);
+}
+
+/* Secondary */
+.button[data-variant='Secondary'] {
+  color: var(--color-text-primary);
+}
+
+.button[data-variant='Secondary'] .button__face {
+  background-color: var(--color-background-surface);
+}
+
+.button[data-variant='Secondary'][data-state='Disabled'] {
+  color: var(--color-text-disabled);
+}
+
+/* Tertiary: same face as the others, without a fill or a bevel */
+.button[data-variant='Tertiary'] {
+  color: var(--color-text-primary);
+}
+
+.button[data-variant='Tertiary'][data-state='Disabled'] {
+  color: var(--color-text-disabled);
+}
+
+/* Disabled and Loading */
+.button[data-state='Disabled'] {
+  cursor: not-allowed;
+}
+
+.button[data-state='Loading'] {
+  cursor: progress;
+}
+
+.button__spinner {
+  animation: buttonSpin var(--motion-duration-spinner) var(--motion-easing-linear) infinite;
+}
+
+@keyframes buttonSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button__spinner {
+    animation: none;
+  }
+}
