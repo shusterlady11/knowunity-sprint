@@ -33,12 +33,12 @@
   color: var(--color-text-secondary);
 }
 
-/* Skeleton: three placeholder lines, one per text line (font/lineHeight/md apart) */
+/* Skeleton: three placeholder lines, one per text line (font/lineHeight/body-md apart, the Body M line height) */
 .answerCard__skeleton {
   display: flex;
   flex-direction: column;
   align-self: stretch;
-  gap: calc(var(--font-lineHeight-md) - var(--space-300));
+  gap: calc(var(--font-lineHeight-body-md) - var(--space-300));
 }
 
 .answerCard__bar {

@@ -10,7 +10,7 @@ const figmaDescription = `One row in the results screen's Good Explanations / Ne
 
 **Opening and closing:** the header is a real button that says whether the row is open. Tapping it calls \`onToggle\` with the state asked for; the parent decides, so it can keep only one row open at a time. The stories keep the state themselves, so a tap opens and closes them.
 
-**Layout:** the row fills its container. Its whole top (padding included) is the tap target, so it's taller than the 24px line and well over the 48px minimum. The chevron points right when collapsed and turns a quarter turn clockwise to point down when open, as in Figma (whose -90 rotation is counterclockwise-positive). The detail is indented \`Space/700\` to line up under the label. Icons: Check, X and DotOutline in \`feedback/success/onSubtle\`, \`feedback/error/onSubtle\` and \`interactive/onSecondary\`; the chevron is \`interactive/primary\`.`;
+**Layout:** the row fills its container. Its whole top (padding included) is the tap target, so it's taller than the one text line and well over the 48px minimum. The chevron points right when collapsed and turns a quarter turn clockwise to point down when open, as in Figma (whose -90 rotation is counterclockwise-positive). The detail is indented \`Space/700\` to line up under the label. Icons: Check, X and DotOutline in \`feedback/success/onSubtle\`, \`feedback/error/onSubtle\` and \`interactive/onSecondary\`; the chevron is \`interactive/primary\`.`;
 
 // Records the toggle without the click event, so Storybook doesn't serialize it (which froze the docs page).
 const toggleSpy = fn();
@@ -84,7 +84,7 @@ const meta = {
     const fill = { success: '--color-feedback-success-subtle', error: '--color-feedback-error-subtle', neutral: '--color-background-surface' }[tone];
     await expect(rowStyle.backgroundColor).toBe(paint('backgroundColor', fill));
 
-    // The header line: icon, label and chevron, 24px tall, so a collapsed row is 56px.
+    // The header line: icon, label and chevron, one Body M line tall (26px), so a collapsed row is 58px.
     const lineHeight = px('--type-body-m-regular-lineHeight');
     if (state === 'collapsed') await expect(rowBox.height).toBe(2 * px('--space-400') + lineHeight);
     const headerBox = header.getBoundingClientRect();

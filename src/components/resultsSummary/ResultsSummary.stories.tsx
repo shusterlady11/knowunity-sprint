@@ -128,7 +128,7 @@ const meta = {
         await expect(item.getBoundingClientRect().top).toBe(previous.bottom + px('--space-100'));
       }
     }
-    // Collapsed rows are 56px, so the card is: top padding + title + gap + rows + gaps + bottom padding.
+    // Collapsed rows are as tall as the padding plus one Body M line (58px), so the card is: top padding + title + gap + rows + gaps + bottom padding.
     const rowHeight = 2 * px('--space-400') + px('--type-body-m-regular-lineHeight');
     await expect(cardBox.height).toBe(px('--space-400') + px('--font-lineHeight-sm') + px('--space-300') + rows.length * rowHeight + (rows.length - 1) * px('--space-100') + px('--space-100'));
 

@@ -19,7 +19,7 @@
 }
 
 /* The header is the tap target. It grows into the card's padding (negative margin) so the whole top of
-   the card is tappable, not just the 24px line. Its own padding puts the content back where the card's
+   the card is tappable, not just the one text line. Its own padding puts the content back where the card's
    padding would have. */
 .expandableResultRow__header {
   appearance: none;

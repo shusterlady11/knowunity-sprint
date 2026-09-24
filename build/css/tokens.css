@@ -226,7 +226,7 @@
   --indicator-handle-width: 32px; /** Width of a bottom sheet's drag handle. USE: the Handle in bottomSheetAppBar. DON'T: use as spacing. */
   --indicator-handle-height: 4px; /** Height of a bottom sheet's drag handle. USE: the Handle in bottomSheetAppBar. DON'T: use as spacing. */
   --indicator-progress-height: 16px; /** Height of the progress bar. USE: progressIndicator. DON'T: use as spacing. */
-  --font-size-2xs: 9px; /** 9px. USE: Caption S Bold and Caption S Regular. */
+  --font-size-2xs: 11px; /** 11px, the brief's minimum for caption or helper text (Platformconstraints.md). USE: Caption S Bold and Caption S Regular. DON'T: go below 11px for any readable text. */
   --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */
   --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */
   --font-size-md: 18px; /** 18px. USE: Headline XS and Body M, both weights. */
@@ -238,7 +238,7 @@
   --font-size-4xl: 59px; /** 59px. USE: Display S. */
   --font-size-5xl: 76px; /** 76px. USE: Display M and Headline XL. */
   --font-size-6xl: 103px; /** 103px. USE: Display L, Heavy only. */
-  --font-lineHeight-2xs: 12px; /** 12px. Set in pixels, not percent. */
+  --font-lineHeight-2xs: 14px; /** 14px line height for 11px caption text. USE: Caption S styles. */
   --font-lineHeight-xs: 16px; /** 16px. Set in pixels, not percent. */
   --font-lineHeight-sm: 20px; /** 20px. Set in pixels, not percent. */
   --font-lineHeight-md: 24px; /** 24px. Set in pixels, not percent. */
@@ -248,6 +248,7 @@
   --font-lineHeight-3xl: 60px; /** 60px. Set in pixels, not percent. */
   --font-lineHeight-4xl: 76px; /** 76px. Set in pixels, not percent. */
   --font-lineHeight-5xl: 104px; /** 104px. Set in pixels, not percent. */
+  --font-lineHeight-body-md: 26px; /** 26px line height for 18px body text (1.44), within the brief's 1.4 to 1.6 for body. USE: Body M styles and any 18px reading text such as Knowie's feedback. DON'T: use for headlines; Headline S keeps font/lineHeight/md (24). */
   --font-family-display: Inter; /** USE: Display L only. Figma uses Greed Standard-TRIAL, which is unlicensed and can't ship, so code resolves to Inter. Switch this value if a Greed license is obtained. */
   --font-family-default: Inter; /** USE: every style except Display L. Figma uses Greed Standard-TRIAL, which is unlicensed and can't ship, so code resolves to Inter. Switch this value if a Greed license is obtained. */
   --font-weight-regular: 400; /** USE: body copy and the Regular variants of Headline XS and XXS. (file weight name: "Regular", mapped to numeric 400.) */
@@ -315,12 +316,12 @@
   --type-body-m-bold-fontFamily: Inter;
   --type-body-m-bold-fontWeight: 600;
   --type-body-m-bold-fontSize: 18px;
-  --type-body-m-bold-lineHeight: 24px;
+  --type-body-m-bold-lineHeight: 26px;
   --type-body-m-bold-letterSpacing: 1px;
   --type-body-m-regular-fontFamily: Inter;
   --type-body-m-regular-fontWeight: 400;
   --type-body-m-regular-fontSize: 18px;
-  --type-body-m-regular-lineHeight: 24px;
+  --type-body-m-regular-lineHeight: 26px;
   --type-body-m-regular-letterSpacing: 1px;
   --type-body-s-bold-fontFamily: Inter;
   --type-body-s-bold-fontWeight: 600;
@@ -344,13 +345,13 @@
   --type-caption-m-regular-letterSpacing: 1px;
   --type-caption-s-bold-fontFamily: Inter;
   --type-caption-s-bold-fontWeight: 600;
-  --type-caption-s-bold-fontSize: 9px;
-  --type-caption-s-bold-lineHeight: 12px;
+  --type-caption-s-bold-fontSize: 11px;
+  --type-caption-s-bold-lineHeight: 14px;
   --type-caption-s-bold-letterSpacing: 1px;
   --type-caption-s-regular-fontFamily: Inter;
   --type-caption-s-regular-fontWeight: 400;
-  --type-caption-s-regular-fontSize: 9px;
-  --type-caption-s-regular-lineHeight: 12px;
+  --type-caption-s-regular-fontSize: 11px;
+  --type-caption-s-regular-lineHeight: 14px;
   --type-caption-s-regular-letterSpacing: 1px;
   --bevel-100: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -2, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */
   --bevel-200: inset 0px -4px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -4, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */

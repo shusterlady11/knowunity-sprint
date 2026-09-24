@@ -8,7 +8,7 @@ const figmaDescription = `A title plus optional caption text pairing, in four si
 
 **Fonts:** Figma sets the XL and L titles in Greed Condensed, an unlicensed trial font that can't be published, so code uses Inter for them, as everywhere else. Inter is wider, so long XL and L titles need more room than in Figma.
 
-**Known issue:** the S caption is 9px, under the 11px minimum for caption text in the platform rules. Caption M (12px) would pass. The other set in Figma also called "textBlock" (a question card with a violet fill, used by the mascot segments) is a different design that \`answerCard\` (question state) already covers, so it isn't built.`;
+**Known issue:** the other set in Figma also called "textBlock" (a question card with a violet fill, used by the mascot segments) is a different design that \`answerCard\` (question state) already covers, so it isn't built.`;
 
 const meta = {
   title: 'Components/textBlock',
@@ -67,7 +67,7 @@ const meta = {
       const t = title.getBoundingClientRect();
       const c = caption!.getBoundingClientRect();
       await expect(c.top).toBe(t.bottom + px(styles.gap));
-      // The block's height is the two lines and the gap (the same heights Figma has: 100, 60, 42, 34 with the default text).
+      // The block's height is the two lines and the gap (100, 60, 44 and 36 with the default text).
       await expect(block.getBoundingClientRect().height).toBe(px(`--type-${styles.title}-lineHeight`) + px(styles.gap) + px(`--type-${styles.caption}-lineHeight`));
       // Both lines fill the block's width, so they line up.
       await expect(c.width).toBe(block.getBoundingClientRect().width);

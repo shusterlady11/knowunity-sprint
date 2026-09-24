@@ -16,7 +16,7 @@ Don't put question copy in Default or vice versa. Don't hand-color the statusPil
 
 **In code:** \`state\` has Figma's seven options, named exactly as in Figma (the description above still says "Property 1", the property's old name). \`message\` is the card's text; Figma has no text property for it. Key words can be wrapped in \`<strong>\` to set them in \`font/weight/bold\`, as the question does with "Q:", "producers" and "consumers" (in Figma these are bold overrides on Body M Regular, not a text style). processing defaults to "Thinking..." and answer-notcaught to "I couldn’t understand that take.". The answer states use the \`statusPill\` component (answer-correct → correct, answer-partial → partial, answer-error → wrong, answer-notcaught → notCaught). The card fills the width it's given (358px inside a 390px screen with 16px margins). Answer and processing cards are announced to screen readers when they appear; processing is also marked busy, and its placeholder bars are hidden from them.
 
-**Differences from Figma, by decision:** the skeleton bars are \`Space/300\` (12px) tall (Figma: 14px, which has no token), 100%, 88% and 60% of the card wide, and one \`font/lineHeight/md\` (24px) apart. "Thinking..." (\`text/secondary\`) and the bars (\`interactive/secondary\`) use the same tokens as Figma.`;
+**Differences from Figma, by decision:** the skeleton bars are \`Space/300\` (12px) tall (Figma: 14px, which has no token), 100%, 88% and 60% of the card wide, and one \`font/lineHeight/body-md\` (26px, the Body M line height) apart. "Thinking..." (\`text/secondary\`) and the bars (\`interactive/secondary\`) use the same tokens as Figma.`;
 
 const pillFor = {
   'answer-correct': 'correct',
@@ -73,7 +73,7 @@ const meta = {
       await expect(getComputedStyle(bars[0]).height).toBe(token('--space-300'));
       await expect(getComputedStyle(bars[0]).backgroundColor).toBe(resolveColor('--color-interactive-secondary'));
       const pitch = bars[1].getBoundingClientRect().top - bars[0].getBoundingClientRect().top;
-      await expect(`${pitch}px`).toBe(token('--font-lineHeight-md'));
+      await expect(`${pitch}px`).toBe(token('--font-lineHeight-body-md'));
     } else {
       await expect(bars).toHaveLength(0);
     }
