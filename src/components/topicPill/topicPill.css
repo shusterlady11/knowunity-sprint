@@ -1,0 +1,29 @@
+.topicPill {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-150);
+  padding: var(--space-150) var(--space-300);
+  border-radius: var(--radius-full);
+  background-color: var(--color-background-surface);
+  /* Drawn inside the edge, like Figma's inside stroke, so it doesn't change the pill's size */
+  box-shadow: inset 0 0 0 var(--stroke-border) var(--color-accent-brand-bold);
+}
+
+.topicPill__dot {
+  flex: none;
+  width: var(--indicator-dot);
+  height: var(--indicator-dot);
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-brand-bold);
+}
+
+.topicPill__label {
+  white-space: nowrap;
+  color: var(--color-text-primary);
+  font-family: var(--type-caption-m-bold-fontFamily);
+  font-weight: var(--type-caption-m-bold-fontWeight);
+  font-size: var(--type-caption-m-bold-fontSize);
+  line-height: var(--type-caption-m-bold-lineHeight);
+  letter-spacing: var(--type-caption-m-bold-letterSpacing);
+}

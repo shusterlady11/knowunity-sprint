@@ -78,7 +78,7 @@ No blur.
 
 Component `15795:39964`, page "New components". Documented in Figma.
 
-**Description:** three pulsing dots, an indeterminate "working on it" indicator. Horizontal auto layout, gap 4, three 6px circles, fill → `accent/brand/bold`.
+**Description:** three pulsing dots, an indeterminate "working on it" indicator. Horizontal auto layout, gap 4, three circles sized by `Indicator/Dot` (6px), fill → `accent/brand/bold`.
 
 **When it's used:** while Knowie processes a spoken answer. Question / processingState, paired with micButton (idle + disabled). Not a progress meter; don't use it anywhere a percentage or step count is knowable.
 
@@ -120,11 +120,13 @@ Component set `15878:22602`, page "New components". Documented in Figma.
 
 Component `15850:10081`, page "New components".
 
-**Description:** a small outlined label with a leading dot that names the topic being studied (e.g. "Energy flow in ecosystems"). Text property `Label`, sentence case. Fill `background/surface`, stroke `accent/brand/bold`, fully rounded.
+**Description:** a small outlined label with a leading dot that names the topic being studied (e.g. "Energy flow in ecosystems"). Text property `Label`, sentence case. Fill `background/surface`, stroke `accent/brand/bold`, fully rounded. Label uses Caption M Bold; the dot is `Indicator/Dot` (6px).
 
-**When it's used:** top of the middle content on every question, answer and permission screen, above the mascot.
+**When it's used:** top of the middle content on every question, answer and permission screen, above the mascot. The Figma description limits it to a question set and its results; not splash pages or study plan overviews.
 
 **States:** none.
+
+**Built** (`src/components/topicPill`, 2026-09-23). Prop `label` (Figma's "Label"). Padding `Space/150` / `Space/300`, gap `Space/150`, corners `Radius/Full` and outline width `stroke/border`: in Figma these are typed-in numbers equal to those tokens. Measured against Figma: same size (216×28) and the same dot and label positions.
 
 ### answerCard ✅
 
@@ -319,7 +321,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **recordingGlow:** give the ellipses meaningful names and add a description. `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.
 - **expandableResultRow:** icon structure differs by tone (success puts Check straight in the `Icon` layer, error wraps X in an `iconSlot`, neutral has a `DotOutline` layer and no `Icon` layer); icon and CaretRight fills are raw white, not a token; the error expanded variant has four nested frames all named `Detail`.
 - **resultsSummary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
-- **topicPill:** has no component description.
+- **topicPill:** padding (6/12), gap (6), corner radius (100) and outline width (1) are typed-in numbers; bind them to `Space/150`, `Space/300`, `Radius/Full` and `Stroke/Border`.
 - **middleSection** (`15851:10099`) isn't used anywhere. **keyboardOutline (legacy)** (`15878:17569`) is only used on the backup page.
 - **"New components - backup" page** holds duplicate sets of statusPill, answerCard, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
 - **scaffold sizes:** the scaffold component has 8 size variants in Figma. design-system.md only uses two (iPhone 13 and 17 Pro Max); ignore the others. The voice screens use iPhone 13.
