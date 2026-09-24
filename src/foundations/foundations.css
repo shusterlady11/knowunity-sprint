@@ -172,3 +172,86 @@
   background: var(--color-background-surface);
   border: var(--stroke-border) solid var(--color-border-default);
 }
+
+.fd-row-visual {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-primary);
+}
+
+.fd-subsection-title {
+  margin: 0 0 var(--space-200);
+  color: var(--color-text-secondary);
+  font-family: var(--type-headline-xs-bold-fontFamily);
+  font-weight: var(--type-headline-xs-bold-fontWeight);
+  font-size: var(--type-headline-xs-bold-fontSize);
+  line-height: var(--type-headline-xs-bold-lineHeight);
+  letter-spacing: var(--type-headline-xs-bold-letterSpacing);
+}
+
+.fd-block-sample {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-family: var(--font-family-default);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  white-space: nowrap;
+}
+
+.fd-line-height {
+  box-sizing: border-box;
+  width: 100%;
+  border-top: var(--stroke-border) solid var(--color-interactive-primary);
+  border-bottom: var(--stroke-border) solid var(--color-interactive-primary);
+  background: var(--color-background-surface);
+}
+
+.fd-stroke-line {
+  width: 100%;
+  background: var(--color-interactive-primary);
+}
+
+.fd-motion-spin {
+  animation: fdSpin var(--motion-duration-spinner) var(--motion-easing-linear) infinite;
+}
+
+.fd-motion-track {
+  position: relative;
+  width: 100%;
+  height: var(--icon-200);
+  border-radius: var(--radius-full);
+  background: var(--color-background-surface);
+}
+
+.fd-motion-dot {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: var(--icon-200);
+  border-radius: var(--radius-full);
+  background: var(--color-interactive-primary);
+  animation: fdSlide calc(var(--motion-duration-spinner) * 2) var(--motion-easing-linear) infinite alternate;
+}
+
+@keyframes fdSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fdSlide {
+  to {
+    left: calc(100% - var(--icon-200));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fd-motion-spin,
+  .fd-motion-dot {
+    animation: none;
+  }
+}
+
+.fd-space-row-wide {
+  grid-template-columns: var(--illustration-4000) 1fr;
+}

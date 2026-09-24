@@ -1,4 +1,5 @@
 import tokens from '../../tokens/tokens.json';
+import motion from '../../tokens/motion.json';
 
 export type Token = {
   path: string[];
@@ -60,6 +61,7 @@ function collectTokens(node: Node, path: string[], out: Token[]) {
 
 const allTokens: Token[] = [];
 collectTokens(tokens as Node, [], allTokens);
+collectTokens(motion as Node, [], allTokens);
 
 export function colorGroups(): ColorGroup[] {
   const groups = new Map<string, ColorGroup>();
@@ -87,6 +89,17 @@ export const iconSizeTokens = () =>
   allTokens.filter((t) => t.path[0] === 'icon' && t.type === 'dimension');
 
 export const shadowTokens = () => allTokens.filter((t) => t.type === 'shadow');
+
+export const illustrationTokens = () => allTokens.filter((t) => t.path[0] === 'illustration');
+
+export const strokeTokens = () => allTokens.filter((t) => t.path[0] === 'stroke');
+
+export const motionTokens = () => allTokens.filter((t) => t.path[0] === 'motion');
+
+export type FontGroup = 'size' | 'lineHeight' | 'weight' | 'family' | 'tracking';
+
+export const fontTokens = (group: FontGroup) =>
+  allTokens.filter((t) => t.path[0] === 'font' && t.path[1] === group);
 
 export function textStyles(): TextStyle[] {
   const out: TextStyle[] = [];
