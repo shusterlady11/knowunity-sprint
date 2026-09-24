@@ -10,6 +10,8 @@ const figmaDescription = `Text button with a label, optional leading/trailing ic
 - **Disabled** is a real disabled button.
 - **Loading** hides the label and side icons and shows a spinner that turns once every 800ms. The button is marked busy, keeps its name for screen readers, and ignores taps. When a student has "reduce motion" turned on, the spinner stops turning but stays visible.
 - **Pressed** loses its bevel and moves down 1px (2px on L) using top padding on the tap area. It does not darken the fill. It can be shown on its own with \`state="Pressed"\`; a real press looks the same.
+- **L labels** are set in Inter Bold. Figma's Greed Condensed is an unlicensed trial font that can't be published, so L labels come out wider than in Figma.
+- **Tertiary** has square corners, which only show as the shape of the keyboard focus ring; it is fully round while pressed, as in Figma.
 - The button has two layers. The tap area has a minimum height of Control/Touch Target (48px), and the visible button is Control/S, Control/M or Control/L tall.`;
 
 const meta = {
@@ -30,6 +32,21 @@ const meta = {
 
     const hasBevel = args.variant !== 'Tertiary' && args.state !== 'Pressed';
     await expect(getComputedStyle(face).boxShadow === 'none').toBe(!hasBevel);
+
+    const isFilled = args.variant !== 'Tertiary';
+    const expectedRadius = args.variant === 'Tertiary' && args.state !== 'Pressed' ? '0px' : token('--radius-full');
+    await expect(getComputedStyle(face).borderTopLeftRadius).toBe(expectedRadius);
+
+    const label = button.querySelector('.button__label') as HTMLElement | null;
+    if (label) {
+      const tracking = args.size === 'L' ? '--type-headline-s-letterSpacing' : '--type-body-s-bold-letterSpacing';
+      const appliedTracking = getComputedStyle(label).letterSpacing;
+      await expect(appliedTracking === 'normal' ? '0px' : appliedTracking).toBe(token(tracking));
+      const labelRect = label.getBoundingClientRect();
+      const faceBox = face.getBoundingClientRect();
+      const lift = isFilled ? parseFloat(token(args.size === 'L' ? '--space-100' : '--space-050')) / 2 : 0;
+      await expect((labelRect.top + labelRect.height / 2) - (faceBox.top + faceBox.height / 2)).toBeCloseTo(-lift, 1);
+    }
 
     const pressedPadding = args.state === 'Pressed' ? parseFloat(token(args.size === 'L' ? '--space-100' : '--space-050')) : 0;
     const buttonRect = button.getBoundingClientRect();

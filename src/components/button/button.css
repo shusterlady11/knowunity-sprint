@@ -38,6 +38,7 @@
   font-weight: var(--type-body-s-bold-fontWeight);
   font-size: var(--type-body-s-bold-fontSize);
   line-height: var(--type-body-s-bold-lineHeight);
+  letter-spacing: var(--type-body-s-bold-letterSpacing);
 }
 
 /* Sizes: the outer button is the tap area, the face is the visible shape */
@@ -73,6 +74,17 @@
   font-weight: var(--type-headline-s-fontWeight);
   font-size: var(--type-headline-s-fontSize);
   line-height: var(--type-headline-s-lineHeight);
+  letter-spacing: var(--type-headline-s-letterSpacing);
+}
+
+/* Filled buttons: the content sits slightly above center, as in Figma */
+.button:is([data-variant='Primary'], [data-variant='Secondary'])[data-size='S'] .button__face,
+.button:is([data-variant='Primary'], [data-variant='Secondary'])[data-size='M'] .button__face {
+  padding-bottom: var(--space-050);
+}
+
+.button:is([data-variant='Primary'], [data-variant='Secondary'])[data-size='L'] .button__face {
+  padding-bottom: var(--space-100);
 }
 
 /* Bottom bevel on filled buttons */
@@ -133,6 +145,15 @@
 /* Tertiary: same face as the others, without a fill or a bevel */
 .button[data-variant='Tertiary'] {
   color: var(--color-text-primary);
+}
+
+.button[data-variant='Tertiary'] .button__face {
+  border-radius: 0;
+}
+
+.button[data-variant='Tertiary'][data-state='Pressed'] .button__face,
+.button[data-variant='Tertiary'][data-state='Default']:active .button__face {
+  border-radius: var(--radius-full);
 }
 
 .button[data-variant='Tertiary'][data-state='Disabled'] {
