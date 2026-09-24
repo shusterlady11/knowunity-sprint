@@ -240,82 +240,104 @@
   --font-weight-semibold: 600; /** USE: the Bold variants of Headline XS and XXS, Body and Caption. (file weight name: "SemiBold", mapped to numeric 600.) */
   --font-weight-bold: 700; /** USE: Display M and S, Headline XL through S. (file weight name: "Bold", mapped to numeric 700.) */
   --font-weight-heavy: 800; /** USE: Display L only, paired with font/family/display. (file weight name: "Heavy", mapped to numeric 800.) */
+  --font-tracking-tight: -1px; /** -1%. USE: Display sizes and Headline L and above. */
+  --font-tracking-none: 0px; /** 0%. USE: Headline S only. */
+  --font-tracking-loose: 1px; /** +1%. USE: Headline XS and below, all Body, all Caption. */
   --type-display-l-fontFamily: Inter;
   --type-display-l-fontWeight: 800;
   --type-display-l-fontSize: 103px;
   --type-display-l-lineHeight: 104px;
+  --type-display-l-letterSpacing: -1px;
   --type-display-m-fontFamily: Inter;
   --type-display-m-fontWeight: 700;
   --type-display-m-fontSize: 76px;
   --type-display-m-lineHeight: 76px;
+  --type-display-m-letterSpacing: -1px;
   --type-display-s-fontFamily: Inter;
   --type-display-s-fontWeight: 700;
   --type-display-s-fontSize: 59px;
   --type-display-s-lineHeight: 60px;
+  --type-display-s-letterSpacing: -1px;
   --type-headline-xl-fontFamily: Inter;
   --type-headline-xl-fontWeight: 700;
   --type-headline-xl-fontSize: 44px;
   --type-headline-xl-lineHeight: 44px;
+  --type-headline-xl-letterSpacing: -1px;
   --type-headline-l-fontFamily: Inter;
   --type-headline-l-fontWeight: 700;
   --type-headline-l-fontSize: 33px;
   --type-headline-l-lineHeight: 36px;
+  --type-headline-l-letterSpacing: -1px;
   --type-headline-m-fontFamily: Inter;
   --type-headline-m-fontWeight: 700;
   --type-headline-m-fontSize: 28px;
   --type-headline-m-lineHeight: 28px;
+  --type-headline-m-letterSpacing: -1px;
   --type-headline-s-fontFamily: Inter;
   --type-headline-s-fontWeight: 700;
   --type-headline-s-fontSize: 24px;
   --type-headline-s-lineHeight: 24px;
+  --type-headline-s-letterSpacing: 0px;
   --type-headline-xs-bold-fontFamily: Inter;
   --type-headline-xs-bold-fontWeight: 600;
   --type-headline-xs-bold-fontSize: 18px;
   --type-headline-xs-bold-lineHeight: 20px;
+  --type-headline-xs-bold-letterSpacing: 1px;
   --type-headline-xs-regular-fontFamily: Inter;
   --type-headline-xs-regular-fontWeight: 400;
   --type-headline-xs-regular-fontSize: 18px;
   --type-headline-xs-regular-lineHeight: 20px;
+  --type-headline-xs-regular-letterSpacing: 1px;
   --type-headline-xxs-bold-fontFamily: Inter;
   --type-headline-xxs-bold-fontWeight: 600;
   --type-headline-xxs-bold-fontSize: 15px;
   --type-headline-xxs-bold-lineHeight: 16px;
+  --type-headline-xxs-bold-letterSpacing: 1px;
   --type-headline-xxs-regular-fontFamily: Inter;
   --type-headline-xxs-regular-fontWeight: 400;
   --type-headline-xxs-regular-fontSize: 15px;
   --type-headline-xxs-regular-lineHeight: 16px;
+  --type-headline-xxs-regular-letterSpacing: 1px;
   --type-body-m-bold-fontFamily: Inter;
   --type-body-m-bold-fontWeight: 600;
   --type-body-m-bold-fontSize: 18px;
   --type-body-m-bold-lineHeight: 24px;
+  --type-body-m-bold-letterSpacing: 1px;
   --type-body-m-regular-fontFamily: Inter;
   --type-body-m-regular-fontWeight: 400;
   --type-body-m-regular-fontSize: 18px;
   --type-body-m-regular-lineHeight: 24px;
+  --type-body-m-regular-letterSpacing: 1px;
   --type-body-s-bold-fontFamily: Inter;
   --type-body-s-bold-fontWeight: 600;
   --type-body-s-bold-fontSize: 15px;
   --type-body-s-bold-lineHeight: 20px;
+  --type-body-s-bold-letterSpacing: 1px;
   --type-body-s-regular-fontFamily: Inter;
   --type-body-s-regular-fontWeight: 400;
   --type-body-s-regular-fontSize: 15px;
   --type-body-s-regular-lineHeight: 20px;
+  --type-body-s-regular-letterSpacing: 1px;
   --type-caption-m-bold-fontFamily: Inter;
   --type-caption-m-bold-fontWeight: 600;
   --type-caption-m-bold-fontSize: 12px;
   --type-caption-m-bold-lineHeight: 16px;
+  --type-caption-m-bold-letterSpacing: 1px;
   --type-caption-m-regular-fontFamily: Inter;
   --type-caption-m-regular-fontWeight: 400;
   --type-caption-m-regular-fontSize: 12px;
   --type-caption-m-regular-lineHeight: 16px;
+  --type-caption-m-regular-letterSpacing: 1px;
   --type-caption-s-bold-fontFamily: Inter;
   --type-caption-s-bold-fontWeight: 600;
   --type-caption-s-bold-fontSize: 9px;
   --type-caption-s-bold-lineHeight: 12px;
+  --type-caption-s-bold-letterSpacing: 1px;
   --type-caption-s-regular-fontFamily: Inter;
   --type-caption-s-regular-fontWeight: 400;
   --type-caption-s-regular-fontSize: 9px;
   --type-caption-s-regular-lineHeight: 12px;
+  --type-caption-s-regular-letterSpacing: 1px;
   --bevel-100: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -2, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */
   --bevel-200: inset 0px -4px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -4, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */
   --bevel-300: inset 0px -6px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -6, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */

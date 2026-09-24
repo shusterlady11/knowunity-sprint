@@ -17,6 +17,7 @@ export function TypeScale() {
           const weight = resolveVar(`${style.cssPrefix}-fontWeight`);
           const size = resolveVar(`${style.cssPrefix}-fontSize`);
           const lineHeight = resolveVar(`${style.cssPrefix}-lineHeight`);
+          const letterSpacing = resolveVar(`${style.cssPrefix}-letterSpacing`);
           return (
             <article className="fd-type-row" key={style.dotName} data-text-style={style.dotName}>
               <p
@@ -26,15 +27,16 @@ export function TypeScale() {
                   fontWeight: `var(${style.cssPrefix}-fontWeight)`,
                   fontSize: `var(${style.cssPrefix}-fontSize)`,
                   lineHeight: `var(${style.cssPrefix}-lineHeight)`,
+                  letterSpacing: `var(${style.cssPrefix}-letterSpacing)`,
                 }}
               >
                 {sampleText}
               </p>
               <h3 className="fd-name">{style.label}</h3>
               <p className="fd-value">{style.dotName}</p>
-              {family && weight && size && lineHeight ? (
+              {family && weight && size && lineHeight && letterSpacing ? (
                 <p className="fd-value">
-                  {family}, weight {weight}, size {size}, line height {lineHeight}
+                  {family}, weight {weight}, size {size}, line height {lineHeight}, letter spacing {letterSpacing}
                 </p>
               ) : (
                 <p className="fd-value fd-error">Not found in tokens.css. Run npm run tokens.</p>
