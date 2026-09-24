@@ -33,6 +33,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Never build tablet or desktop layouts, or RTL — out of scope this sprint. `docs/platform-constraints.md`.
 - Never build real STT/AI judging — out of scope this sprint. `docs/sprint-context.md` (Not building).
 - Never hand-recreate the Knowie mascot freehand — export the real component from Figma. `docs/design-system.md` §1.
+- Figma is read-only. Never modify the Figma file; report differences instead.
 - Never edit `build/css/tokens.css` — it's generated. Edit the source file in `tokens/` and run `npm run tokens`.
 - Never commit without keeping this file's first line (`@AGENTS.md`) intact.
 
