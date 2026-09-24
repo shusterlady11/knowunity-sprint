@@ -1,0 +1,61 @@
+.answerCard {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-400);
+  width: 100%;
+  padding: var(--space-400);
+  border-radius: var(--radius-400);
+  background-color: var(--color-background-surface);
+  color: var(--color-text-primary);
+}
+
+.answerCard[data-state='question'] {
+  background-color: var(--color-background-surfaceQuestion);
+}
+
+.answerCard__message {
+  margin: 0;
+  align-self: stretch;
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+  letter-spacing: var(--type-body-m-regular-letterSpacing);
+}
+
+.answerCard__message strong {
+  font-weight: var(--font-weight-bold);
+}
+
+.answerCard[data-state='processing'] .answerCard__message {
+  color: var(--color-text-secondary);
+}
+
+/* Skeleton: three placeholder lines, one per text line (font/lineHeight/md apart) */
+.answerCard__skeleton {
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: calc(var(--font-lineHeight-md) - var(--space-300));
+}
+
+.answerCard__bar {
+  display: block;
+  height: var(--space-300);
+  border-radius: var(--radius-150);
+  background-color: var(--color-interactive-secondary);
+}
+
+.answerCard__bar:nth-child(1) {
+  width: 100%;
+}
+
+.answerCard__bar:nth-child(2) {
+  width: 88%;
+}
+
+.answerCard__bar:nth-child(3) {
+  width: 60%;
+}

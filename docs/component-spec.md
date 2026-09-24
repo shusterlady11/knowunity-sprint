@@ -20,13 +20,13 @@ Legend: ✅ confirmed live, ready to build · ◐ built, has a known issue liste
 
 | Moment | Screen(s) on "Core flow for Claude Code" | Key components |
 |---|---|---|
-| Question, ready to speak | QUESTION / activeState micOn | topicPill, answerCards (question), micButton (idle + ready), toggleGroup (voice) |
-| Question, typing | Question / activeState keyboard option selected, Question / activeState keyboard open | topicPill, answerCards (question), toggleGroup (keyboard) or inputModeToggle (keyboard), input field, Keyboard |
+| Question, ready to speak | QUESTION / activeState micOn | topicPill, answerCard (question), micButton (idle + ready), toggleGroup (voice) |
+| Question, typing | Question / activeState keyboard option selected, Question / activeState keyboard open | topicPill, answerCard (question), toggleGroup (keyboard) or inputModeToggle (keyboard), input field, Keyboard |
 | Recording | Question / listeningState | micButton (listening + ready), recordingGlow |
-| Processing | Question / processingState | answerCards (processing), micButton (idle + disabled), loadingDots |
-| Feedback | Answering / correctState, correctState finish, partialState, wrongState, notCaughtState | answerCards (answer-*), statusPill, bottomCTA |
+| Processing | Question / processingState | answerCard (processing), micButton (idle + disabled), loadingDots |
+| Feedback | Answering / correctState, correctState finish, partialState, wrongState, notCaughtState | answerCard (answer-*), statusPill, bottomCTA |
 | Reveal answer | Reveal answer | bottomSheet overlay (answer + X), over the answer screen |
-| Last question | Lastquestion / activeState | answerCards (question), micButton (idle + ready), toggleGroup (voice) |
+| Last question | Lastquestion / activeState | answerCard (question), micButton (idle + ready), toggleGroup (voice) |
 | XP card | XP card ("Perfect lesson!") | mascotSlot, XP / Score / Blazing stat boxes, Continue button. First of the two Results steps |
 | Results | Three "Results" frames: perfect score, mixed ("Here's how it went"), 2 of 5 | progressMeter (perfect and 2-of-5 frames), resultsSummary + expandableResultRow (mixed frame), bottomCTA |
 | Mic permission | SPLASH-FIRST-TIME, PERMISSION-MIC, SPLASH-SKIP-MIC | SPLASH-FIRST-TIME: scaffold + button ("Let's go!"). PERMISSION-MIC: bottomSheet with buttonGroup ("Turn on" / "Not now") over the question screen. SPLASH-SKIP-MIC: bottomCTA ("No thanks" / "Continue") |
@@ -126,7 +126,7 @@ Component `15850:10081`, page "New components".
 
 **States:** none.
 
-### answerCards ✅
+### answerCard ✅
 
 Component set `15804:41153`, page "New components". Documented in Figma.
 
@@ -143,13 +143,21 @@ Component set `15804:41153`, page "New components". Documented in Figma.
 - answer-error: statusPill wrong + feedback message. Answering / wrongState.
 - answer-notcaught: statusPill notCaught + "I couldn't understand that take." Answering / notCaughtState, Reveal answer.
 
+**Built** (`src/components/answerCard`, 2026-09-23). Decisions behind the differences from Figma:
+- Padding and gaps: Figma now binds the card to `Space/400` and `Space/100` (`Padding/lg` was retired).
+- Skeleton bars: `Space/300` (12px) tall, since 14px has no token; widths 100%, 88% and 60% of the card; one `font/lineHeight/md` (24px) apart; fill `interactive/secondary` alone (Figma adds an extra 10% opacity, making the bars ~1% white).
+- "Thinking..." uses `text/secondary` alone (Figma adds an extra 68% opacity, about 4:1 contrast, under the 4.5:1 minimum).
+- The property is `state`, with Figma's seven options named exactly as in Figma.
+- Figma has no text property for the message, so the code adds `message`. Emphasised words (the question's "Q:", "producers", "consumers") are bold overrides on Body M Regular in Figma; in code they're `<strong>` in `font/weight/bold`.
+- Still in Figma: the set's description says "Property 1" (the property's old name), and the skeleton bars carry an extra 10% opacity on their fill.
+
 ### statusPill ◐
 
 Component set `15762:36623`, page "New components". Built with its own variant, not an extension of `chips`' color variant.
 
 **Description:** a small colored label at the top of a feedback card that says how the answer went. Properties: `Label` (text), `left icon` (boolean, default true).
 
-**When it's used:** inside answerCards' answer-* variants on the feedback screens and Reveal answer. Tone comes from `state`; never hand-color it.
+**When it's used:** inside answerCard' answer-* variants on the feedback screens and Reveal answer. Tone comes from `state`; never hand-color it.
 
 **States:** `state`.
 - correct: "Correct". `feedback/success/bold`, label `feedback/success/onBold`, icon Check. Answering / correctState, correctState finish.
@@ -305,7 +313,7 @@ Housekeeping in the Figma file. Doesn't change what gets built.
 - **resultsSummary:** 8 unused slot properties from earlier iterations (Row 4, error answer row 1/2/3, success answer row 5-8). Safe to delete; confirm first.
 - **topicPill:** has no component description.
 - **middleSection** (`15851:10099`) isn't used anywhere. **keyboardOutline (legacy)** (`15878:17569`) is only used on the backup page.
-- **"New components - backup" page** holds duplicate sets of statusPill, answerCards, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
+- **"New components - backup" page** holds duplicate sets of statusPill, answerCard, expandableResultRow, Results summary and bottomCTA. The backup bottomCTA throws "Component set has existing errors." Delete the page or rename it clearly so nobody instances from it.
 - **scaffold sizes:** the scaffold component has 8 size variants in Figma. design-system.md only uses two (iPhone 13 and 17 Pro Max); ignore the others. The voice screens use iPhone 13.
 - **Moving components into slots:** moving an existing component instance straight into a scaffold slot corrupts it. Wrap it in a plain frame first.
 - **Plugin tip:** when querying this file through the Figma plugin API, use `findAllWithCriteria`. `findAll` throws "Unknown node type" on this file.

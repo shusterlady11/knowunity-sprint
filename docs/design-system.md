@@ -90,7 +90,7 @@ in Figma — read those before using a component for the first time.
 If a situation doesn't map cleanly onto anything above, don't improvise —
 see §4, "never invent a component."
 
-For the voice-recall components (micButton, recordingGlow, loadingDots, inputModeToggle, toggleGroup, topicPill, answerCards, statusPill, bottomCTA, progressMeter, resultsSummary, expandableResultRow, and the mic/keyboard icons), see §7.
+For the voice-recall components (micButton, recordingGlow, loadingDots, inputModeToggle, toggleGroup, topicPill, answerCard, statusPill, bottomCTA, progressMeter, resultsSummary, expandableResultRow, and the mic/keyboard icons), see §7.
 
 
 ## 2. Scaffold composition
