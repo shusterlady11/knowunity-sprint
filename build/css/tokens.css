@@ -55,6 +55,7 @@
   --color-alpha-dark-10: rgba(10, 10, 10, 0.10196078431372549);
   --color-alpha-dark-50: rgba(10, 10, 10, 0.5019607843137255);
   --color-alpha-glass-60: rgba(61, 61, 61, 0.6);
+  --color-alpha-dark-15: rgba(0, 0, 0, 0.14901960784313725); /** Black at 15%. Used by the Bevel/* effect styles. */
   --color-Homie-Inkwell: #9178e6;
   --color-Homie-Eyes: #0a0a0a;
   --color-Homie-Glint: #fffcf4;
@@ -205,6 +206,10 @@
   --illustration-1500: 120px; /** 120px illustration box. USE: mascot and spot illustration sizing. */
   --illustration-2500: 200px; /** 200px illustration box. USE: mascot and spot illustration sizing. */
   --illustration-4000: 320px; /** 320px illustration box. USE: mascot and spot illustration sizing. */
+  --control-s: 32px; /** Visible height of a small control. USE: button size=S (inner Button frame). DON'T: use as spacing or padding; use Space/* for gaps. PAIR: Control/Touch Target on the outer tap area. */
+  --control-m: 40px; /** Visible height of a medium control. USE: button size=M (inner Button frame). DON'T: use as spacing or padding. PAIR: Control/Touch Target on the outer tap area. */
+  --control-l: 56px; /** Visible height of a large control. USE: button size=L (inner Button frame), e.g. the primary bottom CTA. DON'T: use as spacing or padding. */
+  --control-touch-target: 48px; /** Minimum tappable height for any interactive control, regardless of its visible size. USE: min-height on the outer tap area of buttons and other controls. DON'T: shrink below 48 or use as a visible size. */
   --font-size-2xs: 9px; /** 9px. USE: Caption S Bold and Caption S Regular. */
   --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */
   --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */
@@ -308,4 +313,7 @@
   --type-caption-s-regular-fontWeight: 400;
   --type-caption-s-regular-fontSize: 9px;
   --type-caption-s-regular-lineHeight: 12px;
+  --bevel-100: inset 0px -2px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -2, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */
+  --bevel-200: inset 0px -4px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -4, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */
+  --bevel-300: inset 0px -6px 0px 0px rgba(0, 0, 0, 0.14901960784313725); /** Bottom bevel: inner shadow, y -6, no blur, color/alpha/dark-15. Gives pills, list items and buttons a pressed-in lower edge on dark surfaces. */
 }

@@ -15,7 +15,13 @@ StyleDictionary.registerTransform({
 
 StyleDictionary.registerTransformGroup({
   name: 'css/tokens',
-  transforms: ['name/pathVerbatim', 'color/css', 'fontFamily/css', 'size/px'],
+  transforms: [
+    'name/pathVerbatim',
+    'color/css',
+    'fontFamily/css',
+    'size/px',
+    'shadow/css/shorthand',
+  ],
 });
 
 const config = {

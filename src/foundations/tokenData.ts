@@ -81,6 +81,13 @@ export const spacingTokens = () => allTokens.filter((t) => t.path[0] === 'space'
 
 export const radiusTokens = () => allTokens.filter((t) => t.path[0] === 'radius');
 
+export const controlTokens = () => allTokens.filter((t) => t.path[0] === 'control');
+
+export const iconSizeTokens = () =>
+  allTokens.filter((t) => t.path[0] === 'icon' && t.type === 'dimension');
+
+export const shadowTokens = () => allTokens.filter((t) => t.type === 'shadow');
+
 export function textStyles(): TextStyle[] {
   const out: TextStyle[] = [];
   const visit = (node: Node, path: string[]) => {

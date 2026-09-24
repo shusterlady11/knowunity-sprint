@@ -133,3 +133,42 @@
   background: var(--color-background-surface);
   border: var(--stroke-heavy-border) solid var(--color-interactive-primary);
 }
+
+.fd-control-bar {
+  box-sizing: border-box;
+  width: 100%;
+  background: var(--color-interactive-primary);
+  border-radius: var(--radius-full);
+}
+
+.fd-control-target {
+  background: transparent;
+  border: var(--stroke-border) dashed var(--color-interactive-primary);
+}
+
+.fd-icon-box {
+  box-sizing: border-box;
+  border: var(--stroke-border) solid var(--color-interactive-primary);
+}
+
+.fd-shadow-row {
+  display: flex;
+  gap: var(--space-400);
+  margin-bottom: var(--space-300);
+}
+
+.fd-shadow-sample {
+  box-sizing: border-box;
+  flex: 1;
+  height: var(--control-l);
+  border-radius: var(--radius-full);
+}
+
+.fd-shadow-primary {
+  background: var(--color-interactive-primary);
+}
+
+.fd-shadow-surface {
+  background: var(--color-background-surface);
+  border: var(--stroke-border) solid var(--color-border-default);
+}
