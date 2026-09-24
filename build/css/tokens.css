@@ -222,6 +222,8 @@
   --control-mic: 96px; /** Size of the primary mic button (visible circle and its outer frame). USE: micButton only. DON'T: use for other controls; use Control/S, M or L. The 96px circle is well above Control/Touch Target, so it needs no separate tap area. */
   --indicator-dot: 6px; /** 6px dot. USE: small status/progress dots (topicPill marker, loadingDots). DON'T: use as spacing; use Space/* for gaps. */
   --indicator-meter: 80px; /** 80px circular meter. USE: progressMeter on the results screen. DON'T: use as spacing, or for the mic button (Control/Mic). */
+  --indicator-handle-width: 32px; /** Width of a bottom sheet's drag handle. USE: the Handle in bottomSheetAppBar. DON'T: use as spacing. */
+  --indicator-handle-height: 4px; /** Height of a bottom sheet's drag handle. USE: the Handle in bottomSheetAppBar. DON'T: use as spacing. */
   --font-size-2xs: 9px; /** 9px. USE: Caption S Bold and Caption S Regular. */
   --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */
   --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */

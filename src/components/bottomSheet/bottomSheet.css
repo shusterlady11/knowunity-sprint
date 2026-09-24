@@ -1,0 +1,33 @@
+/* Fills the width it's given and hugs its content; only the top corners are rounded. */
+.bottomSheet {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--space-0);
+  overflow: hidden;
+  border-radius: var(--radius-900) var(--radius-900) 0 0;
+  background-color: var(--color-background-surface);
+}
+
+/* Content: centered, Space/400 at the sides and Space/200 below. */
+.bottomSheet__middle {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-600);
+  padding: var(--space-0) var(--space-400) var(--space-200);
+}
+
+/* Actions: Space/400 all round. */
+.bottomSheet__bottom {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-600);
+  padding: var(--space-400);
+}

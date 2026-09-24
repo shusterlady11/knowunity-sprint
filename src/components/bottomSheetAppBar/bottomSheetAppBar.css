@@ -1,0 +1,79 @@
+.bottomSheetAppBar {
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  background-color: var(--color-background-surface);
+}
+
+/* The drag handle sits Space/150 from the top, centered. */
+.bottomSheetAppBar__handle {
+  position: absolute;
+  top: var(--space-150);
+  right: 0;
+  left: 0;
+  width: var(--indicator-handle-width);
+  height: var(--indicator-handle-height);
+  margin-inline: auto;
+  border-radius: var(--radius-full);
+  background-color: var(--color-background-floating);
+}
+
+/* One row, Space/300 above and below, tall enough for a 48px tap area (72px in all). */
+.bottomSheetAppBar__nav {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-height: calc(var(--control-touch-target) + 2 * var(--space-300));
+  padding: var(--space-300) var(--space-300);
+  gap: var(--space-100);
+}
+
+.bottomSheetAppBar[data-type='withTitle'] .bottomSheetAppBar__nav {
+  padding-inline: var(--space-400);
+}
+
+.bottomSheetAppBar:is([data-type='dismissOnly'], [data-type='dismissAndAction']) .bottomSheetAppBar__nav {
+  padding-inline: var(--space-100);
+  gap: var(--space-300);
+}
+
+.bottomSheetAppBar__text {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  height: var(--control-touch-target);
+  padding: var(--space-0);
+  text-align: center;
+}
+
+.bottomSheetAppBar__text p {
+  margin: 0;
+}
+
+.bottomSheetAppBar__title {
+  color: var(--color-text-primary);
+  font-family: var(--type-body-m-bold-fontFamily);
+  font-weight: var(--type-body-m-bold-fontWeight);
+  font-size: var(--type-body-m-bold-fontSize);
+  line-height: var(--type-body-m-bold-lineHeight);
+  letter-spacing: var(--type-body-m-bold-letterSpacing);
+}
+
+.bottomSheetAppBar__caption {
+  color: var(--color-text-secondary);
+  font-family: var(--type-caption-m-regular-fontFamily);
+  font-weight: var(--type-caption-m-regular-fontWeight);
+  font-size: var(--type-caption-m-regular-fontSize);
+  line-height: var(--type-caption-m-regular-lineHeight);
+  letter-spacing: var(--type-caption-m-regular-letterSpacing);
+}
+
+.bottomSheetAppBar__spacer {
+  flex: none;
+  width: var(--control-touch-target);
+  height: var(--control-touch-target);
+}
