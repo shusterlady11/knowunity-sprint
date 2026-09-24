@@ -216,13 +216,13 @@
   --font-size-xs: 12px; /** 12px. USE: Caption M Bold and Caption M Regular. */
   --font-size-sm: 15px; /** 15px. USE: Headline XXS and Body S, both weights. */
   --font-size-md: 18px; /** 18px. USE: Headline XS and Body M, both weights. */
-  --font-size-lg: 21px; /** 21px. USE: Headline S. */
+  --font-size-lg: 21px; /** 21px. Step between md (18) and lg-plus (24). Not currently used by a text style; Headline S uses lg-plus. */
   --font-size-lg-plus: 24px; /** 24px. Sits between lg (21) and xl (28). USE: Headline S, including L button labels. DON'T: use for body text. */
   --font-size-xl: 28px; /** 28px. USE: Headline M. */
-  --font-size-2xl: 33px; /** 33px. USE: Headline L. */
-  --font-size-3xl: 44px; /** 44px. USE: Headline XL. */
+  --font-size-2xl: 33px; /** 33px. Step between xl (28) and 3xl (44). Not currently used by a text style; Headline L uses 3xl. */
+  --font-size-3xl: 44px; /** 44px. USE: Headline L. */
   --font-size-4xl: 59px; /** 59px. USE: Display S. */
-  --font-size-5xl: 76px; /** 76px. USE: Display M. */
+  --font-size-5xl: 76px; /** 76px. USE: Display M and Headline XL. */
   --font-size-6xl: 103px; /** 103px. USE: Display L, Heavy only. */
   --font-lineHeight-2xs: 12px; /** 12px. Set in pixels, not percent. */
   --font-lineHeight-xs: 16px; /** 16px. Set in pixels, not percent. */
@@ -240,9 +240,9 @@
   --font-weight-semibold: 600; /** USE: the Bold variants of Headline XS and XXS, Body and Caption. (file weight name: "SemiBold", mapped to numeric 600.) */
   --font-weight-bold: 700; /** USE: Display M and S, Headline XL through S. (file weight name: "Bold", mapped to numeric 700.) */
   --font-weight-heavy: 800; /** USE: Display L only, paired with font/family/display. (file weight name: "Heavy", mapped to numeric 800.) */
-  --font-tracking-tight: -1px; /** -1%. USE: Display sizes and Headline L and above. */
-  --font-tracking-none: 0px; /** 0%. USE: Headline S only. */
-  --font-tracking-loose: 1px; /** +1%. USE: Headline XS and below, all Body, all Caption. */
+  --font-tracking-tight: -1px; /** -1px letter-spacing. USE: Display sizes and Headline L and above. */
+  --font-tracking-none: 0px; /** 0px letter-spacing. USE: Headline S only. */
+  --font-tracking-loose: 1px; /** +1px letter-spacing. USE: Headline XS and below, all Body, all Caption. */
   --type-display-l-fontFamily: Inter;
   --type-display-l-fontWeight: 800;
   --type-display-l-fontSize: 103px;
@@ -260,12 +260,12 @@
   --type-display-s-letterSpacing: -1px;
   --type-headline-xl-fontFamily: Inter;
   --type-headline-xl-fontWeight: 700;
-  --type-headline-xl-fontSize: 44px;
-  --type-headline-xl-lineHeight: 44px;
+  --type-headline-xl-fontSize: 76px;
+  --type-headline-xl-lineHeight: 76px;
   --type-headline-xl-letterSpacing: -1px;
   --type-headline-l-fontFamily: Inter;
   --type-headline-l-fontWeight: 700;
-  --type-headline-l-fontSize: 33px;
+  --type-headline-l-fontSize: 44px;
   --type-headline-l-lineHeight: 36px;
   --type-headline-l-letterSpacing: -1px;
   --type-headline-m-fontFamily: Inter;
