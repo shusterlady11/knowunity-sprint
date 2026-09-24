@@ -14,11 +14,18 @@ const figmaDescription = `Text button with a label, optional leading/trailing ic
 - **Tertiary** has square corners, which only show as the shape of the keyboard focus ring; it is fully round while pressed, as in Figma.
 - The button has two layers. The tap area has a minimum height of Control/Touch Target (48px), and the visible button is Control/S, Control/M or Control/L tall.`;
 
+// The click handler records the call but not the click event: Storybook serializes call arguments,
+// and serializing the event froze the docs page for about a second after every click.
+const clickSpy = fn();
+
 const meta = {
   title: 'Components/button',
   component: Button,
   tags: ['autodocs'],
-  args: { CTA: 'Next question', onClick: fn() },
+  args: { CTA: 'Next question', onClick: () => clickSpy() },
+  beforeEach: () => {
+    clickSpy.mockClear();
+  },
   argTypes: { leftIcon: { control: false }, rightIcon: { control: false }, onClick: { control: false } },
   parameters: { docs: { description: { component: figmaDescription } } },
   play: async ({ canvas, args, userEvent }) => {
@@ -58,10 +65,10 @@ const meta = {
     } else if (args.state === 'Loading') {
       await expect(button).toHaveAttribute('aria-busy', 'true');
       await userEvent.click(button);
-      await expect(args.onClick).not.toHaveBeenCalled();
+      await expect(clickSpy).not.toHaveBeenCalled();
     } else {
       await userEvent.click(button);
-      await expect(args.onClick).toHaveBeenCalled();
+      await expect(clickSpy).toHaveBeenCalled();
     }
   },
 } satisfies Meta<typeof Button>;
