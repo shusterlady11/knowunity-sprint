@@ -220,6 +220,36 @@ Component set `15808:41818`, page "New components". Documented in Figma.
 - The one-button layouts are built like the two-button drawers. In Figma their outer frame also has 24/16px padding, but the panel still renders full-width at 0,0, so the result is the same.
 - Props: `layout` (Figma's five options), `showSecondaryButton` (Figma's "Show secondaryButton", "Two button drawer" only), `leftCTA` / `rightCTA`, `onLeftClick` / `onRightClick`.
 
+### lightningIcon and xpCounter ✅
+
+`lightningIcon` (`15967:16936`) and `xpCounter` (`15967:16940`), page "🎨 Mascot & components". Both documented in Figma.
+
+**Description:** `lightningIcon` is a 24px two-tone bolt that marks XP (outer `accent/blue/onSubtle`, inner `accent/blue/subtle`), used only inside `xpCounter`; don't recolor it or use it as a general "energy" or "fast" icon. `xpCounter` shows the student's XP for the session, a `lightningIcon` and a number, on the right of `appBar`; don't use it as a button or filter. The number is the `xp` text property (default "2"), in Headline XS Bold `accent/blue/onSubtle`. Padding `Space/100` at the sides, gap `Space/100`, hugs its content.
+
+**Built** (`src/icons/LightningIcon.tsx`, `src/components/xpCounter`, 2026-09-24). `LightningIcon` is exported from Figma with its two fixed token colors. `xpCounter` takes `xp` (number or text, default 2), uses `iconSlot` at `Icon/300`, and is an image for screen readers named "<number> XP".
+
+### appBar ✅
+
+Component `15725:32304`, page "🎨 Mascot & components". Documented in Figma. The older six-layout set (`9003:8606`, gradient background) is renamed "appBar (unused concept)" and isn't built.
+
+**Description:** the top bar of a question set: a close (X) button on the left, `progressIndicator` in the middle showing how far through the set the student is, and `xpCounter` on the right. Use it at the top of every question and answer screen in a set; not on splash, results or study-plan screens, and not inside a `bottomSheet` (that's `bottomSheetAppBar`). Set the progress and the XP through the exposed `progressIndicator` and `xpCounter` properties; never detach the bar.
+
+**Layout:** 56px tall (a 48px row plus `Space/200` below), `Space/300` at the sides, `Space/100` between the parts; the center slot has `Space/300` above and below and the progress bar fills it.
+
+**Built** (`src/components/appBar`, 2026-09-24). Props `progress` (0 to 100, default 25) and `xp` (default 2), the exposed properties of the parts inside; plus `onClose` and `closeLabel` ("Close"). Built from `buttonIcon` Tertiary M with the `x-close` icon (`src/icons/XCloseIcon.tsx`, exported from Figma), `progressIndicator` and `xpCounter`. It fills its container. The X is the filled `x-close` glyph Figma uses here, not the library X. The XP counter is 48px wide against Figma's 45 because Inter's digits are wider than Greed Condensed's.
+
+### mascotSlot ✅
+
+Component set `9003:8873`, page "🎨 Mascot & components". Documented in Figma.
+
+**Description:** a sizing container for the mascot illustration in four large sizes, `size` XL / 2XL / 3XL / 4XL (64, 120, 200 and 320px, bound to `Illustration/800`, `/1500`, `/2500` and `/4000`). Use it as the hero or focal illustration in a screen's middle or bottom content area, such as a celebratory moment; don't use the smallest (XL) for a primary hero, since the screens only use 2XL to 4XL. Figma notes the set has no swap property, so which illustration shows is a guess. The base (`.mascotSlotBase`) inset the art by `Space/300` and has a "Homie" swap that the slot doesn't expose; its default is `standby`.
+
+**How the screens use it:** `standby` at 2XL (most screens) and `approving` at 3XL (results and the mic permission), `excited` once.
+
+**Built** (`src/components/mascotSlot`, 2026-09-24). Prop `size` as in Figma (default XL) plus `expression`, one of the twelve Knowie expressions in `public/images` (amazed, angry, approving, confused, determined, excited, giggling, laughing, over-it, sad, standby, thinking; default `standby`), because Figma's slot doesn't expose the swap. The art is the real Figma export, shown with `next/image` (`unoptimized`, as the Next.js docs advise for SVGs), inset `Space/300` and fitted inside the square with its own proportions. The mascot is decoration, so `alt` is empty by default.
+
+**Figma difference:** the mascot's own size is 200×217 (the shipped files match), but inside `mascotSlot` Figma resizes it to a 176px square with scaling on, so the art is squashed by about 8% (a little wider and shorter than its true shape). Code keeps the true proportions. To match Figma's squashed look instead, change `object-fit` from `contain` to `fill`.
+
 ### bottomSheetAppBar ✅
 
 Component set `5101:7358`, page "🎨 Mascot & components". Documented in Figma.
@@ -432,12 +462,11 @@ Every token named in this file is in tokens.json, except the deprecated `accent/
 
 Housekeeping in the Figma file. Doesn't change what gets built.
 
-- **appBar:** the XP counter (lightning + "2") is a hand-built "chips" frame inside the appBar main component (`15725:32304`, "🎨 Mascot & components"), not a `chips` instance. It shows on every screen.
 - **SPLASH-FIRST-TIME:** "Skip" is now a `button` (Tertiary, S). Its "Right buttons" group is hidden in the design, so it doesn't show.
-- **appBar:** its 9 back and action buttons are a legacy `App Bar Button Icon` whose source component is deleted. The swap to `buttonIcon` is not invisible: the legacy button shows a 24px icon, while `buttonIcon` Tertiary M shows 20px (Tertiary L keeps 24px but has a 56px tap area). appBar appears on 13 of the core flow screens.
 - **expandableResultRow:** the rows inside `resultsSummary` come from a deleted copy (`15808:42383`). The documented set (`15815:43883`, "New components") has the same variants, properties and description, but the two haven't been compared layer by layer.
 - **bottomSheetAppBar / bottomSheet:** the side buttons (`dismissButton`, `actionButton`) are still the old `App Bar Button Icon` (24px icon, local x-close and arrow-right icons), not `buttonIcon`; the local `x-close` is a filled glyph, not the library X. The `Default` type is a fixed 64px tall in the set but 72px inside a bottomSheet. The handle's corner radius (2) and its 6px offset from the top are typed in (`Radius/Full`, `Space/150`). The app bar sets are 375px wide but the bottomSheet master is 350px. The stories/variants of `height` only differ by placeholder content.
-- **Deleted source components still in use** (they render, but can't be edited centrally): `progressIndicator` (13 uses, inside appBar; the new set exists and appBar will use it once it's built), the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), and the `x-close` icon. The old ring-style `progressIndicator` set (`9003:8923`: Primary and Coral, 24 and 16 thickness, optional label) is still in the file next to the new one; delete or rename it so nobody instances it by mistake.
+- **Deleted source components still in use** (they render, but can't be edited centrally): the mascot's internal parts (`.mascotSlotBase`, `standby`, `approving`), and the `x-close` icon. The old ring-style `progressIndicator` set (`9003:8923`: Primary and Coral, 24 and 16 thickness, optional label) is still in the file next to the new one; delete or rename it so nobody instances it by mistake. The `x-close` glyph is used by the appBar's `closeButton` (and the legacy sheet buttons) but is a different drawing from the library X; pick one for the close action so the app bar and the bottom sheet match.
+- **mascotSlot:** the mascot instance inside each slot is resized to a square (176 at 3XL) with scaling on, which squashes it about 8% out of proportion (its own size is 200×217); size it with its aspect ratio kept. The set has no property for which expression shows; expose the base's "Homie" swap (code adds `expression`). The set's internal parts (`.mascotSlotBase`, `standby`, `approving`) have deleted sources.
 - **textBlock:** the second set named `textBlock` (`15725:33034`, variant `variant5`, 12 uses in "Mascot Segment" frames) duplicates `answerCard`'s question state and uses the deleted `Padding/lg` variable; swap those instances to `answerCard` and delete the set, or rename it so nobody instances it by mistake. The variants use the Greed Condensed trial font for XL and L.
 - **tapToAnswer:** add a description. Every instance on the core flow screens reads "Tyoe an answer" (a typo for "Type an answer"). The text layer sits 20px down inside a 21px frame; it renders correctly in use, but the frame is worth tidying.
 - **recordingGlow:** give the ellipses meaningful names (they're still "Ellipse 3902" to "3905"). `interactive/voiceFeedback/layer0` and `layer1` exist but aren't used; use or delete them.

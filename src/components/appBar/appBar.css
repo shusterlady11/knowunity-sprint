@@ -1,0 +1,23 @@
+/* A 56px bar: a 48px row with Space/200 below it, Space/300 at the sides, and Space/100 between the parts. */
+.appBar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-100);
+  width: 100%;
+  min-height: calc(var(--control-touch-target) + var(--space-200));
+  padding: var(--space-0) var(--space-300) var(--space-200);
+}
+
+/* The middle takes the space the buttons leave and centers the progress bar, with Space/300 above and below. */
+.appBar__slot {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  align-self: stretch;
+  justify-content: center;
+  gap: var(--space-300);
+  min-width: 0;
+  padding: var(--space-300) var(--space-0);
+}

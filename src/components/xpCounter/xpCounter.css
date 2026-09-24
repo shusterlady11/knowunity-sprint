@@ -1,0 +1,18 @@
+/* Hugs the bolt and the number: Space/100 at the sides and between them, no padding above or below. */
+.xpCounter {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-100);
+  padding: var(--space-0) var(--space-100);
+}
+
+.xpCounter__value {
+  color: var(--color-accent-blue-onSubtle);
+  font-family: var(--type-headline-xs-bold-fontFamily);
+  font-weight: var(--type-headline-xs-bold-fontWeight);
+  font-size: var(--type-headline-xs-bold-fontSize);
+  line-height: var(--type-headline-xs-bold-lineHeight);
+  letter-spacing: var(--type-headline-xs-bold-letterSpacing);
+}

@@ -1,0 +1,41 @@
+/* A square as big as the size's illustration token, with the art inset Space/300 on every side. */
+.mascotSlot {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-300);
+}
+
+.mascotSlot[data-size='XL'] {
+  width: var(--illustration-800);
+  height: var(--illustration-800);
+}
+
+.mascotSlot[data-size='2XL'] {
+  width: var(--illustration-1500);
+  height: var(--illustration-1500);
+}
+
+.mascotSlot[data-size='3XL'] {
+  width: var(--illustration-2500);
+  height: var(--illustration-2500);
+}
+
+.mascotSlot[data-size='4XL'] {
+  width: var(--illustration-4000);
+  height: var(--illustration-4000);
+}
+
+.mascotSlot__art {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The art keeps its own shape and is fitted inside the square. */
+.mascotSlot__image {
+  object-fit: contain;
+}
