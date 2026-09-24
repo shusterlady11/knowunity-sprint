@@ -1,0 +1,116 @@
+/* One concept row: a tinted card with a header that opens a detail below it. */
+.expandableResultRow {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  width: 100%;
+  padding: var(--space-400);
+  border-radius: var(--radius-400);
+  background-color: var(--color-background-surface);
+}
+
+.expandableResultRow[data-tone='success'] {
+  background-color: var(--color-feedback-success-subtle);
+}
+
+.expandableResultRow[data-tone='error'] {
+  background-color: var(--color-feedback-error-subtle);
+}
+
+/* The header is the tap target. It grows into the card's padding (negative margin) so the whole top of
+   the card is tappable, not just the 24px line. Its own padding puts the content back where the card's
+   padding would have. */
+.expandableResultRow__header {
+  appearance: none;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  width: calc(100% + 2 * var(--space-400));
+  margin: var(--space-negative-400);
+  padding: var(--space-400);
+  border: 0;
+  border-radius: var(--radius-400);
+  background: none;
+  color: var(--color-text-primary);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.expandableResultRow__header:focus-visible {
+  outline: var(--stroke-heavy-border) solid var(--color-border-focus);
+  outline-offset: var(--space-050);
+}
+
+.expandableResultRow__icon {
+  display: flex;
+  flex: none;
+}
+
+.expandableResultRow[data-tone='success'] .expandableResultRow__icon {
+  color: var(--color-feedback-success-onSubtle);
+}
+
+.expandableResultRow[data-tone='error'] .expandableResultRow__icon {
+  color: var(--color-feedback-error-onSubtle);
+}
+
+.expandableResultRow[data-tone='neutral'] .expandableResultRow__icon {
+  color: var(--color-interactive-onSecondary);
+}
+
+.expandableResultRow__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--color-text-primary);
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+  letter-spacing: var(--type-body-m-regular-letterSpacing);
+}
+
+/* The caret points right when collapsed and turns a quarter turn clockwise to point down when open.
+   (Figma shows this as a -90 rotation, because Figma turns counterclockwise for positive angles.) */
+.expandableResultRow__arrow {
+  display: flex;
+  flex: none;
+  color: var(--color-interactive-primary);
+}
+
+.expandableResultRow[data-state='expanded'] .expandableResultRow__arrow {
+  transform: rotate(90deg);
+}
+
+/* Detail: indented Space/700 so it lines up under the label. */
+.expandableResultRow__detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  padding-left: var(--space-700);
+}
+
+.expandableResultRow__detail p {
+  margin: 0;
+}
+
+.expandableResultRow__detailLabel {
+  color: var(--color-text-secondary);
+  font-family: var(--type-caption-m-bold-fontFamily);
+  font-weight: var(--type-caption-m-bold-fontWeight);
+  font-size: var(--type-caption-m-bold-fontSize);
+  line-height: var(--type-caption-m-bold-lineHeight);
+  letter-spacing: var(--type-caption-m-bold-letterSpacing);
+}
+
+.expandableResultRow__quote {
+  color: var(--color-text-primary);
+  font-family: var(--type-body-s-regular-fontFamily);
+  font-weight: var(--type-body-s-regular-fontWeight);
+  font-size: var(--type-body-s-regular-fontSize);
+  line-height: var(--type-body-s-regular-lineHeight);
+  letter-spacing: var(--type-body-s-regular-letterSpacing);
+}
