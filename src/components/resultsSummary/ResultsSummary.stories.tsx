@@ -30,7 +30,7 @@ Don't exceed 5 rows per variant (sessions are fixed at 5 questions). Don't repur
 
 **Layout:** the card fills its container (358px inside the screen gutters). Padding is \`Space/400\` on top and \`Space/100\` on the other sides, gap \`Space/300\` between the title and the list, \`Space/100\` between rows, corners \`Radius/600\`. Cards are stacked by the parent with \`Space/200\` between them. The title is set in the Button L style at 24px with a 20px line height, using the font tokens Figma binds.
 
-**Known issue:** the title is near-white on the green and coral cards, which is only about 2.1:1 and 2.5:1 contrast; the dark on-primary color (used on the neutral card) would pass on both (about 8.5:1 and 7:1).`;
+**Title color:** the dark \`interactive/onPrimary\` on all three cards, about 8.5:1 on green and 7:1 on coral (Figma changed it from near-white, which was only about 2.1:1 and 2.5:1).`;
 
 const good: ResultsSummaryRow[] = [
   { label: 'Natural selection', question: 'Describe natural selection in your own words.', transcript: 'Natural selection is when organisms with traits that help them survive and reproduce pass those traits on more often.' },
@@ -110,7 +110,7 @@ const meta = {
     await expect(ts.lineHeight).toBe(token('--font-lineHeight-sm'));
     await expect(ts.letterSpacing).toBe(token('--font-tracking-loose'));
     await expect(ts.textAlign).toBe('center');
-    await expect(ts.color).toBe(paint('color', category === 'skipped-questions' ? '--color-interactive-onPrimary' : '--color-interactive-primary'));
+    await expect(ts.color).toBe(paint('color', '--color-interactive-onPrimary'));
     await expect(title.getBoundingClientRect().height).toBe(px('--font-lineHeight-sm'));
     await expect(title.getBoundingClientRect().top).toBe(cardBox.top + px('--space-400'));
 

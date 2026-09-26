@@ -23,21 +23,16 @@
 }
 
 /* Figma sets the title in the Button L style, with its line height and letter spacing taken from the
-   font tokens. */
+   font tokens. The dark on-primary color keeps it readable on all three card fills. */
 .resultsSummary__title {
   margin: 0;
-  color: var(--color-interactive-primary);
+  color: var(--color-interactive-onPrimary);
   font-family: var(--type-headline-s-fontFamily);
   font-weight: var(--type-headline-s-fontWeight);
   font-size: var(--type-headline-s-fontSize);
   line-height: var(--font-lineHeight-sm);
   letter-spacing: var(--font-tracking-loose);
   text-align: center;
-}
-
-/* The neutral card is near-white, so its title is the dark on-primary color. */
-.resultsSummary[data-category='skipped-questions'] .resultsSummary__title {
-  color: var(--color-interactive-onPrimary);
 }
 
 .resultsSummary__list {
