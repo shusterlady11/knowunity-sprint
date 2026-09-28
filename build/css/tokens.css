@@ -23,6 +23,7 @@
   --color-violet-200: #d2ccfa;
   --color-violet-300: #a78bfa;
   --color-violet-400: #7b65e0;
+  --color-violet-450: #7560d6;
   --color-violet-500: #9178e6;
   --color-violet-850: #2d2546;
   --color-violet-900: #15103a;
@@ -59,6 +60,7 @@
   --color-alpha-light-25: rgba(255, 255, 255, 0.25098039215686274);
   --color-alpha-light-40: rgba(255, 255, 255, 0.4);
   --color-alpha-light-48: rgba(245, 243, 255, 0.47843137254901963);
+  --color-alpha-light-50: rgba(245, 243, 255, 0.5019607843137255);
   --color-alpha-light-68: rgba(245, 243, 255, 0.6784313725490196);
   --color-alpha-dark-10: rgba(10, 10, 10, 0.10196078431372549);
   --color-alpha-dark-50: rgba(10, 10, 10, 0.5019607843137255);
@@ -111,7 +113,7 @@
   --color-text-inverse: #090c18; /** Dark text on light or vivid surfaces. USE: labels on background.inverse, text on bright accent fills. DON'T: text on the dark page background (use text.primary instead). PAIR: background.inverse. */
   --color-text-link: #9178e6; /** Inline hyperlink text only. USE: Linked text in body copy, T&C links, 'Learn more' inline links. DON'T: Buttons (use interactive.primary instead), nav items, non-clickable accent text. */
   --color-text-disabled: rgba(255, 255, 255, 0.4); /** Low-contrast text signaling 'unavailable' or 'not yet filled.' USE: Text on disabled controls, placeholder text in empty input fields. DON'T: Secondary labels or metadata (use text.secondary instead). PAIR: interactive.disabled for disabled control backgrounds, background.input for active input fields with placeholders. */
-  --color-text-tertiary: rgba(245, 243, 255, 0.47843137254901963); /** Lowest emphasis readable text. USE: timestamps, counts, inline hints beside a field. DON'T: anything a student must read to proceed (use text.secondary instead). */
+  --color-text-tertiary: rgba(245, 243, 255, 0.5019607843137255); /** Lowest emphasis readable text. USE: timestamps, counts, inline hints beside a field. DON'T: anything a student must read to proceed (use text.secondary instead). */
   --color-text-linkHover: #a78bfa; /** Hover state of text.link. USE: pointer hover on inline hyperlinks. */
   --color-text-success: #4ae5b0; /** Confirmation text. USE: "Correct", validation success messages. DON'T: as a fill (use feedback.success.bold instead). */
   --color-text-error: #fca5a5; /** Validation message text. USE: the line under a failed field. DON'T: destructive button labels (use interactive.onDestructive instead). */
@@ -136,6 +138,7 @@
   --color-accent-brand-onBold: #0e0a18; /** Text and icons on accent.brand.bold. */
   --color-accent-brand-subtle: #15103a; /** Low emphasis brand fill. USE: tinted brand panels. PAIR: accent.brand.onSubtle. */
   --color-accent-brand-onSubtle: #7b65e0; /** Text and icons on accent.brand.subtle. */
+  --color-accent-brand-onSubtleStrong: #7560d6; /** Icon color for content on interactive.primaryActive, where accent.brand.onSubtle fails the 3:1 non-text minimum. */
   --color-accent-coral-bold: #fb7e5b; /** Solid coral accent fill. USE: decorative emphasis, category tags, illustration accents. DON'T: errors or warnings (use feedback.error.bold instead). PAIR: accent.coral.onBold. */
   --color-accent-coral-onBold: #2e0f06; /** Text and icons on accent.coral.bold. */
   --color-accent-coral-subtle: #512e2c; /** Low emphasis coral fill. PAIR: accent.coral.onSubtle. */

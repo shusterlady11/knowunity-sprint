@@ -12,11 +12,11 @@ There is currently no icon instance-swap property — each variant's icon is har
 
 recordingGlow (the 4-ellipse halo, separate component) is not part of this button — it's a separate instance meant to sit behind micButton during Listening, composed independently so the two can animate on their own.
 
-**In code:** \`listeningState\` and \`interactionState\` use Figma's names and options, and the types don't allow the omitted listening + disabled combination. The button is a push-to-talk toggle named "Record answer": it reports whether it's listening to screen readers (pressed = listening), and a tap starts or stops recording. While disabled it is marked busy and unavailable but keeps keyboard focus, and taps are ignored. When pressed the bevel goes and the face sits 2px lower, as in Figma (\`Space/100\` top padding on the fixed frame centers the face), and a real press shows the same look. The icon takes \`accent/brand/bold\` normally, \`accent/brand/onSubtle\` when pressed and \`icon/disabled\` when disabled.
+**In code:** \`listeningState\` and \`interactionState\` use Figma's names and options, and the types don't allow the omitted listening + disabled combination. The button is a push-to-talk toggle named "Record answer": it reports whether it's listening to screen readers (pressed = listening), and a tap starts or stops recording. While disabled it is marked busy and unavailable but keeps keyboard focus, and taps are ignored. When pressed the bevel goes and the face sits 2px lower, as in Figma (\`Space/100\` top padding on the fixed frame centers the face), and a real press shows the same look. The icon takes \`accent/brand/bold\` at rest, \`accent/brand/onSubtleStrong\` whenever the fill is \`primaryActive\` (pressed, or listening) and \`icon/disabled\` when disabled.
 
 **Size:** \`Control/Mic\` (96px) for both the outer frame and the visible circle. The circle is well above the touch-target minimum, so there's no separate tap area.
 
-**Known issue:** in the listening state Figma keeps the violet icon on the darker pressed fill, about 2.3:1 contrast, below the 3:1 minimum for graphics. The listening state is also the one that must be unmistakable, so recordingGlow must always be shown behind it.`;
+**Contrast fix (Figma, 2026-09-28):** the icon on the darker \`primaryActive\` fill (pressed, and listening) was \`accent/brand/onSubtle\`, about 2.3–2.9:1 against that fill, under the 3:1 minimum for graphics. Figma added \`accent/brand/onSubtleStrong\` (a new, more saturated violet) for those three variants; it measures about 3.1:1. \`idle/ready\` and \`idle/disabled\` are unchanged. The listening state is also the one that must be unmistakable, so recordingGlow must always be shown behind it regardless.`;
 
 // Records taps without the click event, so Storybook doesn't serialize a click event (which froze the docs page).
 const tapSpy = fn();
@@ -84,8 +84,8 @@ const meta = {
     const iconColor =
       interaction === 'disabled'
         ? '--color-icon-disabled'
-        : interaction === 'pressed'
-          ? '--color-accent-brand-onSubtle'
+        : interaction === 'pressed' || listening === 'listening'
+          ? '--color-accent-brand-onSubtleStrong'
           : '--color-accent-brand-bold';
     await expect(getComputedStyle(button).color).toBe(color(iconColor));
 

@@ -26,6 +26,7 @@ Web prototype styled as iOS: 390px, dark mode only.
 - Code uses Inter, not Greed, because Greed is an unlicensed trial font that can't be published; Greed is preferred if licensing is ever cleared.
 - Score ring hidden at 0 correct, because results stay encouraging.
 - XP card and breakdown copy change with how the student performed (tiers such as perfect, mixed, mostly skipped; more may be added), because feedback should be encouraging and honest about the result.
+- recordingGlow's 4 static resting-state rings are retired, replaced outright by the ripple/breathing motion, because static lines carry no information — the motion should move in unison with the speaker's actual voice pattern as real-time feedback, and anything extraneous shouldn't appear.
 
 ## Not building
 - Real speech-to-text or AI judging (transcript and verdict hardcoded)

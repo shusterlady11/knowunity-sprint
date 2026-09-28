@@ -44,17 +44,23 @@
 }
 
 /* Listening: the darker fill is the only cue on the button itself, so the recording glow
-   must always be shown behind it. */
+   must always be shown behind it. The icon switches to onSubtleStrong here too (not the resting
+   brand/bold), since brand/bold only clears 2.3:1 against this darker fill, under the 3:1 minimum. */
 .micButton[data-listening-state='listening'] .micButton__face {
   background-color: var(--color-interactive-primaryActive);
 }
 
+.micButton[data-listening-state='listening'] {
+  color: var(--color-accent-brand-onSubtleStrong);
+}
+
 /* Pressed (shown with interactionState, or by a real press): the bevel flattens, the face sits
-   lower, the fill is darker and the icon takes its pressed color. */
+   lower, the fill is darker and the icon takes its pressed color. onSubtleStrong (not onSubtle)
+   because onSubtle only clears 2.9:1 against the darker primaryActive fill, under the 3:1 minimum. */
 .micButton[data-interaction-state='pressed'],
 .micButton[data-interaction-state='ready']:active {
   padding-top: var(--space-100);
-  color: var(--color-accent-brand-onSubtle);
+  color: var(--color-accent-brand-onSubtleStrong);
 }
 
 .micButton[data-interaction-state='pressed'] .micButton__face,
