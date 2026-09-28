@@ -24,6 +24,7 @@ Web prototype styled as iOS: 390px, dark mode only.
 - Some session XP stays pending until the breakdown shows, because the reward should match the real result.
 - Results: XP card, then concept breakdown, because reward and mistake review shouldn't mix.
 - Code uses Inter, not Greed, because Greed is an unlicensed trial font that can't be published; Greed is preferred if licensing is ever cleared.
+- Tried switching to the real Greed VF trial font for real (2026-09-28), reverted same day: many already-built components (button, bottomCTA, toggleGroup, appBar, bottomSheetAppBar) were specifically measured and had labels shortened against Inter's wider character metrics, so Greed's narrower rendering broke that fit rather than just "looking more accurate." Re-attempt only alongside re-tuning those components' measurements, not as a drop-in swap.
 - Score ring hidden at 0 correct, because results stay encouraging.
 - XP card and breakdown copy change with how the student performed (tiers such as perfect, mixed, mostly skipped; more may be added), because feedback should be encouraging and honest about the result.
 - recordingGlow's 4 static resting-state rings are retired, replaced outright by the ripple/breathing motion, because static lines carry no information — the motion should move in unison with the speaker's actual voice pattern as real-time feedback, and anything extraneous shouldn't appear.
