@@ -9,7 +9,8 @@
     "lint": "eslint",
     "tokens": "style-dictionary build --config style-dictionary.config.mjs",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "dotenv -e .env.local -- chromatic"
   },
   "dependencies": {
     "next": "16.3.5",
@@ -30,6 +31,8 @@
     "@types/react-dom": "^19",
     "@vitest/browser-playwright": "latest",
     "@vitest/coverage-v8": "latest",
+    "chromatic": "^18.10.1",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
     "eslint-plugin-storybook": "^10.6.0",

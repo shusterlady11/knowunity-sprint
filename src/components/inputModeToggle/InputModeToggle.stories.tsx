@@ -80,6 +80,18 @@ const meta = {
       probe.remove();
       return value;
     };
+    // Reads the transition-duration back through the browser's own normalizer instead of
+    // assuming the custom property's raw text format (e.g. "200ms" vs a minified "0.2s") -
+    // getComputedStyle always resolves to seconds, so this can never drift from what the
+    // component itself renders.
+    const duration = (property: 'transitionDuration' | 'transitionTimingFunction', cssVar: string) => {
+      const probe = document.createElement('span');
+      probe.style[property] = `var(${cssVar})`;
+      document.body.appendChild(probe);
+      const value = getComputedStyle(probe)[property];
+      probe.remove();
+      return value;
+    };
 
     // Geometry: a 96 x 48 pill of two 48px slots, with a 40px knob behind the active one.
     const pillBox = pill.getBoundingClientRect();
@@ -93,8 +105,8 @@ const meta = {
     }
     const knobMotion = getComputedStyle(knob);
     await expect(knobMotion.transitionProperty).toBe('transform');
-    await expect(knobMotion.transitionDuration).toBe(`${px('--motion-duration-toggle') / 1000}s`);
-    await expect(knobMotion.transitionTimingFunction).toBe(token('--motion-easing-standard'));
+    await expect(knobMotion.transitionDuration).toBe(duration('transitionDuration', '--motion-duration-toggle'));
+    await expect(knobMotion.transitionTimingFunction).toBe(duration('transitionTimingFunction', '--motion-easing-standard'));
     const knobBox = knob.getBoundingClientRect();
     const inset = px('--space-100');
     await expect(knobBox.width).toBe(px('--space-1200') - 2 * inset);

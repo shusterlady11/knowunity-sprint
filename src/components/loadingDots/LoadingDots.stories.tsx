@@ -21,7 +21,18 @@ const meta = {
     const root = getComputedStyle(document.documentElement);
     const token = (name: string) => root.getPropertyValue(name).trim();
     const px = (name: string) => parseFloat(token(name));
-    const seconds = (name: string) => `${parseFloat(token(name)) / 1000}s`;
+    // Reads a CSS time expression back through the browser's own normalizer instead of
+    // assuming the custom property's raw text format (e.g. "200ms" vs a minified "0.2s") -
+    // getComputedStyle always resolves to seconds, so this can never drift from what the
+    // component itself renders.
+    const duration = (property: 'animationDuration' | 'animationDelay' | 'animationTimingFunction', expr: string) => {
+      const probe = document.createElement('span');
+      probe.style[property] = expr;
+      document.body.appendChild(probe);
+      const value = getComputedStyle(probe)[property];
+      probe.remove();
+      return value;
+    };
     const paint = (cssVar: string) => {
       const probe = document.createElement('span');
       probe.style.color = `var(${cssVar})`;
@@ -43,13 +54,17 @@ const meta = {
       await expect(cs.borderTopLeftRadius).toBe(token('--radius-full'));
       await expect(cs.backgroundColor).toBe(paint('--color-accent-brand-bold'));
       await expect(cs.animationName).toBe('loadingDotsPulse');
-      await expect(cs.animationDuration).toBe(seconds('--motion-duration-pulse'));
-      await expect(cs.animationTimingFunction).toBe(token('--motion-easing-inOut'));
+      await expect(cs.animationDuration).toBe(duration('animationDuration', 'var(--motion-duration-pulse)'));
+      await expect(cs.animationTimingFunction).toBe(duration('animationTimingFunction', 'var(--motion-easing-inOut)'));
       await expect(cs.animationIterationCount).toBe('infinite');
     }
-    // Stagger: each dot starts one step after the last.
-    const step = parseFloat(token('--motion-duration-pulseStagger')) / 1000;
-    await expect(items.map((dot) => getComputedStyle(dot).animationDelay)).toEqual(['0s', `${step}s`, `${step * 2}s`]);
+    // Stagger: each dot starts one step after the last. Mirrors loadingDots.css's own
+    // var()/calc() expressions per dot, rather than redoing the multiplication in JS.
+    await expect(items.map((dot) => getComputedStyle(dot).animationDelay)).toEqual([
+      '0s',
+      duration('animationDelay', 'var(--motion-duration-pulseStagger)'),
+      duration('animationDelay', 'calc(var(--motion-duration-pulseStagger) * 2)'),
+    ]);
 
     // Pulse range: dimmest at the token value, brightest at full opacity.
     const keyframes = (items[0].getAnimations()[0].effect as KeyframeEffect).getKeyframes();
