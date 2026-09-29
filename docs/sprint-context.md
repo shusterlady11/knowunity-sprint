@@ -12,6 +12,8 @@ Web prototype styled as iOS: 390px, dark mode only.
 - OS mic denied: keyboard mode, slashed mic, no micButton, mic side opens re-enable flow, because the mic can't work without permission.
 - Primer declined: keyboard mode, mic still selectable, because permission can still be asked.
 - "No thanks" on the confirm screen returns to the launching screen, because the student is never trapped.
+- Cancel (an X beside the mic while recording) throws away the take and returns to idle, mic ready, because a fumbled start shouldn't force a bad submission, and idle is where the student can record again, switch to keyboard, or skip.
+- Screens built: the happy path only (2026-09-29), all answers correct, 5 questions, on one page that moves through the states in place. The steps are question, dictating (with cancel), processing, correct result, then Finish to Results perfect. The keyboard steps come next if there's time. It starts at the first question: no first-run splash or mic permission, since the recording is mocked. No XP card until its stats exist as a Figma component. Other results, Reveal answer and the non-perfect Results screens stay Figma-only.
 - Processing copy is "Thinking...", because the wait should feel calm and literal.
 - Answers show the verbatim transcript, because a paraphrase hides "misheard" vs. "wrong."
 - Bottom bar labels are short ("Next", not "Next question"; "Review", not "Review 3 concepts"), because L labels are set in Inter, which is wider than Greed Condensed, and the longer pairs don't fit side by side at 390px.
@@ -28,6 +30,7 @@ Web prototype styled as iOS: 390px, dark mode only.
 - Score ring hidden at 0 correct, because results stay encouraging.
 - XP card and breakdown copy change with how the student performed (tiers such as perfect, mixed, mostly skipped; more may be added), because feedback should be encouraging and honest about the result.
 - recordingGlow's 4 static resting-state rings are retired, replaced outright by the ripple/breathing motion, because static lines carry no information — the motion should move in unison with the speaker's actual voice pattern as real-time feedback, and anything extraneous shouldn't appear.
+- recordingGlow's listening motion follows recordingglow-listening-spec.md. Its open calls are settled when recordingGlow is built, not before. Leanings so far (2026-09-29): breathe the two filled ellipses in place on voiceFeedback layer2/layer3 and compare against the prototype; drop the two outline rings; ripples on interactive/secondary; ripple size from the real mic level, read inside recordingGlow. Figma doesn't have to match the code's animation exactly, because Figma can't hold motion.
 
 ## Not building
 - Real speech-to-text or AI judging (transcript and verdict hardcoded)
