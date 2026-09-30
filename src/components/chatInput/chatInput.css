@@ -1,0 +1,79 @@
+/* The bar: the optional leading button, then the field, which takes the rest of the width. It fills the
+   width it's given (no fixed 358px), and has no side padding of its own: the screen's 16px margin is the
+   inset, so the field lines up with the cards above it. Figma's Space/050 top and bottom stays. */
+.chatInput {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-050);
+  width: 100%;
+  padding: var(--space-050) var(--space-0);
+}
+
+/* The field: a pill of background/input with a 1px inside edge in border/default, at least Control/L
+   (56px) tall in every status (Figma's Typing hugs to 38px; kept at 56 so tapping in doesn't shrink it). */
+.chatInput__field {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  gap: var(--space-200);
+  min-width: 0;
+  min-height: var(--control-l);
+  padding: var(--space-150) var(--space-400);
+  border-radius: var(--radius-full);
+  background-color: var(--color-background-input);
+  box-shadow: inset 0 0 0 var(--stroke-border) var(--color-border-default);
+}
+
+/* With text, the send button sits inside the right edge: Space/100 top and bottom, Space/200 on the right. */
+.chatInput[data-status='Ready to send'] .chatInput__field {
+  padding: var(--space-100) var(--space-200) var(--space-100) var(--space-400);
+}
+
+/* More than one line: the corners drop to Radius/600, the field hugs its text, and the send button stays at
+   the bottom. */
+.chatInput[data-status='Long input'] .chatInput__field {
+  align-items: flex-end;
+  padding: var(--space-150) var(--space-200) var(--space-150) var(--space-400);
+  border-radius: var(--radius-600);
+}
+
+/* The text: Body M Regular (18/26). One line tall to start; it grows a line at a time and stops at 6 lines,
+   then scrolls inside the field. */
+.chatInput__text {
+  box-sizing: border-box;
+  flex: 1 1 0;
+  min-width: 0;
+  max-height: calc(var(--font-lineHeight-body-md) * 6);
+  margin: var(--space-0);
+  padding: var(--space-0);
+  border: none;
+  outline: none;
+  resize: none;
+  overflow-y: hidden;
+  background: transparent;
+  color: var(--color-text-primary);
+  caret-color: var(--color-text-primary);
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+  letter-spacing: var(--type-body-m-regular-letterSpacing);
+}
+
+.chatInput__text[data-scrolls] {
+  overflow-y: auto;
+}
+
+.chatInput__text::placeholder {
+  color: var(--color-text-placeholder);
+  opacity: 1;
+}
+
+/* The mic inside the field is drawn only (icon/primary); it has no action yet. */
+.chatInput__mic {
+  display: inline-flex;
+  flex: none;
+  color: var(--color-icon-primary);
+}

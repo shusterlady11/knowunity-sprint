@@ -61,6 +61,7 @@
   --color-alpha-light-40: rgba(255, 255, 255, 0.4);
   --color-alpha-light-48: rgba(245, 243, 255, 0.47843137254901963);
   --color-alpha-light-50: rgba(245, 243, 255, 0.5019607843137255);
+  --color-alpha-light-55: rgba(255, 255, 255, 0.5490196078431373);
   --color-alpha-light-68: rgba(245, 243, 255, 0.6784313725490196);
   --color-alpha-dark-10: rgba(10, 10, 10, 0.10196078431372549);
   --color-alpha-dark-50: rgba(10, 10, 10, 0.5019607843137255);
@@ -86,7 +87,7 @@
   --color-background-scrim: rgba(10, 10, 10, 0.5019607843137255); /** Semi-transparent overlay dimming content behind a modal. USE: Behind modals, dialogs, bottom sheets. DON'T: Solid dark backgrounds (use background.inverse instead). RULE: Always paired with a foreground surface on top. */
   --color-background-floating: rgba(61, 61, 61, 0.6); /** Elevated floating surface with translucency. USE: Dropdown menus, tooltips, popovers that float above content with a frosted-glass effect. */
   --color-background-stacking: rgba(255, 255, 255, 0.10196078431372549); /** Additive white layer for stacking elevation on dark surfaces. USE: Toasts, snackbars, floating notifications that need subtle lift above dark backgrounds. */
-  --color-background-input: #1a1c26; /** Fill of an editable field. USE: text inputs, textareas, search fields at rest. DON'T: read-only surfaces (use background.surface instead). PAIR: text.primary when filled, text.disabled for placeholders. */
+  --color-background-input: rgba(255, 255, 255, 0.10196078431372549); /** Fill of an editable field. USE: text inputs, textareas, search fields at rest. DON'T: read-only surfaces (use background.surface instead). PAIR: text.primary when filled, text.placeholder for placeholders. */
   --color-interactive-primary: #f4f2ff; /** Main call-to-action fill. USE: 'Continue,' 'Check,' 'Start practice' buttons, progress bar fills. One primary CTA per screen. DON'T: Selected cards or active tabs (use highlight.surface instead), links (use text.link instead). PAIR: interactive.onPrimary for label text/icons on top. RULE: Max one interactive.primary button per screen. */
   --color-interactive-secondary: rgba(255, 255, 255, 0.10196078431372549); /** Supporting action fill. USE: 'Skip,' 'Cancel,' filter chips, outlined buttons, toggles. DON'T: Primary CTA (use interactive.primary instead). PAIR: interactive.onSecondary for label text on top. */
   --color-interactive-destructive: #ff6b6b; /** Irreversible harmful action fill. USE: Delete, remove, block buttons. DON'T: Validation errors (use feedback.error.bold instead). PAIR: text.inverse for white label text on top. */
@@ -113,6 +114,7 @@
   --color-text-inverse: #090c18; /** Dark text on light or vivid surfaces. USE: labels on background.inverse, text on bright accent fills. DON'T: text on the dark page background (use text.primary instead). PAIR: background.inverse. */
   --color-text-link: #9178e6; /** Inline hyperlink text only. USE: Linked text in body copy, T&C links, 'Learn more' inline links. DON'T: Buttons (use interactive.primary instead), nav items, non-clickable accent text. */
   --color-text-disabled: rgba(255, 255, 255, 0.4); /** Low-contrast text signaling 'unavailable' or 'not yet filled.' USE: Text on disabled controls, placeholder text in empty input fields. DON'T: Secondary labels or metadata (use text.secondary instead). PAIR: interactive.disabled for disabled control backgrounds, background.input for active input fields with placeholders. */
+  --color-text-placeholder: rgba(255, 255, 255, 0.5490196078431373); /** Placeholder text inside an empty input. USE: the example or prompt text a student sees before typing. DON'T: labels on disabled controls (use text.disabled instead), low-emphasis metadata (use text.tertiary instead). RULE: must clear 4.5:1 against background.input. */
   --color-text-tertiary: rgba(245, 243, 255, 0.5019607843137255); /** Lowest emphasis readable text. USE: timestamps, counts, inline hints beside a field. DON'T: anything a student must read to proceed (use text.secondary instead). */
   --color-text-linkHover: #a78bfa; /** Hover state of text.link. USE: pointer hover on inline hyperlinks. */
   --color-text-success: #4ae5b0; /** Confirmation text. USE: "Correct", validation success messages. DON'T: as a fill (use feedback.success.bold instead). */

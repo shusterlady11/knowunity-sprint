@@ -454,6 +454,3 @@ All other open items were decided on 2026-09-29 and are written into the section
    - the canned transcripts and the More info / Reveal context
    - the participant scripts, each with a first-pass and a later-pass chain per question, and the role-play tasks that match them
    - the `tour` reference script used in Verification
-
-**Doesn't exist yet (component work before the screens that need it):**
-- **`chatInput`** as a Storybook component, from the Figma set (screen 11). It fills the width it's given, like `AnswerCard` and `ToggleGroup`.

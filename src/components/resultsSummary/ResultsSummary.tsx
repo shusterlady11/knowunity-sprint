@@ -1,3 +1,5 @@
+'use client';
+
 import { useId, useState } from 'react';
 import { ExpandableResultRow } from '../expandableResultRow/ExpandableResultRow';
 import type { ExpandableResultRowTone } from '../expandableResultRow/ExpandableResultRow';
