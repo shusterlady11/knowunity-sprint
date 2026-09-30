@@ -15,23 +15,25 @@ Decisions behind this spec are logged in `docs/sprint-context.md`. Rules for bui
 A voice active-recall session for a usability test: a student explains 5 concepts out loud, and Knowie answers in text with a verdict, a hint or the answer.
 Real students on real iPhones use it. The recall engine is mocked and follows a script the moderator picks for each participant.
 
-## Screen list, in build order (easiest first)
+## Screen list, in build order (flow order)
+
+Each screen is built only after the screen that leads to it, so every button goes somewhere real when it's tapped (decided 2026-09-30).
 
 | # | Screen | Route | File (new unless noted) | Figma frame(s) on "Core flow for Claude Code" |
 |---|---|---|---|---|
-| 1 | End screen | `/done` | `src/app/done/page.tsx` | none (composed from existing components) |
-| 2 | First-run splash | `/start` | `src/app/start/page.tsx` | SPLASH-FIRST-TIME |
-| 3 | Mic skipped | `/mic-off` | `src/app/mic-off/page.tsx` | SPLASH-SKIP-MIC |
-| 4 | Mic primer | `/mic` | `src/app/mic/page.tsx` | PERMISSION-MIC |
-| 5 | Question | `/q/[n]` | `src/app/q/[n]/page.tsx` | QUESTION / activeState micOn, Lastquestion / activeState |
-| 6 | Dictating | `/q/[n]/recording` | `src/app/q/[n]/recording/page.tsx` | Question / listeningState |
-| 7 | Entry link and reset | `/s/[code]`, `/reset` | `src/app/s/[code]/page.tsx`, `src/app/reset/page.tsx` | none |
-| 8 | Processing | `/q/[n]/thinking` | `src/app/q/[n]/thinking/page.tsx` | Question / processingState |
-| 9 | Result | `/q/[n]/result` | `src/app/q/[n]/result/page.tsx` | Answering / correctState (+ finish), partialState, wrongState, notCaughtState, Reveal answer |
-| 10 | Results | `/results` | `src/app/results/page.tsx` | Results perfect, Results partial, Results needs improvement |
-| 11 | Typing | `/q/[n]/type` | `src/app/q/[n]/type/page.tsx` | Question / activeState keyboard option selected, keyboard open |
+| 1 | First-run splash | `/start` | `src/app/start/page.tsx` | SPLASH-FIRST-TIME |
+| 2 | Mic primer | `/mic` | `src/app/mic/page.tsx` | PERMISSION-MIC |
+| 3 | Question | `/q/[n]` | `src/app/q/[n]/page.tsx` | QUESTION / activeState micOn, Lastquestion / activeState |
+| 4 | Dictating | `/q/[n]/recording` | `src/app/q/[n]/recording/page.tsx` | Question / listeningState |
+| 5 | Entry link and reset | `/s/[code]`, `/reset` | `src/app/s/[code]/page.tsx`, `src/app/reset/page.tsx` | none |
+| 6 | Processing | `/q/[n]/thinking` | `src/app/q/[n]/thinking/page.tsx` | Question / processingState |
+| 7 | Result | `/q/[n]/result` | `src/app/q/[n]/result/page.tsx` | Answering / correctState (+ finish), partialState, wrongState, notCaughtState, Reveal answer |
+| 8 | Results | `/results` | `src/app/results/page.tsx` | Results perfect, Results partial, Results needs improvement |
+| 9 | End screen | `/done` | `src/app/done/page.tsx` | none (composed from existing components) |
+| 10 | Typing | `/q/[n]/type` | `src/app/q/[n]/type/page.tsx` | Question / activeState keyboard option selected, keyboard open |
+| 11 | Mic skipped | `/mic-off` | `src/app/mic-off/page.tsx` | SPLASH-SKIP-MIC |
 
-`[n]` is the question number, 1–5. `src/app/page.tsx` (still the create-next-app placeholder) and `src/app/layout.tsx` get replaced as part of screen 1.
+`[n]` is the question number, 1–5. `src/app/page.tsx` (still the create-next-app placeholder) and `src/app/layout.tsx` get replaced as part of the first screen built, the first-run splash.
 
 **Every screen:**
 - **Built on `Scaffold`** (`src/components/scaffold/`), using its slots `topNavigation`, `middleContent`, `bottomContent` and `bottomSheetOnly`.
@@ -52,52 +54,23 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 
 ## Screens
 
-### 1. End screen: `/done`
-
-- **States:** one message for each way in:
-
-  | Arrived by | Message |
-  |---|---|
-  | Finishing (Results → Continue) | "Nice work. You're done." |
-  | Leaving mid-session (exit confirm → Leave) | "Progress saved. Come back any time." |
-  | Opting out (`/mic-off` → No thanks) | "No problem. Maybe next time." |
-
-- **Components:**
-  - `Scaffold` with no top navigation
-  - `MascotSlot`, `approving`
-  - `TextBlock`
-- **Student actions:** none. The session is over, and the moderator resets from `/reset`.
-
-### 2. First-run splash: `/start`
+### 1. First-run splash: `/start`
 
 - **States:** one. It shows once per phone; later visits skip it (see Mocked recall › Storage).
-- **Components:**
-  - `Scaffold` with no top navigation
+- **Components** (as in the Figma frame SPLASH-FIRST-TIME):
+  - `Scaffold`
+  - `TextBlock` for the headline "Now, let's build some muscle memory."
   - `MascotSlot` 2XL, `standby`
-  - `IconSlot` (the three explainer rows)
+  - a speech bubble holding the body text "When you can explain a concept to someone else…". In Figma it's loose layers (a `background/surface` box with radius 16, plus a tail). `AnswerCard` `Default` may cover it; this is checked side by side at build time (`docs/open-items.md`, D7).
   - `Button` Primary L "Let's go!"
+- **Top navigation:** Figma's frame has a top bar built from loose layers: an icon button on the left and a hidden Skip. `AppBar` can't stand in, since it always draws progress and XP. Whether the splash gets a close button, and where it leads, is D1 in `docs/open-items.md`.
 - **Actions:**
 
 | Action | Leads to |
 |---|---|
 | "Let's go!" | `/mic` |
 
-### 3. Mic skipped: `/mic-off`
-
-- **States:** one: "Let's switch it up. Your mic is off…"
-- **Components:**
-  - `Scaffold` with no top navigation
-  - `MascotSlot` 3XL, `approving`
-  - `TextBlock`
-  - `BottomCTA` layout "Two button no drawer": `Button` Secondary L "No thanks", `Button` Primary L "Continue"
-- **Actions:**
-
-| Action | Leads to |
-|---|---|
-| Continue | `/q/1/type` (keyboard mode, mic still selectable) |
-| No thanks | `/done`, "opted out" message. It stands in for the launching screen the test doesn't have. |
-
-### 4. Mic primer: `/mic`
+### 2. Mic primer: `/mic`
 
 - **States:** one. The question screen sits behind a scrim, with a sheet over it.
 - **Components:**
@@ -111,7 +84,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Turn on | `/q/1`, voice mode. No browser prompt appears: the mic is mocked. |
 | Not now | `/mic-off` |
 
-### 5. Question: `/q/[n]`
+### 3. Question: `/q/[n]`
 
 - **States:**
   - Ready to answer by voice.
@@ -134,7 +107,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Skip | counts as skipped, then `/q/[n+1]`, or `/results` after the last question |
 | Close X | exit confirm sheet |
 
-### 6. Dictating: `/q/[n]/recording`
+### 4. Dictating: `/q/[n]/recording`
 
 - **States:** one: listening. The student sees no transcript while speaking.
 - **Components:**
@@ -153,7 +126,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Close X | exit confirm sheet |
 | Reopening the app on this route | `/q/[n]`; the take is dropped |
 
-### 7. Entry link and reset: `/s/[code]`, `/reset`
+### 5. Entry link and reset: `/s/[code]`, `/reset`
 
 - **`/s/[code]`** is the link the moderator sends. The code (e.g. `k7`) is meaningless to the student and selects one stored script (see Mocked recall). It then goes to:
 
@@ -167,7 +140,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 - **`/reset`** clears the saved session and the "splash seen" flag between participants. It's reached by typing the address and never appears in the student's flow.
 - **Full-screen mode:** an app manifest (`src/app/manifest.ts`, the Next.js file convention) and the page metadata make the Home Screen icon open full screen, with no Safari toolbars.
 
-### 8. Processing: `/q/[n]/thinking`
+### 6. Processing: `/q/[n]/thinking`
 
 - **States:**
   - "Thinking...", for at least 1.2s.
@@ -188,7 +161,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | None: this screen moves on by itself | `/q/[n]/result` when the mock's verdict is ready |
 | Reopening the app on this route | `/q/[n]`; the take is dropped |
 
-### 9. Result: `/q/[n]/result`
+### 7. Result: `/q/[n]/result`
 
 **States, one per verdict.** Each shows `AnswerCard` `question` above the answer card.
 
@@ -209,7 +182,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Partial or wrong, after both hints are used | a fixed nudge toward Reveal, the same for every question: "You're close. Want to see the full answer?" |
 | Didn't catch that | the component's default, "I couldn't understand that take." |
 
-**The student's transcript isn't shown on this screen.** It appears in the Results rows (screen 10), including exactly what a typed take said.
+**The student's transcript isn't shown on this screen.** It appears in the Results rows (screen 8), including exactly what a typed take said.
 
 **Sheets.** "Reveal answer" and "More info" open a `BottomSheet` M with `BottomSheetAppBar` `dismissOnly`. The sheet holds the answer and context, an X, and no buttons. Closing it returns to the same result.
 
@@ -226,7 +199,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Reveal answer / More info | the sheet |
 | Close X | exit confirm sheet |
 
-### 10. Results: `/results`
+### 8. Results: `/results`
 
 - **States:**
   - Perfect: every concept correct.
@@ -248,7 +221,23 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Continue | `/done`, "finished" message |
 | Expand a row | shows that concept's takes |
 
-### 11. Typing: `/q/[n]/type`
+### 9. End screen: `/done`
+
+- **States:** one message for each way in:
+
+  | Arrived by | Message |
+  |---|---|
+  | Finishing (Results → Continue) | "Nice work. You're done." |
+  | Leaving mid-session (exit confirm → Leave) | "Progress saved. Come back any time." |
+  | Opting out (`/mic-off` → No thanks) | "No problem. Maybe next time." |
+
+- **Components:**
+  - `Scaffold` with no top navigation
+  - `MascotSlot`, `approving`
+  - `TextBlock`
+- **Student actions:** none. The session is over, and the moderator resets from `/reset`.
+
+### 10. Typing: `/q/[n]/type`
 
 Built around `chatInput`, a new Storybook component made from the Figma set `chatInput` (16075:17758, "Mascot & components" page). The typing route uses `showLeadingButton={false}`. Don't use the "Chat Input (legacy)" set on "Module 6 component work". Its rules are in `docs/chatinput-decisions.md` and the Figma set's description.
 
@@ -278,6 +267,21 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 | Skip (field empty, or keyboard down) | counts as skipped, then the next question |
 | Dismiss the keyboard | "Keyboard option selected" |
 | Close X | exit confirm sheet |
+
+### 11. Mic skipped: `/mic-off`
+
+- **States:** one: "Let's switch it up. Your mic is off…"
+- **Components:**
+  - `Scaffold` with no top navigation
+  - `MascotSlot` 3XL, `approving`
+  - `TextBlock`
+  - `BottomCTA` layout "Two button no drawer": `Button` Secondary L "No thanks", `Button` Primary L "Continue"
+- **Actions:**
+
+| Action | Leads to |
+|---|---|
+| Continue | `/q/1/type` (keyboard mode, mic still selectable) |
+| No thanks | `/done`, "opted out" message. It stands in for the launching screen the test doesn't have. |
 
 ## Out of scope
 
@@ -446,7 +450,7 @@ Run this after any change. It should take about five minutes, most of it the wal
 
 ## Open
 
-All other open items were decided on 2026-09-29 and are written into the sections above and into `docs/sprint-context.md`. What's left:
+All other open items were decided on 2026-09-29 and are written into the sections above and into `docs/sprint-context.md`. Everything still waiting, including the build decisions for each screen, is collected in `docs/open-items.md`. What's left here:
 
 1. **The mic inside `chatInput`'s field:** is it the way back to voice, or dictation? If `InputModeToggle` is the way back, the in-field mic may be redundant (`docs/chatinput-decisions.md` › Still open).
 2. **Content:**

@@ -11,18 +11,18 @@ As of 2026-09-30. This compares the states in `docs/voice-ux.md` with the Figma 
 
 | State (voice-ux priority) | Designed in Figma | In Storybook | What still needs building |
 |---|---|---|---|
-| Idle, mic ready (Must) | ✅ QUESTION / activeState micOn, Lastquestion | ✅ `MicButton` idle, `AnswerCard` question, `ToggleGroup` voice | Screen 5, `/q/[n]` |
-| Recording (Must) | ✅ Question / listeningState | ⚠️ `MicButton` listening is built. `RecordingGlow` still draws 4 static rings. | Screen 6. `RecordingGlow` must breathe and drop its outline rings. "Tap to submit" is loose text in Figma; it's built as `TapToAnswer`. |
-| Processing (Must) | ✅ Question / processingState | ✅ `AnswerCard` processing (shows "Thinking..." by default), `LoadingDots` | Screen 8, `/q/[n]/thinking` |
-| Result: pass / partial / fail (Must) | ✅ correctState, partialState, wrongState | ✅ All verdict variants of `AnswerCard`, `StatusPill` and `BottomCTA`. The hint is the card's `message`, as in Figma's variants. | Screen 9. The hint copy (with the covered count) comes from the content. |
-| Cancel & re-record before send (Must) | ✅ The X beside the mic on listeningState (`buttonIcon` Secondary S) | ✅ `ButtonIcon`, `src/icons/XIcon.tsx` | Part of screen 6. The X throws the take away and returns to ready. |
-| Text fallback turn (Must) | ✅ keyboard option selected and keyboard open, now built on `chatInput` (Inactive, Long input) | ✅ `ChatInput` (Inactive, Typing, Ready to send, Long input), `ToggleGroup`, `InputModeToggle`, `ButtonIcon` | Screen 11. `chatInput` becomes a Storybook component (rules in `docs/chatinput-decisions.md`). Keeping the bar above the iOS keyboard needs `visualViewport` handling. |
-| Mic permission primer + OS prompt (Must) | ✅ SPLASH-FIRST-TIME, PERMISSION-MIC | ✅ Stories: `BottomSheet` › Mic permission and `Scaffold` › Mic permission | Screens 2 and 4. The OS prompt itself is cut (see Cuts). The splash's close button is loose layers with no component. |
+| Idle, mic ready (Must) | ✅ QUESTION / activeState micOn, Lastquestion | ✅ `MicButton` idle, `AnswerCard` question, `ToggleGroup` voice | Screen 3, `/q/[n]` |
+| Recording (Must) | ✅ Question / listeningState | ⚠️ `MicButton` listening is built. `RecordingGlow` still draws 4 static rings. | Screen 4. `RecordingGlow` must breathe and drop its outline rings. "Tap to submit" is loose text in Figma; it's built as `TapToAnswer`. |
+| Processing (Must) | ✅ Question / processingState | ✅ `AnswerCard` processing (shows "Thinking..." by default), `LoadingDots` | Screen 6, `/q/[n]/thinking` |
+| Result: pass / partial / fail (Must) | ✅ correctState, partialState, wrongState | ✅ All verdict variants of `AnswerCard`, `StatusPill` and `BottomCTA`. The hint is the card's `message`, as in Figma's variants. | Screen 7. The hint copy (with the covered count) comes from the content. |
+| Cancel & re-record before send (Must) | ✅ The X beside the mic on listeningState (`buttonIcon` Secondary S) | ✅ `ButtonIcon`, `src/icons/XIcon.tsx` | Part of screen 4. The X throws the take away and returns to ready. |
+| Text fallback turn (Must) | ✅ keyboard option selected and keyboard open, now built on `chatInput` (Inactive, Long input) | ✅ `ChatInput` (Inactive, Typing, Ready to send, Long input), `ToggleGroup`, `InputModeToggle`, `ButtonIcon` | Screen 10. `chatInput` becomes a Storybook component (rules in `docs/chatinput-decisions.md`). Keeping the bar above the iOS keyboard needs `visualViewport` handling. |
+| Mic permission primer + OS prompt (Must) | ✅ SPLASH-FIRST-TIME, PERMISSION-MIC | ✅ Stories: `BottomSheet` › Mic permission and `Scaffold` › Mic permission | Screens 1 and 2. The OS prompt itself is cut (see Cuts). The splash's close button is loose layers with no component. |
 | Permission denied → text (Must) | ⚠️ SPLASH-SKIP-MIC covers "Not now". No screen shows a blocked mic. | ✅ `ToggleGroup` and `InputModeToggle` with `micBlocked=true` | Screens 3 and 11. A real browser denial can't happen, since the mic is mocked, so "Not now" is the only way in. |
-| Skip a term (Must) | ✅ On idle and "didn't catch that" | ✅ `Button` Tertiary S | Screens 5, 9 and 11 |
-| Empty / silent recording (If time) | ✅ notCaughtState ("Didn't catch that") | ✅ `AnswerCard` answer-notcaught, `StatusPill` notCaught | Screen 9, triggered by a `notCaught` take in the script |
+| Skip a term (Must) | ✅ On idle and "didn't catch that" | ✅ `Button` Tertiary S | Screens 3, 7 and 10 |
+| Empty / silent recording (If time) | ✅ notCaughtState ("Didn't catch that") | ✅ `AnswerCard` answer-notcaught, `StatusPill` notCaught | Screen 7, triggered by a `notCaught` take in the script |
 | Noisy / garbled transcript (If time) | ✅ Same notCaughtState | ✅ Same | Same as above |
-| Judge slow / times out (If time) | ⚠️ No frame for it, but it's the processing card with different text | ✅ `AnswerCard` processing, with "Taking a moment…" passed as `message` | Screen 8, triggered by a `slow` take |
+| Judge slow / times out (If time) | ⚠️ No frame for it, but it's the processing card with different text | ✅ `AnswerCard` processing, with "Taking a moment…" passed as `message` | Screen 6, triggered by a `slow` take |
 | No / dropped network (If time) | ❌ | ❌ | Nothing: cut (see Cuts) |
 | Mic hardware busy (Out of scope) | ❌ | ❌ | Nothing: cut |
 | Language switch mid-answer (Out of scope) | ❌ | ❌ | Nothing: cut |
@@ -34,12 +34,12 @@ These are in Figma, Storybook or SPEC.md, but voice-ux.md doesn't list them. Mos
 
 | Item | Figma | Storybook | Status |
 |---|---|---|---|
-| "Didn't catch that" as a fourth verdict | ✅ | ✅ | In the build (screen 9). It covers voice-ux's "misheard, not wrong" principle. |
-| Reveal answer / More info sheets | ✅ Reveal answer | ✅ `BottomSheet` › Reveal answer | In the build (screen 9) |
-| Hints (at most 2), then a fixed nudge and Reveal as the primary button | ✅ The card text in answer-partial and answer-error is Knowie's feedback | ✅ `AnswerCard` `message`, `BottomCTA` "Two button drawer" | In the build (screen 9) |
-| Results screens | ✅ perfect, partial, needs improvement | ✅ `ProgressMeter`, `ResultsSummary`, `ExpandableResultRow` | In the build (screen 10). "Review all" starts a new pass. |
+| "Didn't catch that" as a fourth verdict | ✅ | ✅ | In the build (screen 7). It covers voice-ux's "misheard, not wrong" principle. |
+| Reveal answer / More info sheets | ✅ Reveal answer | ✅ `BottomSheet` › Reveal answer | In the build (screen 7) |
+| Hints (at most 2), then a fixed nudge and Reveal as the primary button | ✅ The card text in answer-partial and answer-error is Knowie's feedback | ✅ `AnswerCard` `message`, `BottomCTA` "Two button drawer" | In the build (screen 7) |
+| Results screens | ✅ perfect, partial, needs improvement | ✅ `ProgressMeter`, `ResultsSummary`, `ExpandableResultRow` | In the build (screen 8). "Review all" starts a new pass. |
 | Exit confirm | ❌ | ⚠️ Composed from `BottomSheet`, `TextBlock`, `ButtonGroup` and `Button` | In the build (every question route) |
-| End screen | ❌ | ⚠️ Composed from `MascotSlot` and `TextBlock` | In the build (screen 1) |
+| End screen | ❌ | ⚠️ Composed from `MascotSlot` and `TextBlock` | In the build (screen 9) |
 | Entry point screen | ⚠️ Some exploration exists outside the core flow | ❌ | Maybe later (SPEC.md › Maybe later) |
 | XP card | ⚠️ Its stats are loose layers | ❌ | Cut |
 
