@@ -174,7 +174,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - "Taking a moment…", from ~4s, only for a `slow` take.
   - Fallback at ~10s: goes to the result as "didn't catch that".
 
-  The text appears inside `AnswerCard` `processing`. That's part of the answerCard change the designer makes in Figma (Open 1); the story shows no text today.
+  The text appears inside `AnswerCard` `processing`, which shows "Thinking..." by default (Figma's "Processing message" layer). "Taking a moment…" is passed as its `message`.
 - **Components:**
   - `AppBar`, `TopicPill`, `MascotSlot` 2XL
   - `AnswerCard` `question` + `AnswerCard` `processing`
@@ -200,11 +200,16 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Partial or wrong, after both hints are used | as above | as above | `BottomCTA` "Two button drawer": Primary "Reveal answer", Secondary "Next" | live |
 | Didn't catch that | `answer-notcaught` | `StatusPill` `notCaught` | Tertiary "Reveal answer", Secondary "Skip" | live |
 
-**The answer card shows:**
-- The latest take, word for word. It's canned in the mock for spoken takes; a typed take shows exactly what the student typed.
-- On a partial or wrong: a line saying how many key ideas are covered so far, and a hint toward one that's missing.
+**The answer card shows Knowie's feedback, passed as `AnswerCard`'s `message`,** as in Figma's answerCard variants. No component change is needed.
 
-**The hint and covered line are blocked.** `AnswerCard` currently takes only `state` and `message`, so this needs an answerCard change designed in Figma first (Open 1).
+| Verdict | Card text |
+|---|---|
+| Correct | that question's correct feedback, from the content |
+| Partial or wrong | the next unused hint. Its copy includes the covered count, e.g. "You've got 2 of 3 key ideas. Think about…" |
+| Partial or wrong, after both hints are used | a fixed nudge toward Reveal, the same for every question: "You're close. Want to see the full answer?" |
+| Didn't catch that | the component's default, "I couldn't understand that take." |
+
+**The student's transcript isn't shown on this screen.** It appears in the Results rows (screen 10), including exactly what a typed take said.
 
 **Sheets.** "Reveal answer" and "More info" open a `BottomSheet` M with `BottomSheetAppBar` `dismissOnly`. The sheet holds the answer and context, an X, and no buttons. Closing it returns to the same result.
 
@@ -232,7 +237,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 - **Components:**
   - `ProgressMeter` score 1–5. It's hidden when nothing is correct.
   - `ResultsSummary` `good-explanations`, `needs-practice` and `skipped-questions`
-  - `ExpandableResultRow`, with tone `success`, `error` or `neutral`. A row's transcript is every take for that concept, joined.
+  - `ExpandableResultRow`, with tone `success`, `error` or `neutral`. A row's transcript is every take for that concept, joined: the canned transcript for a spoken take, and exactly what was typed for a typed one. This is the only place the student sees their transcript.
   - `BottomCTA` "Two button drawer": Secondary "Review all", Primary "Continue"
   - No `AppBar`, as in Figma.
 - **Actions:**
@@ -245,22 +250,33 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 
 ### 11. Typing: `/q/[n]/type`
 
-- **States:**
-  - Keyboard selected: the field isn't focused yet.
-  - Keyboard open: the phone's own keyboard is up. It's the system keyboard, not something we build.
-- **Components:**
-  - `AppBar`, `TopicPill`, `MascotSlot` 2XL, `AnswerCard` `question`
-  - `TapToAnswer` "Type an answer" (Figma currently says "Tyoe")
-  - `ToggleGroup` `keyboard`, `micBlocked=false`
-  - `Button` Tertiary S "Skip", kept visible above the field while the keyboard is open
-  - With the keyboard open: `InputModeToggle` `keyboard`, a text field and `ButtonIcon` Secondary M to send. The text field is a new component, built from the designer's adaptation of Figma's "Chat Input" set (page "Module 6 component work"); Open 2.
+Built around `chatInput`, a new Storybook component made from the Figma set `chatInput` (16075:17758, "Mascot & components" page). The typing route uses `showLeadingButton={false}`. Don't use the "Chat Input (legacy)" set on "Module 6 component work". Its rules are in `docs/chatinput-decisions.md` and the Figma set's description.
+
+- **States** (`chatInput` `Status`, plus what surrounds it):
+
+| State | Keyboard | `chatInput` | Above the bar |
+|---|---|---|---|
+| Keyboard option selected | down | `Inactive`, with its placeholder | `ToggleGroup` `keyboard` (`micBlocked=false`) + `Button` Tertiary S "Skip" |
+| Typing, field empty | up | `Typing`: a caret, no send button | the same `ToggleGroup` + Skip row |
+| Ready to send | up | `Ready to send`: text, with a send `ButtonIcon` Primary S | nothing: the row is hidden while the field has text |
+| Long input | up | `Long input`: grows upward one line (26px) at a time, up to 6 lines, then scrolls inside the field | nothing |
+
+  - **Emptying the field:** deleting all the text goes back to Typing, and the row reappears.
+  - **Dismissing the keyboard:** only this returns the screen to "Keyboard option selected".
+  - **The keyboard never moves,** and the question above stays visible.
+  - **Unused on this route:** `chatInput`'s `Loading` and `Recording` states. The screen moves to `/q/[n]/thinking` on send, and there's no real mic.
+
+- **Other components:** `AppBar`, `TopicPill`, `MascotSlot` 2XL, `AnswerCard` `question`. `TapToAnswer` is no longer on this screen; `chatInput`'s placeholder replaces it.
+- **Keeping the bar above the keyboard:** this has to be done by hand. On iOS, the page's `100dvh` doesn't shrink when the keyboard opens, so a bar pinned to the bottom of `Scaffold` would sit behind the keyboard. The page has to follow the visible area (the `visualViewport` API) and move the bar up. Check it on the iPhone, not just in a desktop browser.
+- **Width:** `chatInput` fills the width `Scaffold` gives it, as `AnswerCard` and `ToggleGroup` already do (`width: 100%`), with no hard-coded 358px. Screen margins stay 16px everywhere (`docs/platform-constraints.md`).
 - **Actions:**
 
 | Action | Leads to |
 |---|---|
 | Send | `/q/[n]/thinking`. The typed answer goes to the same mock as a spoken one. |
-| Toggle to voice | `/q/[n]`. Voice becomes the mode for later questions. |
-| Skip | counts as skipped, then the next question |
+| `InputModeToggle` to voice (field empty, or keyboard down) | `/q/[n]`. Voice becomes the mode for later questions. |
+| Skip (field empty, or keyboard down) | counts as skipped, then the next question |
+| Dismiss the keyboard | "Keyboard option selected" |
 | Close X | exit confirm sheet |
 
 ## Out of scope
@@ -297,7 +313,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 
 **Content** (supplied by the designer, stored in a new file under `src/content/`):
 - 5 questions from what the participants just studied.
-- For each question: 2–4 key points, one pre-written hint per key point, the "More info" / Reveal context, and a canned transcript for each verdict it can get.
+- For each question: 2–4 key points, one pre-written hint per key point (its copy can include the covered count, filled in by the engine), a correct-feedback line, the "More info" / Reveal context, and a canned transcript for each verdict it can get (shown in Results).
 
 **Scripts** (new, stored with the content; the code in `/s/[code]` picks one):
 - **Each question gets its own chain of takes.** Each take lists the key points it covers, for example `q1: 1,2 > 3`.
@@ -312,10 +328,10 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 **The engine** (new, `src/lib/recallEngine/`) is one piece with a fake setting. Given a take, it returns which key points that take covered, the same shape a real engine would return. Everything else is worked out from that:
 
 - **Verdict from combined coverage** across all of this question's takes: all key points covered is correct, some is partial, none is wrong.
-- **Covered line:** "N of M key ideas".
+- **Covered count:** "N of M key ideas", filled into the hint's copy.
 - **Hints:**
   - A partial or wrong shows the next unused hint, in key-point order.
-  - After 2 hints, "Reveal answer" becomes the primary button, with the mic still live.
+  - After 2 hints, "Reveal answer" becomes the primary button, the card shows the fixed nudge, and the mic stays live.
 - **Timing:**
   - "Thinking..." lasts at least 1.2s.
   - A `slow` take shows "Taking a moment…" at ~4s and becomes "didn't catch that" at ~10s.
@@ -396,18 +412,17 @@ Run this after any change. It should take about five minutes, most of it the wal
 | 3 | Type anything, send | "Thinking..." for at least 1.2s, then Correct. XP shows 10. "More info" opens the sheet and its X closes it. |
 | 4 | Next | `/q/2/type`, because keyboard mode carries over. |
 | 4b | Toggle to voice, tap mic, then the cancel X | back on `/q/2`, no take stored |
-| 5 | Tap mic, tap it again to stop | Partial, with the covered line and hint 1 |
+| 5 | Tap mic, tap it again to stop | Partial, with hint 1 (including the covered count) on the card |
 | 6 | Tap mic, stop | Correct. XP shows 15. |
 | 7 | Next. On question 3: tap mic, stop | "Taking a moment…" at ~4s, "didn't catch that" at ~10s |
-| 8 | Skip. On question 4: record and stop twice | Wrong with hint 1, then wrong with hint 2 |
+| 8 | Skip. On question 4: record and stop three times | Wrong with hint 1, then hint 2, then the nudge with "Reveal answer" as the primary button |
 | 9 | Reveal answer (now the primary button), close the sheet, Next | question 5. XP shows 16. |
 | 10 | Close the app and reopen it from its icon | still on `/q/5` |
 | 11 | Record and stop, then "Finish" | Correct, then `/results` |
-| 12 | Check Results | Good explanations: questions 1, 2, 5. Needs practice: 4. Skipped: 3. `ProgressMeter` shows 3. XP is 26. The bottom bar shows "Review all" + "Continue". |
+| 12 | Check Results | Good explanations: questions 1, 2, 5. Needs practice: 4. Skipped: 3. `ProgressMeter` shows 3. XP is 26. Question 1's row shows what was typed. The bottom bar shows "Review all" + "Continue". |
 | 13 | Review all | `/q/1` in voice mode, progress at 0, XP still 26 |
 | 14 | Close X → "Keep going", then close X → "Leave" | stays on `/q/1`, then `/done` with "Progress saved. Come back any time." |
 
-Until the answerCard change lands (Open 1), steps 5, 7 and 8 check the verdict and timing only, not the hint, the covered line or the processing text.
 
 ### Before each test session (on the test phone)
 
@@ -431,14 +446,14 @@ Until the answerCard change lands (Open 1), steps 5, 7 and 8 check the verdict a
 
 ## Open
 
-All other open items were decided on 2026-09-29 and are written into the sections above and into `docs/sprint-context.md`. What's left is work the designer is doing:
+All other open items were decided on 2026-09-29 and are written into the sections above and into `docs/sprint-context.md`. What's left:
 
-1. **The answerCard change** (Figma first). `AnswerCard` needs room for:
-   - the hint and the covered line on partial and wrong results (screen 9)
-   - the "Thinking..." / "Taking a moment…" text in its `processing` state (screen 8)
-2. **The text input:** the designer adapts Figma's "Chat Input" set for screen 11, with room for Skip above it while the keyboard is open. It's then built as a new Storybook component.
-3. **Content:**
-   - the 5 questions, their key points and hints
+1. **The mic inside `chatInput`'s field:** is it the way back to voice, or dictation? If `InputModeToggle` is the way back, the in-field mic may be redundant (`docs/chatinput-decisions.md` › Still open).
+2. **Content:**
+   - the 5 questions, their key points, hints and correct-feedback lines
    - the canned transcripts and the More info / Reveal context
    - the participant scripts, each with a first-pass and a later-pass chain per question, and the role-play tasks that match them
    - the `tour` reference script used in Verification
+
+**Doesn't exist yet (component work before the screens that need it):**
+- **`chatInput`** as a Storybook component, from the Figma set (screen 11). It fills the width it's given, like `AnswerCard` and `ToggleGroup`.
