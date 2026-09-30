@@ -54,12 +54,19 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 
 ### 1. End screen: `/done`
 
-- **States:** one. Its wording is Open.
+- **States:** one message for each way in:
+
+  | Arrived by | Message |
+  |---|---|
+  | Finishing (Results → Continue) | "Nice work. You're done." |
+  | Leaving mid-session (exit confirm → Leave) | "Progress saved. Come back any time." |
+  | Opting out (`/mic-off` → No thanks) | "No problem. Maybe next time." |
+
 - **Components:**
   - `Scaffold` with no top navigation
-  - `MascotSlot`
+  - `MascotSlot`, `approving`
   - `TextBlock`
-- **Student actions:** none decided (see Open). The moderator resets from `/reset`.
+- **Student actions:** none. The session is over, and the moderator resets from `/reset`.
 
 ### 2. First-run splash: `/start`
 
@@ -88,7 +95,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Action | Leads to |
 |---|---|
 | Continue | `/q/1/type` (keyboard mode, mic still selectable) |
-| No thanks | Open: the decision log says "the launching screen", which the test doesn't have |
+| No thanks | `/done`, "opted out" message. It stands in for the launching screen the test doesn't have. |
 
 ### 4. Mic primer: `/mic`
 
@@ -107,9 +114,9 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 ### 5. Question: `/q/[n]`
 
 - **States:**
-  - Ready to answer by voice (questions 1–4).
-  - The last question: the same screen with `ProgressIndicator` at 100.
-  - A Try again round: only the questions that were missed.
+  - Ready to answer by voice.
+  - `ProgressIndicator` shows questions finished: 0 on question 1, 20 on question 2, up to 80 on question 5. Each pass starts again at 0.
+  - The screen opens in whichever input mode the student last used, voice or keyboard. A student in keyboard mode lands on `/q/[n]/type` instead.
 - **Components:**
   - `AppBar` (close `ButtonIcon`, `ProgressIndicator`, `XpCounter`)
   - `TopicPill`
@@ -132,7 +139,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 - **States:** one: listening. The student sees no transcript while speaking.
 - **Components:**
   - `AppBar`, `TopicPill`, `MascotSlot` 2XL, `AnswerCard` `question`
-  - `RecordingGlow`. It breathes only, with no ripples; whether it's static or breathing in this build is Open.
+  - `RecordingGlow`, breathing, with no ripples and without the two outline rings (see Mocked recall › recordingGlow in this build)
   - `MicButton` `listening` / `ready`
   - `ButtonIcon` Secondary S with `src/icons/XIcon.tsx`, labelled "Cancel recording" for screen readers
   - `TapToAnswer` with the text "Tap to submit"
@@ -144,6 +151,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Tap mic (stop) | submits the take, then `/q/[n]/thinking` |
 | Cancel X | throws the take away, then `/q/[n]` |
 | Close X | exit confirm sheet |
+| Reopening the app on this route | `/q/[n]`; the take is dropped |
 
 ### 7. Entry link and reset: `/s/[code]`, `/reset`
 
@@ -166,7 +174,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - "Taking a moment…", from ~4s, only for a `slow` take.
   - Fallback at ~10s: goes to the result as "didn't catch that".
 
-  Where the "Thinking..." and "Taking a moment…" text appears is Open: the `AnswerCard` `processing` story shows no text.
+  The text appears inside `AnswerCard` `processing`. That's part of the answerCard change the designer makes in Figma (Open 1); the story shows no text today.
 - **Components:**
   - `AppBar`, `TopicPill`, `MascotSlot` 2XL
   - `AnswerCard` `question` + `AnswerCard` `processing`
@@ -178,6 +186,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 |---|---|
 | Close X | exit confirm sheet |
 | None: this screen moves on by itself | `/q/[n]/result` when the mock's verdict is ready |
+| Reopening the app on this route | `/q/[n]`; the take is dropped |
 
 ### 9. Result: `/q/[n]/result`
 
@@ -185,16 +194,17 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 
 | Verdict | Answer card | Pill | Bottom actions | Mic |
 |---|---|---|---|---|
-| Correct | `answer-correct` | `StatusPill` `correct` | `BottomCTA` "Two button drawer": Secondary "More info", Primary "Next" ("Finish" on the last question) | none |
+| Correct | `answer-correct` | `StatusPill` `correct` | `BottomCTA` "Two button drawer": Secondary "More info", Primary "Next" ("Finish" on the last question) | none, and no voice/keyboard toggle: there's nothing left to answer |
 | Partial | `answer-partial` | `StatusPill` `partial` | `BottomCTA` "Two button drawer / Secondary": Tertiary "Reveal answer", Secondary "Next" | live: `MicButton` `idle` / `ready` + `InputModeToggle` `voice` |
 | Wrong | `answer-error` | `StatusPill` `wrong` | same as Partial | live |
+| Partial or wrong, after both hints are used | as above | as above | `BottomCTA` "Two button drawer": Primary "Reveal answer", Secondary "Next" | live |
 | Didn't catch that | `answer-notcaught` | `StatusPill` `notCaught` | Tertiary "Reveal answer", Secondary "Skip" | live |
 
 **The answer card shows:**
-- The latest take, word for word (canned in the mock).
+- The latest take, word for word. It's canned in the mock for spoken takes; a typed take shows exactly what the student typed.
 - On a partial or wrong: a line saying how many key ideas are covered so far, and a hint toward one that's missing.
 
-**The hint and covered line are blocked.** `AnswerCard` currently takes only `state` and `message`, so this needs an answerCard change designed in Figma first (see Open).
+**The hint and covered line are blocked.** `AnswerCard` currently takes only `state` and `message`, so this needs an answerCard change designed in Figma first (Open 1).
 
 **Sheets.** "Reveal answer" and "More info" open a `BottomSheet` M with `BottomSheetAppBar` `dismissOnly`. The sheet holds the answer and context, an X, and no buttons. Closing it returns to the same result.
 
@@ -205,7 +215,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 | Tap mic (partial, wrong, didn't catch that) | `/q/[n]/recording` to retry. The next take is judged together with the earlier ones. |
 | Toggle to keyboard | `/q/[n]/type` |
 | Next after a correct | `/q/[n+1]`, or `/results` after the last question |
-| Next after a partial or wrong | counts as needs practice, then the next question |
+| Next after a partial or wrong, or after a reveal | counts as needs practice (1 XP), then the next question |
 | Finish | `/results` |
 | Skip (didn't catch that) | counts as skipped, then the next question |
 | Reveal answer / More info | the sheet |
@@ -217,24 +227,21 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - Perfect: every concept correct.
   - Mixed.
   - Mostly skipped.
-  - A merged view after a Try again round.
 
-  The copy changes with each state.
+  The copy changes with each state. Results show only the latest pass.
 - **Components:**
   - `ProgressMeter` score 1–5. It's hidden when nothing is correct.
   - `ResultsSummary` `good-explanations`, `needs-practice` and `skipped-questions`
   - `ExpandableResultRow`, with tone `success`, `error` or `neutral`. A row's transcript is every take for that concept, joined.
-  - `BottomCTA` "Two button drawer" with Primary "Continue"
+  - `BottomCTA` "Two button drawer": Secondary "Review all", Primary "Continue"
   - No `AppBar`, as in Figma.
 - **Actions:**
 
 | Action | Leads to |
 |---|---|
-| Try again (shown only when something wasn't correct) | the first missed question. The round covers missed questions only, then comes back here with one merged picture. |
-| Continue | `/done` |
+| Review all | starts a new pass at `/q/1` with all 5 questions. XP earned so far carries over; the new pass's Results replace the old ones. |
+| Continue | `/done`, "finished" message |
 | Expand a row | shows that concept's takes |
-
-Whether "Review all" stays alongside Try again is Open.
 
 ### 11. Typing: `/q/[n]/type`
 
@@ -245,14 +252,14 @@ Whether "Review all" stays alongside Try again is Open.
   - `AppBar`, `TopicPill`, `MascotSlot` 2XL, `AnswerCard` `question`
   - `TapToAnswer` "Type an answer" (Figma currently says "Tyoe")
   - `ToggleGroup` `keyboard`, `micBlocked=false`
-  - `Button` Tertiary S "Skip", while the keyboard is closed
-  - With the keyboard open: `InputModeToggle` `keyboard`, a text field (missing component, see Open) and `ButtonIcon` Secondary M to send
+  - `Button` Tertiary S "Skip", kept visible above the field while the keyboard is open
+  - With the keyboard open: `InputModeToggle` `keyboard`, a text field and `ButtonIcon` Secondary M to send. The text field is a new component, built from the designer's adaptation of Figma's "Chat Input" set (page "Module 6 component work"); Open 2.
 - **Actions:**
 
 | Action | Leads to |
 |---|---|
 | Send | `/q/[n]/thinking`. The typed answer goes to the same mock as a spoken one. |
-| Toggle to voice | `/q/[n]` |
+| Toggle to voice | `/q/[n]`. Voice becomes the mode for later questions. |
 | Skip | counts as skipped, then the next question |
 | Close X | exit confirm sheet |
 
@@ -273,13 +280,18 @@ Whether "Review all" stays alongside Try again is Open.
   - switching language mid-answer
   - mic busy with another app
   - network loss: the mock runs on the phone
-- **Where it launches from:** the study-plan and main-chat entry points. The test starts from the moderator's link.
 - **Records:** logging or analytics. The test relies on screen share and notes.
 - **Devices and platforms:**
   - tablet, desktop and RTL layouts
   - native iOS APIs: haptics, permission sheets, navigation transitions
   - layouts that stretch: other iPhone widths scale the 390 design instead
-- **The recordingGlow rebuild** in `recordingglow-listening-spec.md`, beyond whatever Open settles for this build.
+- **The rest of the recordingGlow spec** (`docs/recordingglow-listening-spec.md`): ripples and a real mic level.
+- **A results-level Try again round.** Retrying happens on a question, by tapping the mic after a partial or wrong.
+- **Pending XP.** `XpCounter` counts up as XP is earned; nothing is held back until Results.
+
+## Maybe later
+
+- **Entry point screen.** The screen a student launches the session from. The design brief names two places: a stepping-stone in the study plan (a light pass early, a fuller pass at the end of the section) and an "Explain out loud" option in the main chat. This test starts from the moderator's link instead (`/s/[code]` → `/start`). If it's added, it comes before the first-run splash, and it becomes the "launching screen" that "No thanks" on `/mic-off` returns to (today that goes to `/done`). Existing Figma work to start from: the "Entry points" section on the "✨ Example Screens" page, and the "Entry / session framing" frames on the "Strategy: Research • Inspo • User Flows" page.
 
 ## How the mocked recall behaves
 
@@ -291,8 +303,9 @@ Whether "Review all" stays alongside Try again is Open.
 - **Each question gets its own chain of takes.** Each take lists the key points it covers, for example `q1: 1,2 > 3`.
 - **There are also special takes:**
   - `notCaught`: didn't catch that
-  - `idk`: "I don't know", treated as Skip
+  - `idk`: "I don't know". It's treated as Skip: no result screen, straight to the next question.
   - `slow`: a late verdict
+- **Each script has two chains per question: one for the first pass and one for every later pass** (started by "Review all"), so role-play tasks can differ between passes.
 - **A question's chain only affects that question.** Takes left over when the student moves on are dropped. Takes beyond the plan cover nothing new.
 - **The moderator gives each participant role-play tasks that match their script,** such as "answer this one fully" or "leave something out", so the verdicts make sense to them. Participants are told beforehand that the transcript text is a placeholder.
 
@@ -302,7 +315,7 @@ Whether "Review all" stays alongside Try again is Open.
 - **Covered line:** "N of M key ideas".
 - **Hints:**
   - A partial or wrong shows the next unused hint, in key-point order.
-  - After 2 hints, Reveal answer is the way forward, with the mic still live.
+  - After 2 hints, "Reveal answer" becomes the primary button, with the mic still live.
 - **Timing:**
   - "Thinking..." lasts at least 1.2s.
   - A `slow` take shows "Taking a moment…" at ~4s and becomes "didn't catch that" at ~10s.
@@ -312,25 +325,43 @@ Whether "Review all" stays alongside Try again is Open.
   |---|---|
   | First-try correct | 10 |
   | Correct after a hint or retry | 5 |
-  | Revealed | 1 |
+  | Revealed, including a correct retry after a reveal | 1 |
+  | Needs practice (Next after a partial or wrong) | 1 |
   | Skipped | 0 |
 
-  A correct answer in a Try again round earns 5.
+  XP carries over between passes. `XpCounter` shows it as it's earned.
 - **Results groups:**
 
   | Group | What lands there |
   |---|---|
   | Good explanations | correct, at any attempt |
-  | Needs practice | Next tapped after a partial or wrong |
+  | Needs practice | Next tapped after a partial or wrong, and any concept whose answer was revealed |
   | Skipped | Skip, `idk`, or Skip after "didn't catch that" |
+
+**Screen-reader announcements.** One visually hidden live region (the pattern in `docs/recordingglow-listening-spec.md` §7) announces every state change in a full sentence:
+- "Listening for your answer."
+- "Recording cancelled."
+- "Thinking."
+- "Taking a moment."
+- each verdict with its covered count, e.g. "Partial. You covered 2 of 3 key ideas."
+
+**recordingGlow in this build.** Only the two filled circles show, and they breathe; the two outline rings are removed. The breathing follows `docs/recordingglow-listening-spec.md` §3:
+- a 3400ms loop that rises for the first 25% and falls for the rest
+- core: scale 0.94–1.1, opacity 0.5–0.88
+- halo: scale 0.92–1.12, opacity 0.3–0.56
+
+The blur values (20px halo, 2px core) are treated as part of the animation, so they live with the timing in `tokens/motion.json`, not in Figma. Under reduced motion, the circles hold still at opacity 0.75 (core) and 0.42 (halo). The Figma component doesn't have to match the animation.
+
+**Input mode.** Voice or keyboard carries over to the next question until the student switches back.
 
 **Storage.** The session is saved on the phone:
 - the script code
 - the current route
 - every take
 - verdicts, hints used and XP
+- the input mode and the pass number
 
-Reopening the app resumes where the student was. `/reset` clears the session.
+Reopening the app resumes where the student was, except mid-take: on `/recording` or `/thinking` it returns to `/q/[n]` and drops that take. `/reset` clears the session.
 
 **Screen size.** The 390×844 design scales to the phone's width. The first remote participant has an iPhone 17 (402×874), where it scales to about 103%, or about 870 tall. `Scaffold`'s top strip for the status bar is fixed at 48px (`src/components/scaffold/scaffold.css`). It must grow to the phone's safe area when that's larger, which it is on Dynamic Island phones. The bottom content must stay clear of the home bar.
 
@@ -344,7 +375,7 @@ Run this after any change. It should take about five minutes, most of it the wal
 - `npm run lint`
 - `npm run build`
 - the Storybook component tests
-- the recall engine's unit tests in `src/lib/recallEngine/`. They cover verdicts from coverage, combined takes, leftover and extra takes, hint order and the 2-hint limit, `notCaught`, `slow`, and every XP outcome.
+- the recall engine's unit tests in `src/lib/recallEngine/`. They cover verdicts from coverage, combined takes, leftover and extra takes, hint order and the 2-hint limit, `notCaught`, `slow`, `idk`, first-pass and later-pass chains, and every XP outcome.
 
 **2. Walkthrough with the `tour` script (about 4 minutes).** Use a 390×844 viewport, either browser devtools or the phone. Tap only; don't type addresses after the first step.
 
@@ -363,19 +394,20 @@ Run this after any change. It should take about five minutes, most of it the wal
 | 1 | Open `/reset`, then `/s/tour` | `/start` |
 | 2 | "Let's go!" → "Not now" → "Continue" | `/mic`, then `/mic-off`, then `/q/1/type` |
 | 3 | Type anything, send | "Thinking..." for at least 1.2s, then Correct. XP shows 10. "More info" opens the sheet and its X closes it. |
-| 4 | Next. On question 2, switch to voice if needed (Open 22). Tap mic, then the cancel X | back on `/q/2`, no take stored |
+| 4 | Next | `/q/2/type`, because keyboard mode carries over. |
+| 4b | Toggle to voice, tap mic, then the cancel X | back on `/q/2`, no take stored |
 | 5 | Tap mic, tap it again to stop | Partial, with the covered line and hint 1 |
 | 6 | Tap mic, stop | Correct. XP shows 15. |
 | 7 | Next. On question 3: tap mic, stop | "Taking a moment…" at ~4s, "didn't catch that" at ~10s |
 | 8 | Skip. On question 4: record and stop twice | Wrong with hint 1, then wrong with hint 2 |
-| 9 | Reveal answer, close the sheet, Next | question 5 |
+| 9 | Reveal answer (now the primary button), close the sheet, Next | question 5. XP shows 16. |
 | 10 | Close the app and reopen it from its icon | still on `/q/5` |
 | 11 | Record and stop, then "Finish" | Correct, then `/results` |
-| 12 | Check Results | Good explanations: questions 1, 2, 5. Needs practice: 4. Skipped: 3. `ProgressMeter` shows 3. XP is 25 plus whatever Open 8 decides for question 4. Try again is shown. |
-| 13 | Try again | `/q/3` |
-| 14 | Close X → "Keep going", then close X → "Leave" | stays on `/q/3`, then `/done` |
+| 12 | Check Results | Good explanations: questions 1, 2, 5. Needs practice: 4. Skipped: 3. `ProgressMeter` shows 3. XP is 26. The bottom bar shows "Review all" + "Continue". |
+| 13 | Review all | `/q/1` in voice mode, progress at 0, XP still 26 |
+| 14 | Close X → "Keep going", then close X → "Leave" | stays on `/q/1`, then `/done` with "Progress saved. Come back any time." |
 
-Until the answerCard change lands (Open 1), steps 5 and 8 check the verdict only, not the hint and covered line.
+Until the answerCard change lands (Open 1), steps 5, 7 and 8 check the verdict and timing only, not the hint, the covered line or the processing text.
 
 ### Before each test session (on the test phone)
 
@@ -399,32 +431,14 @@ Until the answerCard change lands (Open 1), steps 5 and 8 check the verdict only
 
 ## Open
 
-**Waiting on the designer:**
-1. **The answerCard change** for the hint and the covered line (Figma first). It blocks hints on screen 9.
-2. **The text input component** on screen 11. Nobody is assigned to design it yet.
+All other open items were decided on 2026-09-29 and are written into the sections above and into `docs/sprint-context.md`. What's left is work the designer is doing:
+
+1. **The answerCard change** (Figma first). `AnswerCard` needs room for:
+   - the hint and the covered line on partial and wrong results (screen 9)
+   - the "Thinking..." / "Taking a moment…" text in its `processing` state (screen 8)
+2. **The text input:** the designer adapts Figma's "Chat Input" set for screen 11, with room for Skip above it while the keyboard is open. It's then built as a new Storybook component.
 3. **Content:**
    - the 5 questions, their key points and hints
-   - the canned transcripts and More info context
-   - the participant scripts and their role-play tasks
-
-**Decisions still to make:**
-
-4. **recordingGlow on screen 6:** keep today's static glow, or bring the breathing forward now. Breathing needs blur tokens (20px, 2px) that don't exist yet.
-5. **"No thanks" on `/mic-off`:** where it leads when there's no launching screen.
-6. **End screen:** its wording, and whether it offers anything, such as starting again.
-7. **After 2 hints:** how Reveal answer is emphasized. Figma doesn't design this.
-8. **XP for needs practice** (Next after a partial or wrong), including Next after the answer was revealed. The 10/5/1/0 tiers don't cover it.
-9. **A reveal followed by a correct retry:** whether it counts as revealed (1 XP) or correct after a retry (5 XP).
-10. **Typed answers:** show the student's own typed text, or the canned transcript.
-11. **Skip while typing:** Figma's keyboard-open frame has no Skip.
-12. **Reloading mid-take:** what happens when the app reopens on `/recording` or `/thinking`.
-13. **The Results bottom bar:** whether "Review all" stays next to Try again and Continue.
-14. **Progress bar values:** per question, and during a Try again round. Figma shows 25 on question 1.
-15. **Screen-reader announcements** for listening, thinking and the verdict. `recordingglow-listening-spec.md` §7 proposes a live-region pattern for listening only.
-16. **The voice/keyboard toggle:** the decision log says it's on every question and answer screen, but Figma's correct-result screen has none.
-17. **Pending XP** (the decision log says some XP confirms only on the breakdown): what it means without an XP card.
-18. **The spec file's home:** whether `recordingglow-listening-spec.md` moves into `docs/`.
-19. **Where the processing text appears:** "Thinking..." and "Taking a moment…". The `AnswerCard` `processing` story shows no text, and no documented prop adds it.
-20. **Scripts in a Try again round:** which takes a redone question gets, since its chain was used up or dropped in the first round.
-21. **An `idk` take:** whether it shows a result screen first, or moves straight to the next question like Skip.
-22. **Input mode across questions:** whether keyboard or voice carries over to the next question, or each question starts in voice.
+   - the canned transcripts and the More info / Reveal context
+   - the participant scripts, each with a first-pass and a later-pass chain per question, and the role-play tasks that match them
+   - the `tour` reference script used in Verification
