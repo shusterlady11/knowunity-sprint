@@ -18,7 +18,6 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 | # | Decision | Blocks |
 |---|---|---|
 | D1 | Does the splash get a close button, and where does it lead? Figma's frame has a top bar of loose layers; `AppBar` can't stand in because it always draws progress and XP. If it gets one: `ButtonIcon` Tertiary M with `XCloseIcon`. | 1 First-run splash |
-| D2 | Where buttons point before their screen exists: its future address (a "page not found" page until then), or a temporary target. Affects Mic primer › Not now (`/mic-off`, screen 11), and on the question screen: the keyboard toggle (`/q/[n]/type`, 10), Skip on question 5 (`/results`, 8), Close → Leave (`/done`, 9). | 2 Mic primer, 3 Question |
 | D5 | What `/` does before the entry link `/s/[code]` exists. | App shell |
 | D6 | Mic primer text: `TextBlock`, or the styled `<p>` that the story "Scaffold › Mic permission" uses. | 2 Mic primer |
 | D7 | Is `AnswerCard` `Default` Figma's splash speech bubble (a `background/surface` box with radius 16 and a tail)? Checked side by side at build time. | 1 First-run splash |
