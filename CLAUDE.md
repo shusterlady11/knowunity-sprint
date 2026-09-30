@@ -70,5 +70,6 @@ When working on UI, use the storybook tools to read the component library before
 - `.claude/skills/ui-designer/SKILL.md` — visual craft, styling, tokens-to-CSS; read before styling any screen.
 - `.claude/skills/ux-motion/SKILL.md` — animation/transition implementation; read before building the mic, recording glow, or loading states.
 - `.claude/skills/interactive-prototype/SKILL.md` — high-fidelity interactive React-artifact prototyping workflow; read before prototyping a flow in an artifact.
+- `docs/component-gaps.md` — running list of things built inline during a screen build because Storybook had no component for them; read it before building a new screen.
 - `.claude/skills/build-screen/SKILL.md` — how every screen gets built (route per screen, Storybook-only reuse, component gaps, what to report); use it for any screen under `src/app/`.
 - `.claude/launch.json` — Claude Code debug launch config for `npm run dev`.
