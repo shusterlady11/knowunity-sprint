@@ -330,6 +330,14 @@ Component `15808:41585`, page "New components". No description in Figma.
 
 **Built** (`src/components/tapToAnswer`, 2026-09-24). Prop `text` (Figma's "Text", same default). A plain paragraph, not a button: the input field is what the student taps. Fills its container, centered; Body S Regular in `text/secondary` with the line height (`font/lineHeight/sm`) and letter spacing Figma binds.
 
+### middleSection ✅
+
+Component `15851:10099`, page "New components". No description and no properties in Figma.
+
+**Description (from its layers):** the top of a question screen: the topic pill, then Knowie (mascotSlot 2XL) peeking out from behind two answerCards, an intro message (Default) and the question. The core flow's question frames don't use it: they draw the same layout from loose layers, with Knowie resized to 84px over a shadow and no intro card.
+
+**Built** (`src/components/middleSection`, 2026-10-01). Props `topic`, `intro` and `question` (the nested pill's label and the cards' text), plus `showIntro`, added in code because Figma always draws the intro card; the question screen shows it on question 1 only. `Space/400` above the pill, the cards `Space/2400` below it and `Space/200` apart, Knowie centered with the cards over its lower 44px (Figma: 43). Figma's 16px sides are left to `scaffold`. Used on the question screen and behind the mic primer.
+
 ### Typing input screen ◐
 
 Not a component: two screens, "Question / activeState keyboard option selected" (`15878:19708`) and "Question / activeState keyboard open" (`15878:19734`).

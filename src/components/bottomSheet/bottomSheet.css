@@ -31,3 +31,9 @@
   gap: var(--space-600);
   padding: var(--space-400);
 }
+
+/* A Secondary button fills with background/surface, the sheet's own color, so it would vanish here. Figma
+   overrides the fill on sheet buttons to background/floating (PERMISSION-MIC's "Not now"). */
+.bottomSheet .button[data-variant='Secondary'] .button__face {
+  background-color: var(--color-background-floating);
+}

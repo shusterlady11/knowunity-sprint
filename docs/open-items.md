@@ -6,7 +6,7 @@ Everything still waiting on a decision or on content, in one place. Each item na
 
 The designer supplies these, stored in a new file under `src/content/` (SPEC.md › How the mocked recall behaves).
 
-- **The 5 questions,** from what the participants just studied, with their topic. Blocks screen 3 (see D12).
+- **The 5 questions,** from what the participants just studied, with their topic. Placeholders stand in until then (`src/content/questions.ts`).
 - **For each question:** 2–4 key points, one hint per key point, a correct-feedback line, the More info / Reveal context, and a canned transcript for each verdict it can get.
 - **The participant scripts:** a first-pass and a later-pass chain per question, and the role-play tasks that match them.
 - **The `tour` reference script** used in SPEC.md › Verification.
@@ -19,12 +19,10 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 |---|---|---|
 | D1 | Does the splash get a close button, and where does it lead? Figma's frame has a top bar of loose layers; `AppBar` can't stand in because it always draws progress and XP. If it gets one: `ButtonIcon` Tertiary M with `XCloseIcon`. | 1 First-run splash |
 | D5 | What `/` does before the entry link `/s/[code]` exists. | App shell |
-| D6 | Mic primer text: `TextBlock`, or the styled `<p>` that the story "Scaffold › Mic permission" uses. | 2 Mic primer |
 | D7 | Is `AnswerCard` `Default` Figma's splash speech bubble (a `background/surface` box with radius 16 and a tail)? Checked side by side at build time. | 1 First-run splash |
 | D9 | Page headings for screen readers. `TextBlock` doesn't choose a heading level, so no screen has a real `<h1>` to jump to. | All screens |
 | D10 | `themeColor` in the page's `viewport`: leave it out, or read it from `tokens/tokens.json` (it can't be a CSS variable). | App shell |
 | D11 | Which build step owns scaling the 390×844 design to the phone's width and growing `Scaffold`'s 48px top strip to the Dynamic Island's safe area. Neither shows in a 390×844 browser check; both are needed on the iPhone 17. | Device test |
-| D12 | Use placeholder questions until the content exists, or wait for the content before building the question screen. | 3 Question |
 
 ### For later screens
 
@@ -42,4 +40,3 @@ Not decisions, just things that won't work yet:
 
 - **The splash shows every time,** not once per phone, until the saved session exists (screen 5).
 - **Progress and XP on the question screen aren't real** until the saved session exists (screen 5). Until then, progress follows the question number (0, 20…80) and XP stays at 0.
-- **The mic primer's background** is meant to be the question screen, which is built after it. Until then it uses the same static layout as the Storybook story.

@@ -1,32 +1,8 @@
 /* Mic primer, as in Figma's PERMISSION-MIC: question 1 behind the scrim, and the primer sheet over it. */
 
-/* The question, laid out from the top: the topic pill Space/600 from the top (Scaffold's Space/200 plus
-   Space/400 here), then Knowie and the card, Space/600 apart (Figma: 25). */
+/* Question 1, laid out from the top and filling the width, as on the question screen. */
 .mic__question {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-600);
   width: 100%;
-  padding-top: var(--space-400);
-}
-
-/* Knowie peeks out from behind the card, as on the first-run splash. */
-.mic__speaker {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  align-self: stretch;
-}
-
-/* The card overlaps the mascot's lower 44px, the same overlap as the splash (Figma: about 48 at this
-   size). No spacing step is near it, so it's worked out from two tokens. Positioned so it paints over
-   the mascot. */
-.mic__card {
-  position: relative;
-  align-self: stretch;
-  margin-top: calc(var(--space-100) - var(--space-1200));
 }
 
 /* "Tap to dictate" over the mic, centered. Both sit under the sheet. */
@@ -36,17 +12,6 @@
   align-items: center;
   gap: var(--space-400);
   width: 100%;
-}
-
-/* Built here: a Secondary button's fill is background/surface, the sheet's own color, so "Not now" vanishes
-   into the sheet. Figma overrides this instance's fill to background/floating (docs/component-gaps.md).
-   The wrapper adds no box of its own. */
-.mic__actions {
-  display: contents;
-}
-
-.mic__actions .button[data-variant='Secondary'] .button__face {
-  background-color: var(--color-background-floating);
 }
 
 /* The primer line: Headline S, centered, text/primary, as in Figma. */

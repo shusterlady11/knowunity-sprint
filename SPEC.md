@@ -95,12 +95,10 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - The screen opens in whichever input mode the student last used, voice or keyboard. A student in keyboard mode lands on `/q/[n]/type` instead.
 - **Components:**
   - `AppBar` (close `ButtonIcon`, `ProgressIndicator`, `XpCounter`)
-  - `TopicPill`
-  - `MascotSlot` 2XL
-  - `AnswerCard` `question`
+  - `MiddleSection`: `TopicPill`, `MascotSlot` 2XL and the `AnswerCard` `question`, with the "Welcome!" intro card (`AnswerCard` `Default`) on question 1 only
+  - `TapToAnswer` "Tap to dictate"
   - `MicButton` `idle` / `ready`
-  - `ToggleGroup` `voice`, `micBlocked=false`
-  - `Button` Tertiary S "Skip"
+  - `ToggleGroup` `voice`, `micBlocked=false` (it holds the `Button` Tertiary S "Skip")
 - **Actions:**
 
 | Action | Leads to |

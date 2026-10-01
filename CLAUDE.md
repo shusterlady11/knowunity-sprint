@@ -58,7 +58,7 @@ When working on UI, use the storybook tools to read the component library before
 - `docs/voice-ux.md` — voice UX principles, states-to-build priority table. Read before building the recording/processing/result loop.
 - `docs/component-spec.md` — current source of truth for component builds: per-component status (✅ ready / ⚠️ blocker / 🆕 unaudited), variant/property/binding detail. Read before building or touching any component.
 - `docs/module-5-components-to-build.md` — superseded by `docs/component-spec.md`; kept as history, not edited. Don't build against this anymore.
-- `src/components/*` — built components, one folder each with its CSS and stories: `iconSlot`, `button`, `statusPill`, `answerCard`, `bottomCTA`, `topicPill`, `micButton`, `inputModeToggle`, `toggleGroup`, `loadingDots`, `recordingGlow`, `progressMeter`, `buttonIcon`, `expandableResultRow`, `resultsSummary`, `buttonGroup`, `bottomSheetAppBar`, `bottomSheet`, `tapToAnswer`, `textBlock`, `progressIndicator`, `xpCounter`, `appBar`, `mascotSlot`, `scaffold`, `chatInput`. Values come from tokens only; check Storybook before building a new one.
+- `src/components/*` — built components, one folder each with its CSS and stories: `iconSlot`, `button`, `statusPill`, `answerCard`, `bottomCTA`, `topicPill`, `micButton`, `inputModeToggle`, `toggleGroup`, `loadingDots`, `recordingGlow`, `progressMeter`, `buttonIcon`, `expandableResultRow`, `resultsSummary`, `buttonGroup`, `bottomSheetAppBar`, `bottomSheet`, `tapToAnswer`, `textBlock`, `progressIndicator`, `xpCounter`, `appBar`, `mascotSlot`, `scaffold`, `chatInput`, `middleSection`. Values come from tokens only; check Storybook before building a new one.
 - `src/icons/*` — icons exported from Figma (`currentColor` fill), passed into `iconSlot`.
 - `src/foundations/*` — Storybook pages that show the tokens (colors, type, spacing, radius, sizes, shadows, motion).
 - `src/app/layout.tsx` — root layout, fonts. Still the create-next-app default.
@@ -70,6 +70,7 @@ When working on UI, use the storybook tools to read the component library before
 - `.claude/skills/ui-designer/SKILL.md` — visual craft, styling, tokens-to-CSS; read before styling any screen.
 - `.claude/skills/ux-motion/SKILL.md` — animation/transition implementation; read before building the mic, recording glow, or loading states.
 - `.claude/skills/interactive-prototype/SKILL.md` — high-fidelity interactive React-artifact prototyping workflow; read before prototyping a flow in an artifact.
+- `src/content/*` — the questions and topic the screens show. PLACEHOLDER until the designer supplies the real content (D12).
 - `docs/component-gaps.md` — running list of things built inline during a screen build because Storybook had no component for them; read it before building a new screen.
 - `.claude/skills/build-screen/SKILL.md` — how every screen gets built (route per screen, Storybook-only reuse, component gaps, what to report); use it for any screen under `src/app/`.
 - `.claude/launch.json` — Claude Code debug launch config for `npm run dev`.

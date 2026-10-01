@@ -1,0 +1,31 @@
+/* Question screen, as in Figma's "QUESTION / activeState micOn". */
+
+/* The content is laid out from the top and fills the width Scaffold gives it. */
+.question__content {
+  width: 100%;
+}
+
+/* "Tap to dictate", the mic Space/600 below it (Figma: 21), and the toggle row Space/1200 below the mic.
+   The row sits Space/600 from the bottom edge (Scaffold's Space/400 plus Space/200 here), like every
+   bottom button. */
+.question__answer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-bottom: var(--space-200);
+}
+
+.question__answer > .micButton {
+  margin-top: var(--space-600);
+}
+
+.question__answer > .toggleGroup {
+  margin-top: var(--space-1200);
+}
+
+/* The exit confirm adds no box of its own around the sheet. */
+.question__sheet {
+  display: contents;
+}

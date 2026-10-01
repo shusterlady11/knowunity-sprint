@@ -1,0 +1,35 @@
+/* A column that fills the width it's given: the topic pill, then the cards Space/2400 below it, as in Figma.
+   Space/400 above the pill. Figma's 16px at the sides is left out: Scaffold's middleContent already gives it. */
+.middleSection {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2400);
+  width: 100%;
+  padding: var(--space-400) var(--space-0) var(--space-0);
+}
+
+/* The cards, Space/200 apart. Knowie is placed against them rather than in the column, as in Figma. */
+.middleSection__conversation {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-200);
+  width: 100%;
+}
+
+/* Knowie, centered, with the cards over its lower 44px (Figma: 43). No spacing step is near 44, so it's
+   worked out from two tokens, as on the first-run splash. */
+.middleSection__mascot {
+  position: absolute;
+  bottom: calc(100% + var(--space-100) - var(--space-1200));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* The cards paint over Knowie. */
+.middleSection__conversation > :not(.middleSection__mascot) {
+  position: relative;
+}
