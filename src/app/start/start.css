@@ -37,7 +37,8 @@
 }
 
 /* Figma places the mascot 30px in and 25px into the gap above it; the nearest steps are Space/800 and
-   Space/negative-600. The bubble then overlaps the mascot's lower 44px (Figma: 43). */
+   Space/negative-600. The bubble then overlaps the mascot's lower 44px (Figma: 43). No spacing step is
+   near 44, so the bottom margin is worked out from two tokens rather than a new value (decided 2026-10-01). */
 .start__mascot {
   margin: var(--space-negative-600) var(--space-0) calc(var(--space-100) - var(--space-1200)) var(--space-800);
 }
@@ -49,13 +50,13 @@
 }
 
 /* The tail: on the bubble's top edge, Space/400 in from the left, pointing up toward Knowie. Same fill as
-   the card (background/surface). */
+   the card (background/surface). Icon/200 tall (16px, Figma's height); the width follows the 19×16 shape. */
 .start__tail {
   position: absolute;
   top: var(--space-negative-300);
   left: var(--space-400);
   display: block;
-  height: var(--space-400);
+  height: var(--icon-200);
   color: var(--color-background-surface);
 }
 
