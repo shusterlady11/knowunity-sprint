@@ -1,27 +1,22 @@
-@import "tailwindcss";
-@import "../../build/css/tokens.css";
+@import '../../build/css/tokens.css';
 
+/* Inter, loaded the same way as Storybook (.storybook/preview.css), so screens render in the font the
+   components were sized for. Every type token's font family is Inter. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
+}
+
+/* Dark mode only. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: var(--space-0);
+  background: var(--color-background-page);
+  color: var(--color-text-primary);
 }

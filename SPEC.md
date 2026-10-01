@@ -39,6 +39,8 @@ Each screen is built only after the screen that leads to it, so every button goe
 - **Built on `Scaffold`** (`src/components/scaffold/`), using its slots `topNavigation`, `middleContent`, `bottomContent` and `bottomSheetOnly`.
 - **Knowie's expression** is `standby` unless a screen says otherwise, as in Figma.
 - **Sheets are overlays on a route, not routes of their own.** That covers the exit confirm, Reveal answer and More info.
+- **Centered content sits 24px above center:** on screens whose middle content is a centered block (headline, Knowie, text), the block sits 24px higher than the true middle of `middleContent` (decided 2026-10-01, on the first-run splash). Applies to the End screen and Mic skipped.
+- **Bottom buttons:** a full-width button in `bottomContent` sits 16px from each side, lining up with the cards above it, and 24px from the bottom edge (`Scaffold`'s 16px plus 8px), even where a Figma frame insets it differently (decided 2026-10-01).
 - **Every button links to its real route from the start,** even when that screen isn't built yet. Until it is, the screen that links to it counts as unfinished; nothing is sent to a temporary stand-in (decided 2026-09-30).
 
 **Exit confirm (on every `/q/...` route).** The close `ButtonIcon` in `AppBar` opens the confirm "Leave? Your progress is saved." It's composed from existing components and reviewed in Storybook:

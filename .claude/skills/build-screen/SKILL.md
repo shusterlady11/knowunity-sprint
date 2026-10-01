@@ -41,6 +41,8 @@ Storybook is the only place to look for something to reuse. Most of the Figma li
 - **Build on `Scaffold`**, using its slots `topNavigation`, `middleContent`, `bottomContent` and `bottomSheetOnly`. Never build a screen outside it.
 - **Sheets** (exit confirm, Reveal answer, More info, mic primer) are overlays in `bottomSheetOnly` on the same route, not routes of their own.
 - **Components fill the width `Scaffold` gives them.** The screen's margin is 16px (`--space-400`) everywhere. Never hard-code 358.
+- **Centered content sits 24px above center:** when the middle content is a centered block (headline, Knowie, text; for example the End screen and Mic skipped), wrap it in a flex column that fills `middleContent` with `justify-content: center` and `padding-bottom: var(--space-1200)`. The extra space below lifts the block by half of it, 24px. `src/app/start/start.css` (`.start__content`) is the reference. Screens laid out from the top, like the question screen, don't get this.
+- **Bottom buttons:** 16px from each side, lining up with the cards above them (the side margin `Scaffold`'s `bottomContent` already gives, so add no side padding), and 24px from the bottom edge (`Scaffold`'s 16px plus `padding-bottom: var(--space-200)` on the screen's wrapper around the buttons). Do this even where a Figma frame insets them differently (some frames use 28px all round), and list it as a difference.
 
 ### 5. When something isn't in Storybook
 

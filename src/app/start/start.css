@@ -1,0 +1,71 @@
+/* First-run splash, as in Figma's SPLASH-FIRST-TIME. */
+
+/* The top bar: one back button on the left, in a 56px row. buttonIcon L is Figma's 56px button frame with
+   a 24px arrow 16px from the edge. */
+.start__topBar {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-l);
+}
+
+/* The content is centered in the middle slot, with Space/1200 between the headline and Knowie. It sits 24px
+   higher than true center (decided 2026-10-01): Space/1200 of extra space below moves the centered block
+   up by half that. */
+.start__content {
+  box-sizing: border-box;
+  padding-bottom: var(--space-1200);
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1200);
+  width: 100%;
+}
+
+.start__heading {
+  display: flex;
+  justify-content: center;
+}
+
+/* Knowie peeks out from behind the speech bubble: the bubble overlaps the bottom of the mascot. */
+.start__speaker {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+}
+
+/* Figma places the mascot 30px in and 25px into the gap above it; the nearest steps are Space/800 and
+   Space/negative-600. The bubble then overlaps the mascot's lower 44px (Figma: 43). */
+.start__mascot {
+  margin: var(--space-negative-600) var(--space-0) calc(var(--space-100) - var(--space-1200)) var(--space-800);
+}
+
+/* Positioned so it paints over the mascot. */
+.start__bubble {
+  position: relative;
+  align-self: stretch;
+}
+
+/* The tail: on the bubble's top edge, Space/400 in from the left, pointing up toward Knowie. Same fill as
+   the card (background/surface). */
+.start__tail {
+  position: absolute;
+  top: var(--space-negative-300);
+  left: var(--space-400);
+  display: block;
+  height: var(--space-400);
+  color: var(--color-background-surface);
+}
+
+/* The button fills the width inside Scaffold's Space/400 margin, so it lines up with the card above. It
+   sits Space/600 (24px) from the bottom: Scaffold's Space/400 plus Space/200 here. */
+.start__actions {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  padding-bottom: var(--space-200);
+}
