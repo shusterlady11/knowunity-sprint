@@ -42,6 +42,7 @@ const toneFor: Record<ResultsSummaryCategory, ExpandableResultRowTone> = {
   'skipped-questions': 'neutral',
 };
 
+/** One end-of-session results card (good explanations, needs practice or skipped), with up to five rows. Don't show a card with no rows. */
 export function ResultsSummary({ category = 'good-explanations', rows, openRow, onOpenRowChange }: ResultsSummaryProps) {
   const titleId = useId();
   const [ownOpenRow, setOwnOpenRow] = useState<number | null>(null);

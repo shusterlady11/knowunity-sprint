@@ -23,6 +23,7 @@ export type ButtonIconProps = {
 
 const iconSizeFor: Record<ButtonIconSize, IconSlotSize> = { S: '200', M: '250', L: '300' };
 
+/** An icon-only button with the same weights, sizes and states as button. Use it only where the icon's meaning is obvious. */
 export function ButtonIcon({
   variant = 'Primary',
   size = 'S',

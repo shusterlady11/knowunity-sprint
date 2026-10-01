@@ -32,6 +32,7 @@ const toneIcon: Record<ExpandableResultRowTone, ReactNode> = {
   neutral: <DotOutlineIcon />,
 };
 
+/** One answer in a results list: tap it to show what the student said. The parent decides which row is open. */
 export function ExpandableResultRow({
   state = 'collapsed',
   tone = 'success',

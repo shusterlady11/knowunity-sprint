@@ -21,6 +21,7 @@ export type ButtonProps = {
 
 const iconSizeFor: Record<ButtonSize, IconSlotSize> = { S: '200', M: '250', L: '300' };
 
+/** A text button with an optional icon on either side, in three weights, three sizes and four states. Use one Primary per screen. */
 export function Button({
   variant = 'Primary',
   size = 'S',

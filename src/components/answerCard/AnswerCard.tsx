@@ -29,6 +29,7 @@ const defaultMessage: Partial<Record<AnswerCardState, string>> = {
   'answer-notcaught': 'I couldn’t understand that take.',
 };
 
+/** The card for whatever Knowie is saying or asking right now: a message, the question, a thinking state, or feedback on an answer. One per turn. */
 export function AnswerCard({ state = 'Default', message }: AnswerCardProps) {
   const text = message ?? defaultMessage[state] ?? '';
   const pill = pillFor[state];

@@ -16,6 +16,7 @@ const RADIUS = 50;
 const THICKNESS = RADIUS * 0.15;
 const CENTER_LINE = RADIUS - THICKNESS / 2;
 
+/** The results-screen ring showing how many of the five questions were right. Leave it out when none were. */
 export function ProgressMeter({ score = 1 }: ProgressMeterProps) {
   const isPerfect = score === TOTAL;
   return (

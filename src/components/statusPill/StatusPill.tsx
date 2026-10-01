@@ -22,6 +22,7 @@ const content: Record<StatusPillState, { label: string; icon: ReactNode }> = {
   notCaught: { label: "Didn't catch that", icon: <QuestionMarkIcon /> },
 };
 
+/** A small colored label for how one spoken answer was judged: correct, partial, wrong or not caught. Its text and icon are fixed per state. */
 export function StatusPill({ state = 'correct', leftIcon = true }: StatusPillProps) {
   const { label, icon } = content[state];
   return (

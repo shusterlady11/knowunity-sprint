@@ -28,6 +28,7 @@ const buttonsFor: Record<BottomCTALayout, { left: ButtonVariant | null; right: B
   'One button drawer / secondary': { left: null, right: 'Secondary' },
 };
 
+/** The action bar at the bottom of the answer, results and skip-mic screens: one or two buttons, with or without a panel behind them. */
 export function BottomCTA({
   layout = 'Two button no drawer',
   showSecondaryButton = true,

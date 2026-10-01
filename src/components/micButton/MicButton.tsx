@@ -11,6 +11,7 @@ export type MicButtonState =
 export type MicButtonProps = MicButtonState &
   Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children' | 'className' | 'disabled'>;
 
+/** The mic the student taps to start and stop answering out loud. Disabled only while Knowie checks the answer, not for a blocked mic. */
 export function MicButton({
   listeningState = 'idle',
   interactionState = 'ready',

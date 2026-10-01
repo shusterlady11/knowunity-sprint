@@ -18,6 +18,7 @@ export type InputModeToggleProps = InputModeToggleState & {
   onBlockedMicClick?: () => void;
 };
 
+/** Switches between speaking and typing an answer. When the mic is blocked, tapping the mic side opens the permission flow instead. */
 export function InputModeToggle({
   inputMode = 'voice',
   micBlocked = false,
