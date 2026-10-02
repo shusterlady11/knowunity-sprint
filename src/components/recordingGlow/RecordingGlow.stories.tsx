@@ -3,13 +3,15 @@ import { expect } from 'storybook/test';
 import { MicButton } from '../micButton/MicButton';
 import { RecordingGlow } from './RecordingGlow';
 
-const figmaDescription = `Animated glow around micButton while it is recording. USE: behind micButton, only while listeningState=listening. DON'T: show it for idle or disabled, or use it around other buttons. Sizes are proportional to Control/Mic (96): rings at 1.1x, 1.24x, 1.42x and 1.74x the mic diameter (Figma rounds to 106 / 120 / 136 / 168). Fills use interactive/voiceFeedback/layer2 and layer3; the two outlines use interactive/secondary at Stroke/Hairline.
+const figmaDescription = `Voice listening feedback for the mic button. Idle: two blurred, animated glow ellipses (layer2 outer, layer3 inner), no static rings. Listening: same two ellipses breathe on a 3400ms asymmetric cycle (glow core/halo), plus a speech-reactive ripple pool (interactive/secondary stroke) layered on top. Spec: claude/recordingglow-listening-spec.md in the Knowunity Voice Recall Sprint project.
 
-**In code:** it has no props, as in Figma, and is hidden from screen readers because it's decoration. Each ring is \`Control/Mic\` times its ratio (1.1, 1.24, 1.42, 1.74), so the exact sizes are 105.6, 119.04, 136.32 and 167.04px; Figma shows them rounded. The rings are centered on each other, so placing the glow's center on the mic button's center keeps it centered. The outlines are drawn inside the edge at \`Stroke/Hairline\`, as a shadow rather than a border, because browsers round a border this thin to whole device pixels.
+**In code:** it has no props, as in Figma, and is hidden from screen readers because it's decoration. Two circles, centered on each other: the halo is \`Control/Mic\` × 1.74 (167.04px; Figma rounds to 168) in \`interactive/voiceFeedback/layer2\`, blurred \`motion.blur.glowHalo\` (20px); the core is × 1.42 (136.32px) in \`layer3\`, blurred \`motion.blur.glowCore\` (2px).
 
-**Always show it while listening:** the listening micButton only differs from its resting look by a darker fill, so this halo is what makes recording unmistakable.
+**Breathing:** both circles loop on \`motion.duration.breathe\` (3400ms) with \`motion.easing.inOut\`, rising over the first 25% and falling over the rest, a quick inhale and a long exhale (docs/recordingglow-listening-spec.md §3). The halo goes from scale 0.92 to 1.12 and opacity 0.3 to 0.56; the core from 0.94 to 1.1 and 0.5 to 0.88, all \`motion.scale.breathe*\` and \`motion.opacity.breathe*\` tokens. Under reduced motion they stop and hold 0.42 (halo) and 0.75 (core).
 
-**Not animated yet:** the Figma description calls it an animated glow but doesn't say how. The component is static until that's decided (which ring moves, how, and how long).`;
+**Not built in this sprint:** the speech-reactive ripples. No real microphone is used, so nothing should look like it's hearing the student (docs/sprint-context.md).
+
+**Always show it while listening:** the listening micButton only differs from its resting look by a darker fill, so this halo is what makes recording unmistakable.`;
 
 const meta = {
   title: 'Components/recordingGlow',
@@ -18,45 +20,43 @@ const meta = {
   parameters: { docs: { description: { component: figmaDescription } } },
   play: async ({ canvasElement }) => {
     const glow = canvasElement.querySelector('.recordingGlow') as HTMLElement;
-    const rings = [...glow.querySelectorAll('.recordingGlow__ring')] as HTMLElement[];
+    const circles = [...glow.querySelectorAll<HTMLElement>('.recordingGlow__circle')];
     const root = getComputedStyle(document.documentElement);
     const token = (name: string) => root.getPropertyValue(name).trim();
     const mic = parseFloat(token('--control-mic'));
-    const paint = (property: 'backgroundColor' | 'boxShadow', value: string) => {
+    const paint = (value: string) => {
       const probe = document.createElement('span');
-      probe.style[property] = value;
+      probe.style.backgroundColor = value;
       document.body.appendChild(probe);
-      const computed = getComputedStyle(probe)[property];
+      const computed = getComputedStyle(probe).backgroundColor;
       probe.remove();
       return computed;
     };
 
-    // Ratios of Control/Mic, outermost first: 1.74, 1.42 (filled), then 1.24 and 1.1 (outlines).
+    // Two circles, halo then core, as multiples of Control/Mic. offsetWidth is the size before the
+    // breathing scale, which keeps changing.
     const expected = [
-      { scale: 1.74, fill: '--color-interactive-voiceFeedback-layer2' },
-      { scale: 1.42, fill: '--color-interactive-voiceFeedback-layer3' },
-      { scale: 1.24, line: true },
-      { scale: 1.1, line: true },
+      { scale: 1.74, fill: '--color-interactive-voiceFeedback-layer2', blur: '--motion-blur-glowHalo', name: 'recordingGlow-halo' },
+      { scale: 1.42, fill: '--color-interactive-voiceFeedback-layer3', blur: '--motion-blur-glowCore', name: 'recordingGlow-core' },
     ];
-    const glowBox = glow.getBoundingClientRect();
-    await expect(glowBox.width).toBeCloseTo(mic * 1.74, 1);
-    await expect(glowBox.height).toBeCloseTo(mic * 1.74, 1);
-    await expect(rings).toHaveLength(4);
-    for (const [i, ring] of rings.entries()) {
-      const box = ring.getBoundingClientRect();
-      const cs = getComputedStyle(ring);
-      await expect(box.width).toBeCloseTo(mic * expected[i].scale, 1);
-      await expect(box.height).toBeCloseTo(mic * expected[i].scale, 1);
-      // Concentric: every ring shares the glow's center.
-      await expect(box.left + box.width / 2).toBeCloseTo(glowBox.left + glowBox.width / 2, 1);
-      await expect(box.top + box.height / 2).toBeCloseTo(glowBox.top + glowBox.height / 2, 1);
+    await expect(glow.offsetWidth).toBeCloseTo(mic * 1.74, 0);
+    await expect(circles).toHaveLength(2);
+    for (const [i, circle] of circles.entries()) {
+      const cs = getComputedStyle(circle);
+      await expect(circle.offsetWidth).toBeCloseTo(mic * expected[i].scale, 0);
+      await expect(circle.offsetHeight).toBeCloseTo(mic * expected[i].scale, 0);
+      // Concentric: every circle shares the glow's center (offset values are whole pixels, so within 1px).
+      await expect(Math.abs(circle.offsetLeft + circle.offsetWidth / 2 - glow.offsetWidth / 2)).toBeLessThanOrEqual(1);
+      await expect(Math.abs(circle.offsetTop + circle.offsetHeight / 2 - glow.offsetHeight / 2)).toBeLessThanOrEqual(1);
       await expect(cs.borderTopLeftRadius).toBe(token('--radius-full'));
-      if (expected[i].line) {
-        await expect(cs.backgroundColor).toBe('rgba(0, 0, 0, 0)');
-        await expect(cs.boxShadow).toBe(paint('boxShadow', 'inset 0 0 0 var(--stroke-hairline) var(--color-interactive-secondary)'));
-      } else {
-        await expect(cs.backgroundColor).toBe(paint('backgroundColor', `var(${expected[i].fill})`));
-        await expect(cs.boxShadow).toBe('none');
+      await expect(cs.backgroundColor).toBe(paint(`var(${expected[i].fill})`));
+      await expect(cs.filter).toBe(`blur(${token(expected[i].blur)})`);
+
+      // Breathing, unless the viewer asked for reduced motion.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        await expect(cs.animationName).toBe(expected[i].name);
+        await expect(cs.animationDuration).toBe(`${parseFloat(token('--motion-duration-breathe')) / 1000}s`);
+        await expect(cs.animationIterationCount).toBe('infinite');
       }
     }
     await expect(glow).toHaveAttribute('aria-hidden', 'true');

@@ -24,8 +24,3 @@
 .question__answer > .toggleGroup {
   margin-top: var(--space-1200);
 }
-
-/* The exit confirm adds no box of its own around the sheet. */
-.question__sheet {
-  display: contents;
-}

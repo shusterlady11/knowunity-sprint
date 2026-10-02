@@ -116,7 +116,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - `RecordingGlow`, breathing, with no ripples and without the two outline rings (see Mocked recall › recordingGlow in this build)
   - `MicButton` `listening` / `ready`
   - `ButtonIcon` Secondary S with `src/icons/XIcon.tsx`, labelled "Cancel recording" for screen readers
-  - `TapToAnswer` with the text "Tap to submit"
+  - `TapToAnswer` reading "Listening…", then "Tap to submit…" after 3 seconds (`motion.duration.listeningHint`). The old words fade out (`hintFadeOut`, 250ms) and the new ones fade in (`hintFadeIn`, 400ms); with reduced motion they just swap. The mic is mocked, so it's a timer, not speech detection; it never stops the recording. Figma shows "Tap to submit" throughout (decided 2026-10-02).
   - No toggle and no Skip, as in Figma.
 - **Actions:**
 

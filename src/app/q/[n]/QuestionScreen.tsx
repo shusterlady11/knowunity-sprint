@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../../components/scaffold/Scaffold';
 import { AppBar } from '../../../components/appBar/AppBar';
@@ -8,35 +8,21 @@ import { MiddleSection } from '../../../components/middleSection/MiddleSection';
 import { TapToAnswer } from '../../../components/tapToAnswer/TapToAnswer';
 import { MicButton } from '../../../components/micButton/MicButton';
 import { ToggleGroup } from '../../../components/toggleGroup/ToggleGroup';
-import { BottomSheet } from '../../../components/bottomSheet/BottomSheet';
-import { TextBlock } from '../../../components/textBlock/TextBlock';
-import { ButtonGroup } from '../../../components/buttonGroup/ButtonGroup';
-import { Button } from '../../../components/button/Button';
 import { intro, questions, topic } from '../../../content/questions';
 import { bold } from '../../../content/bold';
+import { ExitConfirm } from '../ExitConfirm';
+import '../exitConfirm.css';
 import './question.css';
 
 /** The question screen's taps, plus the exit confirm sheet that the close X opens over it. */
 export function QuestionScreen({ n }: { n: number }) {
   const router = useRouter();
   const [leaving, setLeaving] = useState(false);
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const keepGoing = useCallback(() => setLeaving(false), []);
   const isLast = n === questions.length;
 
   // Skipping isn't saved yet: that waits for the saved session (screen 5).
   const skip = () => router.push(isLast ? '/results' : `/q/${n + 1}`);
-
-  // With the sheet open, focus moves into it and Escape closes it; closing hands focus back to the X.
-  useEffect(() => {
-    if (!leaving) return;
-    sheetRef.current?.querySelector('button')?.focus();
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setLeaving(false);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.querySelector<HTMLElement>('.appBar .buttonIcon')?.focus();
-    };
-  }, [leaving]);
 
   return (
     <Scaffold
@@ -64,24 +50,7 @@ export function QuestionScreen({ n }: { n: number }) {
         </div>
       }
       showBottomSheetBackground={leaving}
-      bottomSheetOnly={
-        leaving ? (
-          // Exit confirm (SPEC.md): no Figma frame; composed like the mic permission sheet.
-          <div ref={sheetRef} className="question__sheet">
-            <BottomSheet
-              appBar={{ type: 'Default' }}
-              label="Leave?"
-              middleSection={<TextBlock variant="L" title="Leave?" caption="Your progress is saved." />}
-              bottomSection={
-                <ButtonGroup variant="Vertical" size="L">
-                  <Button variant="Primary" size="L" CTA="Keep going" onClick={() => setLeaving(false)} />
-                  <Button variant="Secondary" size="L" CTA="Leave" onClick={() => router.push('/done')} />
-                </ButtonGroup>
-              }
-            />
-          </div>
-        ) : undefined
-      }
+      bottomSheetOnly={leaving ? <ExitConfirm onKeepGoing={keepGoing} /> : undefined}
     />
   );
 }

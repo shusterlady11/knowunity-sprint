@@ -1,49 +1,83 @@
-/* Every ring is a multiple of the mic button's size (Control/Mic), as in the Figma description:
-   1.1x, 1.24x, 1.42x and 1.74x the mic diameter. */
+/* Each circle is a multiple of the mic button's size (Control/Mic), as in Figma: the halo 1.74x, the core
+   1.42x the mic diameter. */
 .recordingGlow {
-  --recordingGlow-scale-innerLine: 1.1;
-  --recordingGlow-scale-outerLine: 1.24;
-  --recordingGlow-scale-innerFill: 1.42;
-  --recordingGlow-scale-outerFill: 1.74;
+  --recordingGlow-scale-core: 1.42;
+  --recordingGlow-scale-halo: 1.74;
 
   position: relative;
   display: block;
   flex: none;
-  width: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
-  height: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-halo));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-halo));
 }
 
-/* Rings are centered on each other, so the halo stays centered on the mic button behind it. */
-.recordingGlow__ring {
+/* The circles are centered on each other, so the glow stays centered on the mic button behind it. */
+.recordingGlow__circle {
   position: absolute;
   inset: 0;
   margin: auto;
-  box-sizing: border-box;
   border-radius: var(--radius-full);
+  animation-duration: var(--motion-duration-breathe);
+  animation-timing-function: var(--motion-easing-inOut);
+  animation-iteration-count: infinite;
 }
 
-.recordingGlow__ring--outerFill {
-  width: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
-  height: calc(var(--control-mic) * var(--recordingGlow-scale-outerFill));
+/* The halo: the outer circle, softly blurred. */
+.recordingGlow__circle--halo {
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-halo));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-halo));
   background-color: var(--color-interactive-voiceFeedback-layer2);
+  filter: blur(var(--motion-blur-glowHalo));
+  animation-name: recordingGlow-halo;
 }
 
-.recordingGlow__ring--innerFill {
-  width: calc(var(--control-mic) * var(--recordingGlow-scale-innerFill));
-  height: calc(var(--control-mic) * var(--recordingGlow-scale-innerFill));
+/* The core: the inner circle, slightly blurred. */
+.recordingGlow__circle--core {
+  width: calc(var(--control-mic) * var(--recordingGlow-scale-core));
+  height: calc(var(--control-mic) * var(--recordingGlow-scale-core));
   background-color: var(--color-interactive-voiceFeedback-layer3);
+  filter: blur(var(--motion-blur-glowCore));
+  animation-name: recordingGlow-core;
 }
 
-/* The outlines are drawn inside the edge, like Figma's inside stroke. A shadow is used instead of a
-   border because browsers round a border this thin to whole device pixels. */
-.recordingGlow__ring--outerLine {
-  width: calc(var(--control-mic) * var(--recordingGlow-scale-outerLine));
-  height: calc(var(--control-mic) * var(--recordingGlow-scale-outerLine));
-  box-shadow: inset 0 0 0 var(--stroke-hairline) var(--color-interactive-secondary);
+/* One breath: up over the first quarter, down over the rest, a quick inhale and a long exhale
+   (docs/recordingglow-listening-spec.md §3). A keyframe's position can't be a token, so the 25% is
+   written here. */
+@keyframes recordingGlow-halo {
+  0%,
+  100% {
+    opacity: var(--motion-opacity-breatheHaloMin);
+    transform: scale(var(--motion-scale-breatheHaloMin));
+  }
+  25% {
+    opacity: var(--motion-opacity-breatheHaloMax);
+    transform: scale(var(--motion-scale-breatheHaloMax));
+  }
 }
 
-.recordingGlow__ring--innerLine {
-  width: calc(var(--control-mic) * var(--recordingGlow-scale-innerLine));
-  height: calc(var(--control-mic) * var(--recordingGlow-scale-innerLine));
-  box-shadow: inset 0 0 0 var(--stroke-hairline) var(--color-interactive-secondary);
+@keyframes recordingGlow-core {
+  0%,
+  100% {
+    opacity: var(--motion-opacity-breatheCoreMin);
+    transform: scale(var(--motion-scale-breatheCoreMin));
+  }
+  25% {
+    opacity: var(--motion-opacity-breatheCoreMax);
+    transform: scale(var(--motion-scale-breatheCoreMax));
+  }
+}
+
+/* Reduced motion: no breathing; each circle holds the middle of its range. */
+@media (prefers-reduced-motion: reduce) {
+  .recordingGlow__circle {
+    animation: none;
+  }
+
+  .recordingGlow__circle--halo {
+    opacity: var(--motion-opacity-breatheHaloRest);
+  }
+
+  .recordingGlow__circle--core {
+    opacity: var(--motion-opacity-breatheCoreRest);
+  }
 }

@@ -1,0 +1,4 @@
+/* The exit confirm adds no box of its own around the sheet. */
+.exitConfirm {
+  display: contents;
+}

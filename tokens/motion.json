@@ -32,6 +32,38 @@
           "unit": "ms"
         },
         "$description": "150ms between one dot starting its pulse and the next, so the pulse travels left to right. USE: loadingDots (dot 2 starts one step after dot 1, dot 3 two steps). DON'T: use as a general delay. PAIR: motion.duration.pulse."
+      },
+      "breathe": {
+        "$type": "duration",
+        "$value": {
+          "value": 3400,
+          "unit": "ms"
+        },
+        "$description": "3400ms for one breath of the recording glow: it rises over the first quarter and falls over the rest, like a quick inhale and a long exhale (docs/recordingglow-listening-spec.md §3). USE: recordingGlow's two circles while the mic is listening. DON'T: symmetric pulses (use motion.duration.pulse). PAIR: motion.easing.inOut, motion.scale.breathe*, motion.opacity.breathe*. RULE: under prefers-reduced-motion, stop the breathing and hold each circle at its Rest opacity."
+      },
+      "listeningHint": {
+        "$type": "duration",
+        "$value": {
+          "value": 3000,
+          "unit": "ms"
+        },
+        "$description": "3000ms after recording starts, the hint under the question changes from \"Listening…\" to \"Tap to submit…\", once the student has had time to start speaking. The mic is mocked, so this is a timer, not speech detection. USE: the dictating screen's tapToAnswer hint. DON'T: stop the recording or submit anything; only the student's tap does that (docs/voice-ux.md)."
+      },
+      "hintFadeOut": {
+        "$type": "duration",
+        "$value": {
+          "value": 250,
+          "unit": "ms"
+        },
+        "$description": "250ms for a hint's old words to fade out before new words replace them, about 60% of the fade in, since the old words have already been read. USE: the dictating screen's hint, \"Listening…\" fading out. PAIR: motion.duration.hintFadeIn, motion.easing.inOut. RULE: under prefers-reduced-motion, swap the words with no fade."
+      },
+      "hintFadeIn": {
+        "$type": "duration",
+        "$value": {
+          "value": 400,
+          "unit": "ms"
+        },
+        "$description": "400ms for a hint's new words to fade in, slow enough to feel calm rather than abrupt. USE: the dictating screen's hint, \"Tap to submit…\" fading in. PAIR: motion.duration.hintFadeOut, motion.easing.inOut. RULE: under prefers-reduced-motion, swap the words with no fade."
       }
     },
     "easing": {
@@ -71,6 +103,76 @@
         "$type": "number",
         "$value": 0.3,
         "$description": "Opacity of a pulsing dot at its dimmest (30%); it peaks at full opacity. USE: loadingDots. DON'T: use for disabled or inactive states (use the color tokens). PAIR: motion.duration.pulse."
+      },
+      "breatheCoreMin": {
+        "$type": "number",
+        "$value": 0.5,
+        "$description": "The glow core's opacity at the bottom of a breath. USE: recordingGlow's inner circle. PAIR: motion.duration.breathe."
+      },
+      "breatheCoreMax": {
+        "$type": "number",
+        "$value": 0.88,
+        "$description": "The glow core's opacity at the top of a breath. USE: recordingGlow's inner circle. PAIR: motion.duration.breathe."
+      },
+      "breatheCoreRest": {
+        "$type": "number",
+        "$value": 0.75,
+        "$description": "The glow core's held opacity under prefers-reduced-motion, the middle of its range. USE: recordingGlow's inner circle."
+      },
+      "breatheHaloMin": {
+        "$type": "number",
+        "$value": 0.3,
+        "$description": "The glow halo's opacity at the bottom of a breath. USE: recordingGlow's outer circle. PAIR: motion.duration.breathe."
+      },
+      "breatheHaloMax": {
+        "$type": "number",
+        "$value": 0.56,
+        "$description": "The glow halo's opacity at the top of a breath. USE: recordingGlow's outer circle. PAIR: motion.duration.breathe."
+      },
+      "breatheHaloRest": {
+        "$type": "number",
+        "$value": 0.42,
+        "$description": "The glow halo's held opacity under prefers-reduced-motion, the middle of its range. USE: recordingGlow's outer circle."
+      }
+    },
+    "scale": {
+      "breatheCoreMin": {
+        "$type": "number",
+        "$value": 0.94,
+        "$description": "The glow core's size at the bottom of a breath, as a multiple of its rest size. USE: recordingGlow's inner circle. PAIR: motion.duration.breathe."
+      },
+      "breatheCoreMax": {
+        "$type": "number",
+        "$value": 1.1,
+        "$description": "The glow core's size at the top of a breath. USE: recordingGlow's inner circle. PAIR: motion.duration.breathe."
+      },
+      "breatheHaloMin": {
+        "$type": "number",
+        "$value": 0.92,
+        "$description": "The glow halo's size at the bottom of a breath. USE: recordingGlow's outer circle. PAIR: motion.duration.breathe."
+      },
+      "breatheHaloMax": {
+        "$type": "number",
+        "$value": 1.12,
+        "$description": "The glow halo's size at the top of a breath. USE: recordingGlow's outer circle. PAIR: motion.duration.breathe."
+      }
+    },
+    "blur": {
+      "glowCore": {
+        "$type": "dimension",
+        "$value": {
+          "value": 2,
+          "unit": "px"
+        },
+        "$description": "2px blur on the glow's inner circle. Part of the breathing animation, so it lives here, not in Figma (docs/recordingglow-listening-spec.md §3). USE: recordingGlow's inner circle."
+      },
+      "glowHalo": {
+        "$type": "dimension",
+        "$value": {
+          "value": 20,
+          "unit": "px"
+        },
+        "$description": "20px blur on the glow's outer circle, so it reads as a soft halo. Part of the breathing animation, so it lives here, not in Figma (docs/recordingglow-listening-spec.md §3). USE: recordingGlow's outer circle."
       }
     }
   }

@@ -1,0 +1,63 @@
+/* Dictating, as in Figma's "Question / listeningState". */
+
+/* The content is laid out from the top, the same as the question screen, so nothing moves. */
+.recording__content {
+  width: 100%;
+}
+
+/* The hint ("Listening…", then "Tap to submit…"), the mic Space/800 below it (Figma: 31), and the cancel
+   X Space/600 below the mic (Figma: 26). Space/800 under the X keeps the mic exactly where it sits on the
+   question screen (120px above the bottom edge), as Figma does. */
+.recording__answer {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-bottom: var(--space-800);
+  /* Keeps the prompt's layering inside this area, so it stays under the exit confirm's scrim and sheet. */
+  isolation: isolate;
+}
+
+/* The hint paints over the glow's edge, as in Figma. It fades in over motion.duration.hintFadeIn, and
+   fades out faster (hintFadeOut) when its words are about to change. */
+.recording__hint {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  opacity: 1;
+  transition: opacity var(--motion-duration-hintFadeIn) var(--motion-easing-inOut);
+}
+
+.recording__hint[data-fading] {
+  opacity: 0;
+  transition-duration: var(--motion-duration-hintFadeOut);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .recording__hint {
+    transition: none;
+  }
+}
+
+/* The mic with the glow centered behind it. The glow takes no room of its own. */
+.recording__mic {
+  position: relative;
+  display: flex;
+  margin-top: var(--space-800);
+}
+
+.recording__glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.recording__mic > .micButton {
+  position: relative;
+}
+
+.recording__answer > .buttonIcon {
+  margin-top: var(--space-600);
+}

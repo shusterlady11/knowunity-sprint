@@ -64,21 +64,17 @@ Component set `15878:19554`, page "New components". Documented in Figma.
 
 Component `15878:19671`, page "New components", 168×168. Documented in Figma.
 
-**Description:** the animated halo behind micButton that shows the mic is recording. A separate component, not a micButton variant, so the two can animate independently. Use it only behind micButton while listeningState=listening; never for idle or disabled.
+**Description:** voice listening feedback for the mic button: two blurred glow circles (layer2 outer, layer3 inner) that breathe on a 3400ms asymmetric cycle while listening. Figma's description also names a speech-reactive ripple pool, which isn't built this sprint (no real mic). Use it only behind micButton while listeningState=listening.
 
 **When it's used:** only while recording. Question / listeningState, centered behind micButton (listening + ready).
 
-**States:** none. It's either on the screen (recording) or not.
+**Structure:** every size is a multiple of `Control/Mic` (96); Figma rounds them to whole pixels.
+- 1.74× (168px) halo, fill → `interactive/voiceFeedback/layer2`, blur `motion.blur.glowHalo` (20px)
+- 1.42× (136px) core, fill → `interactive/voiceFeedback/layer3`, blur `motion.blur.glowCore` (2px)
 
-**Structure (outer to inner):** every size is a multiple of `Control/Mic` (96): Figma rounds them to whole pixels.
-- 1.74× (168px) circle, fill → `interactive/voiceFeedback/layer2`
-- 1.42× (136px) circle, fill → `interactive/voiceFeedback/layer3`
-- 1.24× (120px) ring, no fill, `Stroke/Hairline` (0.5px) → `interactive/secondary`
-- 1.1× (106px) ring, no fill, `Stroke/Hairline` → `interactive/secondary`
+The two outline rings were removed in Figma and in code (2026-10-01).
 
-No blur.
-
-**Built** (`src/components/recordingGlow`, 2026-09-24). No props, as in Figma; hidden from screen readers. Each ring is `Control/Mic` times its ratio (so 167.04, 136.32, 119.04 and 105.6px exactly), concentric. The outlines are inset shadows at `Stroke/Hairline`, because browsers round a border this thin to whole device pixels. It also has a "Behind micButton (listening)" story that isn't a Figma variant. Not animated yet: the Figma description says "animated" but doesn't say how, so a motion decision is needed first.
+**Built** (`src/components/recordingGlow`, 2026-09-24; rebuilt 2026-10-01). No props, as in Figma; hidden from screen readers. Both circles breathe on `motion.duration.breathe` (3400ms) with `motion.easing.inOut`, up over the first 25% and down over the rest (docs/recordingglow-listening-spec.md §3): halo scale 0.92–1.12 and opacity 0.3–0.56, core 0.94–1.1 and 0.5–0.88, all `motion.scale.breathe*` / `motion.opacity.breathe*` tokens in `tokens/motion.json`. Under reduced motion they hold 0.42 (halo) and 0.75 (core). The 25% keyframe is written in the CSS, since a keyframe's position can't be a token. It also has a "Behind micButton (listening)" story that isn't a Figma variant.
 
 ### loadingDots ✅
 
