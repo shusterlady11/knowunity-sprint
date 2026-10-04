@@ -1,0 +1,31 @@
+/* Processing, as in Figma's "Question / processingState". */
+
+/* The question, then the processing card Space/400 below it, laid out from the top like the question
+   screen so nothing moves. */
+.thinking__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  width: 100%;
+}
+
+/* The disabled mic, in the same spot as on the question screen: 120px above the bottom edge, which there
+   is the toggle row (Space/1200 + Space/1200) plus Space/200 and Scaffold's Space/400. */
+.thinking__answer {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-bottom: calc(var(--space-1200) + var(--space-1200) + var(--space-200));
+}
+
+/* The dots, centered Space/300 under the mic (Figma: 14). They take no room, so the mic doesn't move. */
+.thinking__dots {
+  position: absolute;
+  top: calc(var(--control-mic) + var(--space-300));
+  left: 50%;
+  display: flex;
+  transform: translateX(-50%);
+}

@@ -6,13 +6,18 @@
 // still works, just without resuming.
 
 import { useMemo, useSyncExternalStore } from 'react';
+import type { Verdict } from './recallEngine';
 
 export type InputMode = 'voice' | 'keyboard';
 
 export type QuestionRecord = {
-  /** How many takes the student has submitted for this question, this pass. */
+  /** How many takes have been judged for this question, this pass. */
   takes: number;
-  /** Set when the student skipped the question. Verdicts are added with the result screen. */
+  /** Key points covered by all this question's takes so far, this pass. */
+  covered?: number[];
+  /** The latest take's verdict, for the result screen. */
+  verdict?: Verdict;
+  /** Set when the student skipped the question, or said they don't know. */
   outcome?: 'skipped';
 };
 

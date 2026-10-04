@@ -64,6 +64,30 @@
           "unit": "ms"
         },
         "$description": "400ms for a hint's new words to fade in, slow enough to feel calm rather than abrupt. USE: the dictating screen's hint, \"Tap to submit…\" fading in. PAIR: motion.duration.hintFadeOut, motion.easing.inOut. RULE: under prefers-reduced-motion, swap the words with no fade."
+      },
+      "thinkingMin": {
+        "$type": "duration",
+        "$value": {
+          "value": 1200,
+          "unit": "ms"
+        },
+        "$description": "1200ms, the shortest time \"Thinking...\" stays up, so a quick verdict still reads as Knowie having considered the answer (fake-but-present latency). USE: the processing screen. DON'T: animation timing."
+      },
+      "slowNotice": {
+        "$type": "duration",
+        "$value": {
+          "value": 4000,
+          "unit": "ms"
+        },
+        "$description": "4000ms into a slow judgment, \"Thinking...\" becomes \"Taking a moment…\", so a long wait doesn't look broken (docs/voice-ux.md). USE: the processing screen, slow takes only. PAIR: motion.duration.slowTimeout."
+      },
+      "slowTimeout": {
+        "$type": "duration",
+        "$value": {
+          "value": 10000,
+          "unit": "ms"
+        },
+        "$description": "10000ms into a slow judgment, it gives up and shows \"didn't catch that\", so the student can try again instead of waiting forever. USE: the processing screen, slow takes only. PAIR: motion.duration.slowNotice."
       }
     },
     "easing": {

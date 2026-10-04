@@ -10,7 +10,8 @@
     "tokens": "style-dictionary build --config style-dictionary.config.mjs",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "dotenv -e .env.local -- chromatic"
+    "chromatic": "dotenv -e .env.local -- chromatic",
+    "test:unit": "vitest run --project unit"
   },
   "dependencies": {
     "next": "16.3.5",

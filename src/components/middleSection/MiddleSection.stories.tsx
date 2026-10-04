@@ -4,7 +4,7 @@ import { MiddleSection } from './MiddleSection';
 
 const figmaDescription = `Figma has no description for this component, so this is written from its layers. It's the top of a question screen: the topic pill, then Knowie peeking out from behind two answer cards, an intro message ("Welcome! Let’s test your knowledge on energy flow in ecosystems.") and the question. It has no properties; the pill's label and the cards' text are set on the nested instances.
 
-**In code:** \`topic\` is the nested topicPill's "Label", and \`intro\` and \`question\` are the two cards' text (answerCard Default and question; Figma has no text property on them). \`showIntro\` is added in code, since Figma always draws the intro card: the question screen shows it on question 1 only (decided 2026-10-01). Knowie is \`mascotSlot\` 2XL, \`standby\`.
+**In code:** \`topic\` is the nested topicPill's "Label", and \`intro\` and \`question\` are the two cards' text (answerCard Default and question; Figma has no text property on them). \`showIntro\` is added in code, since Figma always draws the intro card: the screens show it on question 1 until the student answers, then drop it so Knowie's reply fits (decided 2026-10-01 and 2026-10-04). Knowie is \`mascotSlot\` 2XL, \`standby\`.
 
 **Built from:** \`topicPill\`, \`mascotSlot\` and two \`answerCard\`s.
 

@@ -13,13 +13,12 @@ import { XIcon } from '../../../../icons/XIcon';
 import { intro, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { announce } from '../../../../lib/announcer';
-import { questionRecord, rememberRoute, updateSession, useSession } from '../../../../lib/session';
+import { durationMs } from '../../../../lib/motion';
+import { rememberRoute, useSession } from '../../../../lib/session';
 import { ExitConfirm } from '../../ExitConfirm';
+import { sendBackOnLoad } from '../../sendBackOnLoad';
 import '../../exitConfirm.css';
 import './recording.css';
-
-// Set once a load that opened on this route has been sent back to the question.
-let sentBackOnLoad = false;
 
 /** Dictating: the question stays on screen while the mic listens; no transcript, no toggle, no Skip. */
 export function RecordingScreen({ n }: { n: number }) {
@@ -34,13 +33,10 @@ export function RecordingScreen({ n }: { n: number }) {
   // mocked, so this is a timer (motion.duration.listeningHint), not speech detection; only a tap stops it.
   // The old words fade out, then the new ones fade in; with reduced motion they just swap.
   useEffect(() => {
-    // The build can rewrite the token's 3000ms as 3s, so read the unit too.
-    const value = getComputedStyle(document.documentElement).getPropertyValue('--motion-duration-listeningHint').trim();
-    const delay = parseFloat(value) * (value.endsWith('ms') ? 1 : 1000);
     const timer = setTimeout(() => {
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) setHint('Tap to submit…');
       else setHintFading(true);
-    }, delay);
+    }, durationMs('--motion-duration-listeningHint'));
     return () => clearTimeout(timer);
   }, []);
 
@@ -52,28 +48,15 @@ export function RecordingScreen({ n }: { n: number }) {
   };
 
   useEffect(() => {
-    // Opened straight onto this route (a reload, or reopening the app here): the take is dropped and the
-    // student goes back to the question. The browser remembers the first page it loaded, so this only
-    // matches once per load; later taps on the mic record as usual.
-    const first = performance.getEntriesByType('navigation')[0];
-    if (!sentBackOnLoad && first && new URL(first.name).pathname === window.location.pathname) {
-      sentBackOnLoad = true;
-      router.replace(`/q/${n}`);
-      return;
-    }
+    if (sendBackOnLoad(n, (route) => router.replace(route))) return;
     // Saved as the question itself: reopening the app mid-take returns there.
     rememberRoute(`/q/${n}`);
     announce('Listening for your answer.');
   }, [n, router]);
 
-  // Stopping submits the take; the engine judges it on the processing screen. Both taps replace this route,
-  // so going back never lands on a recording that has ended.
-  const stop = () => {
-    updateSession((session) => {
-      questionRecord(session, n).takes += 1;
-    });
-    router.replace(`/q/${n}/thinking`);
-  };
+  // Stopping submits the take to the processing screen, which judges and counts it. Both taps replace this
+  // route, so going back never lands on a recording that has ended.
+  const stop = () => router.replace(`/q/${n}/thinking`);
   const cancel = () => {
     announce('Recording cancelled.');
     router.replace(`/q/${n}`);

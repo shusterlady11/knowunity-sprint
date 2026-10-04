@@ -14,6 +14,14 @@ const dirname =
 export default defineConfig({
   test: {
     projects: [
+      // The recall engine's unit tests (SPEC.md › Verification): plain logic, run in Node.
+      {
+        test: {
+          name: 'unit',
+          include: ['src/lib/**/*.test.ts'],
+          environment: 'node',
+        },
+      },
       {
         extends: true,
         plugins: [
