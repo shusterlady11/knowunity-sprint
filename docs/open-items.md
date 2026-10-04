@@ -18,7 +18,6 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 | # | Decision | Blocks |
 |---|---|---|
 | D1 | Does the splash get a close button, and where does it lead? Figma's frame has a top bar of loose layers; `AppBar` can't stand in because it always draws progress and XP. If it gets one: `ButtonIcon` Tertiary M with `XCloseIcon`. | 1 First-run splash |
-| D5 | What `/` does before the entry link `/s/[code]` exists. | App shell |
 | D7 | Is `AnswerCard` `Default` Figma's splash speech bubble (a `background/surface` box with radius 16 and a tail)? Checked side by side at build time. | 1 First-run splash |
 | D9 | Page headings for screen readers. `TextBlock` doesn't choose a heading level, so no screen has a real `<h1>` to jump to. | All screens |
 | D10 | `themeColor` in the page's `viewport`: leave it out, or read it from `tokens/tokens.json` (it can't be a CSS variable). | App shell |
@@ -38,5 +37,4 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 
 Not decisions, just things that won't work yet:
 
-- **The splash shows every time,** not once per phone, until the saved session exists (screen 5).
-- **Progress and XP on the question screen aren't real** until the saved session exists (screen 5). Until then, progress follows the question number (0, 20…80) and XP stays at 0.
+- **XP stays at 0** until the result screen (7) awards it.

@@ -1,0 +1,23 @@
+/* Centered in the middle slot, 24px above true center (Space/1200 of extra space below lifts it by half),
+   with Space/600 between Knowie and the text. Same pattern as the first-run splash. */
+.messageScreen__content {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-600);
+  width: 100%;
+  padding-bottom: var(--space-1200);
+}
+
+/* A full-width button, Space/600 from the bottom edge: Scaffold's Space/400 plus Space/200 here. */
+.messageScreen__actions {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  padding-bottom: var(--space-200);
+}

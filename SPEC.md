@@ -133,12 +133,15 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 
 | Situation | Leads to |
 |---|---|
-| A session is already in progress | wherever the student left off |
+| A session with this code is already in progress | wherever the student left off |
 | First visit on this phone | `/start` |
 | Otherwise | `/q/1` |
 
-- **Home Screen:** the student adds this page to their Home Screen. The saved icon has to open `/s/[code]` with its code. On iOS, Home Screen web apps don't share storage with Safari, so the code can't be passed along any other way.
-- **`/reset`** clears the saved session and the "splash seen" flag between participants. It's reached by typing the address and never appears in the student's flow.
+A different code starts a new session for it. An unknown code shows "This link doesn’t work. Ask the person running the session for a new link." and goes nowhere.
+
+- **Home Screen:** the student adds this page to their Home Screen. The saved icon has to open `/s/[code]` with its code. On iOS, Home Screen web apps don't share storage with Safari, so the code can't be passed along any other way. So, opened in Safari, `/s/[code]` stays on its address and shows "Add to Home Screen" with the steps ("Tap Share, then Add to Home Screen. Open Knowie from your Home Screen to start."), and a Secondary "Continue in browser" button for testing on a computer. Opened from the icon (full screen), it goes straight on (decided 2026-10-02).
+- **`/reset`** clears the saved session and the "splash seen" flag between participants, then shows "All cleared. This phone is ready for the next participant. Open their link to start." It's reached by typing the address and never appears in the student's flow.
+- **`/`, the app's home address,** resumes a session in progress; with none, it starts one on the `tour` script at `/start` (was D5, decided 2026-10-02).
 - **Full-screen mode:** an app manifest (`src/app/manifest.ts`, the Next.js file convention) and the page metadata make the Home Screen icon open full screen, with no Safari toolbars.
 
 ### 6. Processing: `/q/[n]/thinking`

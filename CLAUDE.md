@@ -61,9 +61,10 @@ When working on UI, use the storybook tools to read the component library before
 - `src/components/*` — built components, one folder each with its CSS and stories: `iconSlot`, `button`, `statusPill`, `answerCard`, `bottomCTA`, `topicPill`, `micButton`, `inputModeToggle`, `toggleGroup`, `loadingDots`, `recordingGlow`, `progressMeter`, `buttonIcon`, `expandableResultRow`, `resultsSummary`, `buttonGroup`, `bottomSheetAppBar`, `bottomSheet`, `tapToAnswer`, `textBlock`, `progressIndicator`, `xpCounter`, `appBar`, `mascotSlot`, `scaffold`, `chatInput`, `middleSection`. Values come from tokens only; check Storybook before building a new one.
 - `src/icons/*` — icons exported from Figma (`currentColor` fill), passed into `iconSlot`.
 - `src/foundations/*` — Storybook pages that show the tokens (colors, type, spacing, radius, sizes, shadows, motion).
-- `src/app/layout.tsx` — root layout, fonts. Still the create-next-app default.
-- `src/app/page.tsx` — home page. Still the create-next-app placeholder; references `/next.svg` and `/vercel.svg`.
-- `src/app/globals.css` — global styles; imports `build/css/tokens.css`. The rest is still the create-next-app default theme.
+- `src/app/layout.tsx` — root layout: page metadata, Home Screen (full-screen) settings, viewport, and the screen-reader live region.
+- `src/app/page.tsx` — the home address: resumes a saved session, or starts one on `tour` at `/start`.
+- `src/app/globals.css` — global styles: imports `build/css/tokens.css`, loads Inter, sets dark mode, hides the live region.
+- `src/app/manifest.ts` — the web app manifest that makes the Home Screen icon open full screen (no start_url, so the icon keeps its `/s/[code]`).
 - `public/images/*` — shipped Knowie mascot expression icons (9 svg + 3 png, intentional mix).
 - `reference/*.PNG` — 43 Figma mockup exports for visual reference only; not served assets, not final.
 - `.claude/skills/ux-designer/SKILL.md` — flow/IA/usability strategy; read before designing a new flow.
@@ -71,6 +72,9 @@ When working on UI, use the storybook tools to read the component library before
 - `.claude/skills/ux-motion/SKILL.md` — animation/transition implementation; read before building the mic, recording glow, or loading states.
 - `.claude/skills/interactive-prototype/SKILL.md` — high-fidelity interactive React-artifact prototyping workflow; read before prototyping a flow in an artifact.
 - `src/content/*` — the questions and topic the screens show. PLACEHOLDER until the designer supplies the real content (D12).
+- `src/lib/session.ts` — the saved session on the phone (script code, route, input mode, takes, XP) and the "splash seen" flag; `/reset` clears both.
+- `src/content/scripts.ts` — the scripts the entry link `/s/[code]` picks. PLACEHOLDER: only `tour` so far.
+- `src/app/MessageScreen.tsx` — the plain centered message page (install steps, unknown link, reset).
 - `src/lib/announcer.tsx` — the one hidden screen-reader live region (in the root layout); call `announce()` for every state change, in a full sentence.
 - `src/app/q/ExitConfirm.tsx` — the exit confirm sheet the close X opens on every `/q/...` route.
 - `docs/component-gaps.md` — running list of things built inline during a screen build because Storybook had no component for them; read it before building a new screen.

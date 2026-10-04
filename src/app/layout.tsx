@@ -5,6 +5,9 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'Knowie voice recall',
   description: 'Usability-test prototype: explain a concept out loud, and Knowie checks your answer.',
+  // Opened from the Home Screen, it runs full screen under a see-through status bar; Scaffold keeps its
+  // content clear of the bar.
+  appleWebApp: { capable: true, title: 'Knowie', statusBarStyle: 'black-translucent' },
 };
 
 // viewportFit 'cover' lets the screen run under the iPhone's status bar and home bar, so Scaffold can

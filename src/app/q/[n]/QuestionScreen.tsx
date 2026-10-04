@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../../components/scaffold/Scaffold';
 import { AppBar } from '../../../components/appBar/AppBar';
@@ -10,6 +10,7 @@ import { MicButton } from '../../../components/micButton/MicButton';
 import { ToggleGroup } from '../../../components/toggleGroup/ToggleGroup';
 import { intro, questions, topic } from '../../../content/questions';
 import { bold } from '../../../content/bold';
+import { getSession, questionRecord, rememberRoute, updateSession, useSession } from '../../../lib/session';
 import { ExitConfirm } from '../ExitConfirm';
 import '../exitConfirm.css';
 import './question.css';
@@ -19,17 +20,35 @@ export function QuestionScreen({ n }: { n: number }) {
   const router = useRouter();
   const [leaving, setLeaving] = useState(false);
   const keepGoing = useCallback(() => setLeaving(false), []);
+  const xp = useSession()?.xp ?? 0;
   const isLast = n === questions.length;
 
-  // Skipping isn't saved yet: that waits for the saved session (screen 5).
-  const skip = () => router.push(isLast ? '/results' : `/q/${n + 1}`);
+  // A student in keyboard mode answers on the typing screen; otherwise remember this question.
+  useEffect(() => {
+    if (getSession()?.inputMode === 'keyboard') return router.replace(`/q/${n}/type`);
+    rememberRoute(`/q/${n}`);
+  }, [n, router]);
+
+  const skip = () => {
+    updateSession((session) => {
+      questionRecord(session, n).outcome = 'skipped';
+    });
+    router.push(isLast ? '/results' : `/q/${n + 1}`);
+  };
+
+  const toKeyboard = () => {
+    updateSession((session) => {
+      session.inputMode = 'keyboard';
+    });
+    router.push(`/q/${n}/type`);
+  };
 
   return (
     <Scaffold
       topNavigation={
         <div inert={leaving}>
-          {/* Progress counts questions finished: 0 on question 1, 80 on question 5. XP stays 0 until the saved session exists. */}
-          <AppBar progress={((n - 1) / questions.length) * 100} xp={0} onClose={() => setLeaving(true)} />
+          {/* Progress counts questions finished: 0 on question 1, 80 on question 5. */}
+          <AppBar progress={((n - 1) / questions.length) * 100} xp={xp} onClose={() => setLeaving(true)} />
         </div>
       }
       middleContent={
@@ -44,7 +63,7 @@ export function QuestionScreen({ n }: { n: number }) {
           <ToggleGroup
             inputMode="voice"
             micBlocked={false}
-            onInputModeChange={(mode) => mode === 'keyboard' && router.push(`/q/${n}/type`)}
+            onInputModeChange={(mode) => mode === 'keyboard' && toKeyboard()}
             onSkip={skip}
           />
         </div>

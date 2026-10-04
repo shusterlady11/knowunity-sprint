@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../components/scaffold/Scaffold';
 import { AppBar } from '../../components/appBar/AppBar';
@@ -12,11 +13,21 @@ import { ButtonGroup } from '../../components/buttonGroup/ButtonGroup';
 import { Button } from '../../components/button/Button';
 import { intro, questions, topic } from '../../content/questions';
 import { bold } from '../../content/bold';
+import { rememberRoute, updateSession } from '../../lib/session';
 import './mic.css';
 
 /** Mic primer (SPEC.md › 2): a sheet asking to turn on the mic, over question 1 behind a scrim. */
 export default function MicPage() {
   const router = useRouter();
+
+  useEffect(() => rememberRoute('/mic'), []);
+
+  const answer = (inputMode: 'voice' | 'keyboard', route: string) => {
+    updateSession((session) => {
+      session.inputMode = inputMode;
+    });
+    router.push(route);
+  };
 
   // Question 1 behind the sheet, drawn like the question screen. `inert` keeps taps and screen readers in
   // the sheet: the scrim already blocks taps, but not a screen reader.
@@ -52,9 +63,9 @@ export default function MicPage() {
           }
           bottomSection={
             <ButtonGroup variant="Vertical" size="L">
-              {/* No browser prompt: the mic is mocked (docs/sprint-context.md). Voice is the question screen's default mode. */}
-              <Button variant="Primary" size="L" CTA="Turn on" onClick={() => router.push('/q/1')} />
-              <Button variant="Secondary" size="L" CTA="Not now" onClick={() => router.push('/mic-off')} />
+              {/* No browser prompt: the mic is mocked (docs/sprint-context.md). Not now puts the student in keyboard mode. */}
+              <Button variant="Primary" size="L" CTA="Turn on" onClick={() => answer('voice', '/q/1')} />
+              <Button variant="Secondary" size="L" CTA="Not now" onClick={() => answer('keyboard', '/mic-off')} />
             </ButtonGroup>
           }
         />

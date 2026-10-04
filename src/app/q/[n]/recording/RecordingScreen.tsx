@@ -13,6 +13,7 @@ import { XIcon } from '../../../../icons/XIcon';
 import { intro, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { announce } from '../../../../lib/announcer';
+import { questionRecord, rememberRoute, updateSession, useSession } from '../../../../lib/session';
 import { ExitConfirm } from '../../ExitConfirm';
 import '../../exitConfirm.css';
 import './recording.css';
@@ -26,6 +27,7 @@ export function RecordingScreen({ n }: { n: number }) {
   const [leaving, setLeaving] = useState(false);
   const [hint, setHint] = useState('Listening…');
   const [hintFading, setHintFading] = useState(false);
+  const xp = useSession()?.xp ?? 0;
   const keepGoing = useCallback(() => setLeaving(false), []);
 
   // "Listening…" first, then "Tap to submit…" once the student has had time to start speaking. The mic is
@@ -59,12 +61,19 @@ export function RecordingScreen({ n }: { n: number }) {
       router.replace(`/q/${n}`);
       return;
     }
+    // Saved as the question itself: reopening the app mid-take returns there.
+    rememberRoute(`/q/${n}`);
     announce('Listening for your answer.');
   }, [n, router]);
 
-  // The take isn't stored yet: that waits for the saved session (screen 5). Both taps replace this route,
+  // Stopping submits the take; the engine judges it on the processing screen. Both taps replace this route,
   // so going back never lands on a recording that has ended.
-  const stop = () => router.replace(`/q/${n}/thinking`);
+  const stop = () => {
+    updateSession((session) => {
+      questionRecord(session, n).takes += 1;
+    });
+    router.replace(`/q/${n}/thinking`);
+  };
   const cancel = () => {
     announce('Recording cancelled.');
     router.replace(`/q/${n}`);
@@ -74,7 +83,7 @@ export function RecordingScreen({ n }: { n: number }) {
     <Scaffold
       topNavigation={
         <div inert={leaving}>
-          <AppBar progress={((n - 1) / questions.length) * 100} xp={0} onClose={() => setLeaving(true)} />
+          <AppBar progress={((n - 1) / questions.length) * 100} xp={xp} onClose={() => setLeaving(true)} />
         </div>
       }
       middleContent={

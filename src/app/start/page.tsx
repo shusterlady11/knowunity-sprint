@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../components/scaffold/Scaffold';
 import { ButtonIcon } from '../../components/buttonIcon/ButtonIcon';
@@ -9,11 +10,18 @@ import { AnswerCard } from '../../components/answerCard/AnswerCard';
 import { Button } from '../../components/button/Button';
 import { ArrowLeftIcon } from '../../icons/ArrowLeftIcon';
 import { SpeechBubbleTailIcon } from '../../icons/SpeechBubbleTailIcon';
+import { markSplashSeen, rememberRoute } from '../../lib/session';
 import './start.css';
 
 /** First-run splash (SPEC.md › 1): Knowie explains why answering out loud helps, then the mic primer. */
 export default function StartPage() {
   const router = useRouter();
+
+  // Shown once per phone: the entry link skips it from now on.
+  useEffect(() => {
+    markSplashSeen();
+    rememberRoute('/start');
+  }, []);
 
   return (
     <Scaffold
