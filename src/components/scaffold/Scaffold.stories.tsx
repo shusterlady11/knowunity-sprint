@@ -199,9 +199,14 @@ export const LongSheet: Story = {
       <BottomSheet
         appBar={{ type: 'dismissOnly', title: 'Producers and consumers' }}
         middleSection={
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-400)' }}>
+          // The overlay rules from the build-screen skill: text inset Space/400 more than the sheet on both
+          // sides (32px from each edge), and room at the bottom when the sheet has no buttons.
+          <div
+            className="longSheetContent"
+            style={{ boxSizing: 'border-box', display: 'flex', flexDirection: 'column', gap: 'var(--space-400)', width: '100%', paddingInline: 'var(--space-400)', paddingBottom: 'max(var(--space-800), env(safe-area-inset-bottom))' }}
+          >
             {Array.from({ length: 8 }, (_, i) => (
-              <p key={i} style={{ margin: 0, color: 'var(--color-text-primary)', font: 'var(--type-body-m-regular-fontWeight) var(--type-body-m-regular-fontSize)/var(--type-body-m-regular-lineHeight) var(--type-body-m-regular-fontFamily)' }}>
+              <p key={i} style={{ margin: 0, color: 'var(--color-text-primary)', font: 'var(--type-body-m-regular-fontWeight) var(--type-body-m-regular-fontSize)/var(--type-body-m-regular-lineHeight) var(--type-body-m-regular-fontFamily)', letterSpacing: 'var(--type-body-m-regular-letterSpacing)' }}>
                 Producers make their own food, while consumers get energy by eating producers or other consumers.
               </p>
             ))}
@@ -217,6 +222,16 @@ export const LongSheet: Story = {
     const sheet = canvasElement.querySelector('.bottomSheet') as HTMLElement;
     const sheetBar = sheet.querySelector('.bottomSheetAppBar') as HTMLElement;
     const middle = sheet.querySelector('.bottomSheet__middle') as HTMLElement;
+
+    // The text sits the same distance from both edges: the sheet's Space/400 plus Space/400 more.
+    const content = sheet.querySelector('.longSheetContent') as HTMLElement;
+    const root = getComputedStyle(document.documentElement);
+    const inset = 2 * parseFloat(root.getPropertyValue('--space-400'));
+    const s = sheet.getBoundingClientRect();
+    const c = content.getBoundingClientRect();
+    const cs = getComputedStyle(content);
+    await expect(c.left + parseFloat(cs.paddingLeft) - s.left).toBe(inset);
+    await expect(s.right - (c.right - parseFloat(cs.paddingRight))).toBe(inset);
 
     // At its tallest: the sheet's top meets the bottom of the app bar, which stays in view.
     await expect(Math.round(sheet.getBoundingClientRect().top)).toBe(Math.round(bar.getBoundingClientRect().bottom));
