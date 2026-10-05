@@ -4,11 +4,11 @@ import { Button } from '../button/Button';
 import { ButtonGroup } from '../buttonGroup/ButtonGroup';
 import { BottomSheet } from './BottomSheet';
 
-const figmaDescription = `Sheet that slides up over a screen for a short, secondary task. middleSection holds the content; bottomSection holds the actions. The top bar is a bottomSheetAppBar; pick its Type for the sheet's purpose. USE: permission prompts (mic access) and supporting detail such as Reveal answer. DON'T: use for the main question flow or anything the student must complete to continue the set. height (S/M/L) is a design-time preview only; in code the sheet hugs its content and fills the screen width.
+const figmaDescription = `Sheet that slides up over a screen for a short, secondary task. middleSection holds the content; bottomSection holds the actions. The top bar is a bottomSheetAppBar; pick its Type for the sheet's purpose. USE: permission prompts (mic access) and supporting detail such as Reveal answer. DON'T: use for the main question flow or anything the student must complete to continue the set. height (S/M/L) is a design-time preview only; in code the sheet hugs its content and fills the screen width, up to a maximum height.
 
 **In code:** the two slots are the props \`middleSection\` and \`bottomSection\`. The top bar's settings (its type, title, icons and taps) go in \`appBar\`, which takes the \`bottomSheetAppBar\` properties, because Figma sets them on the nested bar. \`bottomSection\` left out means the actions section isn't drawn, as when Figma hides the empty slot on Reveal answer. \`height\` keeps Figma's S / M / L options so the props mirror Figma, but has no effect (decided with the user): the sheet fills the width it's given and always hugs its content. The two real uses, Reveal answer (about 259px tall) and the mic permission (about 537px), are both \`height=M\` in Figma and very different heights.
 
-**Layout:** top corners \`Radius/900\`, bottom corners square, fill \`background/surface\`. The content section has \`Space/400\` at the sides and \`Space/200\` below, with \`Space/600\` between items, centered; the actions section has \`Space/400\` all round and the same gap. A Secondary button on the sheet takes \`background/floating\`, Figma's override on the mic permission's "Not now": the button's own fill is \`background/surface\`, the sheet's color, so it would vanish. The sheet doesn't position itself: the screen's \`bottomSheetOnly\` slot places it at the bottom, over the scrim, and the slide-up isn't built (no motion token for it).
+**Layout:** top corners \`Radius/900\`, bottom corners square, fill \`background/surface\`. The content section has \`Space/400\` at the sides and \`Space/200\` below, with \`Space/600\` between items, centered; the actions section has \`Space/400\` all round and the same gap. A Secondary button on the sheet takes \`background/floating\`, Figma's override on the mic permission's "Not now": the button's own fill is \`background/surface\`, the sheet's color, so it would vanish. The sheet never grows past its container: in a screen, \`scaffold\`'s \`bottomSheetOnly\` slot stops just below the app bar, and from there the top bar and actions stay put while the content scrolls (decided 2026-10-04; see the story "scaffold › Long sheet"). The sheet doesn't position itself: the screen's \`bottomSheetOnly\` slot places it at the bottom, over the scrim, and the slide-up isn't built (no motion token for it).
 
 **Accessibility:** it's a dialog, named by \`label\` or, by default, the top bar's title (the Default top bar has no title, so give it a \`label\`). Focus handling and closing on the scrim belong to the screen.
 
@@ -31,6 +31,8 @@ const meta = {
     const bar = sheet.querySelector('.bottomSheetAppBar') as HTMLElement;
     const middle = sheet.querySelector('.bottomSheet__middle') as HTMLElement;
     const bottom = sheet.querySelector('.bottomSheet__bottom') as HTMLElement | null;
+    // The content is the part that scrolls when the sheet is at its tallest.
+    await expect(getComputedStyle(middle).overflowY).toBe('auto');
     const root = getComputedStyle(document.documentElement);
     const token = (name: string) => root.getPropertyValue(name).trim();
     const paint = (cssVar: string) => {

@@ -36,7 +36,7 @@ export function Scaffold({
   showBottomSheetBackground = false,
 }: ScaffoldProps) {
   return (
-    <div className="scaffold" data-size="iPhone 13">
+    <div className="scaffold" data-size="iPhone 13" data-top-nav={showTopNavSlot}>
       {/* The status bar is system UI and isn't built; its height is kept so everything lines up with Figma. */}
       <div className="scaffold__statusArea" aria-hidden="true" />
       {showTopNavSlot && <div className="scaffold__topNavigation">{topNavigation}</div>}

@@ -64,6 +64,7 @@
 
 .scaffold__bottomSheetOnly {
   position: absolute;
+  top: var(--scaffold-sheet-top);
   right: 0;
   bottom: 0;
   left: 0;
@@ -71,4 +72,22 @@
   flex-direction: column;
   justify-content: flex-end;
   gap: var(--space-100);
+  pointer-events: none;
+}
+
+/* A sheet grows with its content up to the top of this slot, then its content scrolls (decided
+   2026-10-04). The slot starts below the app bar (the status area, then the appBar's 48px row and
+   Space/200), or below the status area when there's no top navigation. It's see-through and lets taps
+   through, except on the sheet itself. */
+.scaffold {
+  --scaffold-sheet-top: calc(var(--space-1200) + var(--control-touch-target) + var(--space-200));
+}
+
+.scaffold[data-top-nav='false'] {
+  --scaffold-sheet-top: var(--space-1200);
+}
+
+.scaffold__bottomSheetOnly > * {
+  min-height: 0;
+  pointer-events: auto;
 }

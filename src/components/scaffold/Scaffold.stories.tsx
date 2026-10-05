@@ -16,7 +16,7 @@ const figmaDescription = `Used to quickly create screens using our components, m
 
 **In code:** every screen is a \`scaffold\` plus what goes in its four slots. The slots are props with Figma's names: \`topNavigation\` (usually an appBar), \`middleContent\` (the screen's content; the only part that scrolls), \`bottomContent\` (the primary actions, pinned to the bottom) and \`bottomSheetOnly\` (a bottomSheet, placed at the bottom over everything). The three switches keep Figma's names and defaults: \`showTopNavSlot\` (on), \`showBottomNavSlot\` (on) and \`showBottomSheetBackground\` (off, the scrim behind a sheet).
 
-**Layout:** the frame fills the width it's given and is one screen tall, on \`background/page\`. Its corners are square, unlike Figma's \`Radius/600\` frame: the iPhone's screen has its own rounded corners, and rounding them again showed dark wedges under a sheet or bottom bar (decided 2026-10-04). From the top: a 48px area where the status bar goes (\`Space/1200\`; the status bar is system UI and isn't built, but its height is kept so everything lines up), the top navigation with \`Space/100\` between items, the content taking all the remaining height, and the bottom actions. The content has \`Space/200\` above and below and \`Space/400\` at the sides, with \`Space/200\` between items, and scrolls when it's too long. The bottom actions have \`Space/400\` all round, with \`Space/100\` between items. The scrim (\`background/scrim\`) covers the whole screen and the sheet sits at the very bottom above it.
+**Layout:** the frame fills the width it's given and is one screen tall, on \`background/page\`. Its corners are square, unlike Figma's \`Radius/600\` frame: the iPhone's screen has its own rounded corners, and rounding them again showed dark wedges under a sheet or bottom bar (decided 2026-10-04). From the top: a 48px area where the status bar goes (\`Space/1200\`; the status bar is system UI and isn't built, but its height is kept so everything lines up), the top navigation with \`Space/100\` between items, the content taking all the remaining height, and the bottom actions. The content has \`Space/200\` above and below and \`Space/400\` at the sides, with \`Space/200\` between items, and scrolls when it's too long. The bottom actions have \`Space/400\` all round, with \`Space/100\` between items. The scrim (\`background/scrim\`) covers the whole screen and the sheet sits at the very bottom above it. A sheet grows with its content up to just below the app bar (or the status area, with no top navigation), then its content scrolls (decided 2026-10-04).
 
 **Only one size:** Figma's set has eight sizes (iPhone 13, 17 Pro Max, iPhone SE, four tablet and iPad layouts, and a laptop). Only \`iPhone 13\`, the 390px phone the prototype is drawn for, is built; the other layouts are out of scope this sprint.
 
@@ -187,6 +187,45 @@ export const NoBottomContent: Story = {
 export const QuestionScreen: Story = {
   name: 'Question screen (voice)',
   args: questionScreen,
+};
+
+// Not a Figma variant: a sheet with more text than fits. It stops just below the app bar and its content scrolls.
+export const LongSheet: Story = {
+  name: 'Long sheet (content scrolls)',
+  args: {
+    ...questionScreen,
+    showBottomSheetBackground: true,
+    bottomSheetOnly: (
+      <BottomSheet
+        appBar={{ type: 'dismissOnly', title: 'Producers and consumers' }}
+        middleSection={
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-400)' }}>
+            {Array.from({ length: 8 }, (_, i) => (
+              <p key={i} style={{ margin: 0, color: 'var(--color-text-primary)', font: 'var(--type-body-m-regular-fontWeight) var(--type-body-m-regular-fontSize)/var(--type-body-m-regular-lineHeight) var(--type-body-m-regular-fontFamily)' }}>
+                Producers make their own food, while consumers get energy by eating producers or other consumers.
+              </p>
+            ))}
+          </div>
+        }
+      />
+    ),
+  },
+  play: async (context) => {
+    await meta.play?.(context);
+    const { canvasElement } = context;
+    const bar = canvasElement.querySelector('.scaffold__topNavigation') as HTMLElement;
+    const sheet = canvasElement.querySelector('.bottomSheet') as HTMLElement;
+    const sheetBar = sheet.querySelector('.bottomSheetAppBar') as HTMLElement;
+    const middle = sheet.querySelector('.bottomSheet__middle') as HTMLElement;
+
+    // At its tallest: the sheet's top meets the bottom of the app bar, which stays in view.
+    await expect(Math.round(sheet.getBoundingClientRect().top)).toBe(Math.round(bar.getBoundingClientRect().bottom));
+    // The content scrolls; the sheet's own top bar stays at its top.
+    await expect(middle.scrollHeight).toBeGreaterThan(middle.clientHeight);
+    await expect(getComputedStyle(middle).overflowY).toBe('auto');
+    middle.scrollTop = middle.scrollHeight;
+    await expect(Math.round(sheetBar.getBoundingClientRect().top)).toBe(Math.round(sheet.getBoundingClientRect().top));
+  },
 };
 
 export const MicPermission: Story = {

@@ -1,28 +1,36 @@
-/* Fills the width it's given and hugs its content; only the top corners are rounded. */
+/* Fills the width it's given and hugs its content; only the top corners are rounded. It never grows past
+   its container (Scaffold's sheet slot stops below the app bar): the top bar and the actions stay put and
+   the content scrolls. */
 .bottomSheet {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 100%;
   padding: var(--space-0);
   overflow: hidden;
   border-radius: var(--radius-900) var(--radius-900) 0 0;
   background-color: var(--color-background-surface);
 }
 
-/* Content: centered, Space/400 at the sides and Space/200 below. */
+/* Content: centered, Space/400 at the sides and Space/200 below. It scrolls when the sheet is at its
+   tallest; "safe" keeps long content from being cut off at the top. */
 .bottomSheet__middle {
   box-sizing: border-box;
   display: flex;
+  flex: 0 1 auto;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: safe center;
+  min-height: 0;
+  overflow-y: auto;
   gap: var(--space-600);
   padding: var(--space-0) var(--space-400) var(--space-200);
 }
 
 /* Actions: Space/400 all round. */
 .bottomSheet__bottom {
+  flex: none;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -36,4 +44,9 @@
    overrides the fill on sheet buttons to background/floating (PERMISSION-MIC's "Not now"). */
 .bottomSheet .button[data-variant='Secondary'] .button__face {
   background-color: var(--color-background-floating);
+}
+
+/* The top bar stays put while the content scrolls. */
+.bottomSheet > .bottomSheetAppBar {
+  flex: none;
 }
