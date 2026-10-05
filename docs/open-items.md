@@ -28,8 +28,6 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 | # | Decision | Blocks |
 |---|---|---|
 | D4 | Where a screen with no Figma frame gets reviewed: in the dev server at 390, or as an extra `Scaffold` story in Storybook. | 5 Entry link, 9 End screen |
-| D8 | Mic skipped's small shadow under the mascot is a loose layer with no component: drop it, or add it to `MascotSlot` in Figma. | 11 Mic skipped |
-| D13 | Mic skipped's body text: Figma uses Headline S, but `TextBlock` L draws its caption in Headline XS. Accept that, or change something in Figma. | 11 Mic skipped |
 
 ## Known limits until later screens exist
 

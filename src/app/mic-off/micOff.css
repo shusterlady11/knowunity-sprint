@@ -1,0 +1,23 @@
+/* Mic skipped, as in Figma's SPLASH-SKIP-MIC. */
+
+/* Knowie and the text, centered 24px above true center (Space/1200 of extra space below lifts the block by
+   half of it), Space/200 apart as in Figma. */
+.micOff__content {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-200);
+  width: 100%;
+  padding-bottom: var(--space-1200);
+}
+
+/* BottomCTA's no-drawer layout brings its own Space/400 sides and Space/600 bottom, so the bar cancels
+   Scaffold's Space/400 margin: the buttons end up 16px from the sides and 24px from the bottom, like every
+   bottom button. */
+.micOff__bar {
+  align-self: stretch;
+  margin: var(--space-negative-400);
+}

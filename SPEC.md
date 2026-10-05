@@ -288,8 +288,8 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 - **States:** one: "Let's switch it up. Your mic is off…"
 - **Components:**
   - `Scaffold` with no top navigation
-  - `MascotSlot` 3XL, `approving`
-  - `TextBlock`
+  - `MascotSlot` 3XL, `approving`, with no shadow under it: Figma's oval is a loose layer, dropped (was D8, decided 2026-10-05)
+  - `TextBlock` L as it is: "Let's switch it up." in Headline L, and the paragraph as its caption in Headline XS, smaller than Figma's Headline S (was D13, decided 2026-10-05)
   - `BottomCTA` layout "Two button no drawer": `Button` Secondary L "No thanks", `Button` Primary L "Continue"
 - **Actions:**
 
