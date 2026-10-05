@@ -45,7 +45,11 @@ export type Session = {
   questions: Record<number, QuestionRecord>;
   /** Set once the student starts answering question 1 for the first time; the "Welcome!" card never shows again. */
   introSeen?: boolean;
+  /** How the student reached the end screen, saved by the button that leads there (was D3). */
+  endedBy?: EndedBy;
 };
+
+export type EndedBy = 'finished' | 'left' | 'optedOut';
 
 const SESSION_KEY = 'knowie.session';
 const SPLASH_KEY = 'knowie.splashSeen';
@@ -130,6 +134,18 @@ export function hasSeenSplash(): boolean {
 
 export function markSplashSeen() {
   write(SPLASH_KEY, true);
+}
+
+/**
+ * Saves how the session ended, for the end screen's message. Finishing or opting out ends the session, so
+ * reopening the app comes back to the end screen; a student who left keeps their place and resumes there
+ * ("Progress saved. Come back any time.").
+ */
+export function endSession(endedBy: EndedBy) {
+  updateSession((session) => {
+    session.endedBy = endedBy;
+    if (endedBy !== 'left') session.route = '/done';
+  });
 }
 
 /**

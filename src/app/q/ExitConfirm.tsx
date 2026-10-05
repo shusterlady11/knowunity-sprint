@@ -6,6 +6,7 @@ import { BottomSheet } from '../../components/bottomSheet/BottomSheet';
 import { TextBlock } from '../../components/textBlock/TextBlock';
 import { ButtonGroup } from '../../components/buttonGroup/ButtonGroup';
 import { Button } from '../../components/button/Button';
+import { endSession } from '../../lib/session';
 
 /**
  * The exit confirm that the close X opens on every /q/... route (SPEC.md › Exit confirm). No Figma frame;
@@ -35,7 +36,15 @@ export function ExitConfirm({ onKeepGoing }: { onKeepGoing: () => void }) {
         bottomSection={
           <ButtonGroup variant="Vertical" size="L">
             <Button variant="Primary" size="L" CTA="Keep going" onClick={onKeepGoing} />
-            <Button variant="Secondary" size="L" CTA="Leave" onClick={() => router.push('/done')} />
+            <Button
+              variant="Secondary"
+              size="L"
+              CTA="Leave"
+              onClick={() => {
+                endSession('left');
+                router.push('/done');
+              }}
+            />
           </ButtonGroup>
         }
       />

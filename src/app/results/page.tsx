@@ -8,7 +8,7 @@ import { ResultsSummary, type ResultsSummaryProps } from '../../components/resul
 import { BottomCTA } from '../../components/bottomCTA/BottomCTA';
 import { questions } from '../../content/questions';
 import { resultsCopy } from '../../content/results';
-import { rememberRoute, startNextPass, useSession } from '../../lib/session';
+import { endSession, rememberRoute, startNextPass, useSession } from '../../lib/session';
 import './results.css';
 
 type Category = NonNullable<ResultsSummaryProps['category']>;
@@ -94,7 +94,10 @@ export default function ResultsPage() {
       }
       bottomContent={
         <div className="results__bar">
-          <BottomCTA layout="Two button drawer" leftCTA="Review all" rightCTA="Continue" onLeftClick={reviewAll} onRightClick={() => router.push('/done')} />
+          <BottomCTA layout="Two button drawer" leftCTA="Review all" rightCTA="Continue" onLeftClick={reviewAll} onRightClick={() => {
+            endSession('finished');
+            router.push('/done');
+          }} />
         </div>
       }
     />

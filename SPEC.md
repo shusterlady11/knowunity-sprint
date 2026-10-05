@@ -241,7 +241,7 @@ A different code starts a new session for it. An unknown code shows "This link d
   | Leaving mid-session (exit confirm → Leave) | "Progress saved. Come back any time." |
   | Opting out (`/mic-off` → No thanks) | "No problem. Maybe next time." |
 
-  **How it knows the way in** (was D3, decided 2026-10-05): the button that leads here saves it in the session (finished, left or opted out) before going to `/done`, so reopening the app from the Home Screen shows the same message. With nothing saved, it shows the finished message.
+  **How it knows the way in** (was D3, decided 2026-10-05): the button that leads here saves it in the session (finished, left or opted out) before going to `/done`, so reopening the app from the Home Screen shows the same message. A student who left keeps their place instead: reopening resumes where they stopped. With nothing saved, it shows the finished message. Each message is split into a `TextBlock` L headline and the line under it, e.g. "Nice work." over "You're done."
 
 - **Components:**
   - `Scaffold` with no top navigation
