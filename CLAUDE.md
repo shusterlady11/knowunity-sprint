@@ -71,11 +71,11 @@ When working on UI, use the storybook tools to read the component library before
 - `.claude/skills/ui-designer/SKILL.md` — visual craft, styling, tokens-to-CSS; read before styling any screen.
 - `.claude/skills/ux-motion/SKILL.md` — animation/transition implementation; read before building the mic, recording glow, or loading states.
 - `.claude/skills/interactive-prototype/SKILL.md` — high-fidelity interactive React-artifact prototyping workflow; read before prototyping a flow in an artifact.
-- `src/content/*` — the questions and topic the screens show. PLACEHOLDER until the designer supplies the real content (D12).
+- `src/content/*` — the questions, topic, key points, hints, correct lines and answers the screens show. PLACEHOLDER until the designer supplies the real content (D12).
 - `src/lib/session.ts` — the saved session on the phone (script code, route, input mode, takes, XP) and the "splash seen" flag; `/reset` clears both.
 - `src/content/scripts.ts` — the scripts the entry link `/s/[code]` picks. PLACEHOLDER: only `tour` so far.
 - `src/app/MessageScreen.tsx` — the plain centered message page (install steps, unknown link, reset).
-- `src/lib/recallEngine/` — the mocked recall engine: reads a script's take for a question and works out coverage and the verdict. Unit tests run with `npm run test:unit`.
+- `src/lib/recallEngine/` — the mocked recall engine: reads a script's take for a question and works out coverage, the verdict, the hint or nudge, and XP. Unit tests run with `npm run test:unit`.
 - `src/lib/motion.ts` — `durationMs()`, for reading a motion duration token in code (timers).
 - `src/app/q/sendBackOnLoad.ts` — sends a reload or reopen on the recording or thinking route back to its question.
 - `src/lib/announcer.tsx` — the one hidden screen-reader live region (in the root layout); call `announce()` for every state change, in a full sentence.

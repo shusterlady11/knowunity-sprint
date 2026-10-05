@@ -16,7 +16,7 @@ const figmaDescription = `Used to quickly create screens using our components, m
 
 **In code:** every screen is a \`scaffold\` plus what goes in its four slots. The slots are props with Figma's names: \`topNavigation\` (usually an appBar), \`middleContent\` (the screen's content; the only part that scrolls), \`bottomContent\` (the primary actions, pinned to the bottom) and \`bottomSheetOnly\` (a bottomSheet, placed at the bottom over everything). The three switches keep Figma's names and defaults: \`showTopNavSlot\` (on), \`showBottomNavSlot\` (on) and \`showBottomSheetBackground\` (off, the scrim behind a sheet).
 
-**Layout:** the frame fills the width it's given and is one screen tall, with rounded corners (\`Radius/600\`) on \`background/page\`, as in Figma. From the top: a 48px area where the status bar goes (\`Space/1200\`; the status bar is system UI and isn't built, but its height is kept so everything lines up), the top navigation with \`Space/100\` between items, the content taking all the remaining height, and the bottom actions. The content has \`Space/200\` above and below and \`Space/400\` at the sides, with \`Space/200\` between items, and scrolls when it's too long. The bottom actions have \`Space/400\` all round, with \`Space/100\` between items. The scrim (\`background/scrim\`) covers the whole screen and the sheet sits at the very bottom above it.
+**Layout:** the frame fills the width it's given and is one screen tall, on \`background/page\`. Its corners are square, unlike Figma's \`Radius/600\` frame: the iPhone's screen has its own rounded corners, and rounding them again showed dark wedges under a sheet or bottom bar (decided 2026-10-04). From the top: a 48px area where the status bar goes (\`Space/1200\`; the status bar is system UI and isn't built, but its height is kept so everything lines up), the top navigation with \`Space/100\` between items, the content taking all the remaining height, and the bottom actions. The content has \`Space/200\` above and below and \`Space/400\` at the sides, with \`Space/200\` between items, and scrolls when it's too long. The bottom actions have \`Space/400\` all round, with \`Space/100\` between items. The scrim (\`background/scrim\`) covers the whole screen and the sheet sits at the very bottom above it.
 
 **Only one size:** Figma's set has eight sizes (iPhone 13, 17 Pro Max, iPhone SE, four tablet and iPad layouts, and a laptop). Only \`iPhone 13\`, the 390px phone the prototype is drawn for, is built; the other layouts are out of scope this sprint.
 
@@ -84,12 +84,12 @@ const meta = {
       return value;
     };
 
-    // The frame: fills the width and the height of the screen, rounded, on the page color, clipped.
+    // The frame: fills the width and the height of the screen, square-cornered, on the page color, clipped.
     const box = screen.getBoundingClientRect();
     const ss = getComputedStyle(screen);
     await expect(box.width).toBe(document.documentElement.clientWidth);
     await expect(box.height).toBe(window.innerHeight);
-    await expect(ss.borderTopLeftRadius).toBe(token('--radius-600'));
+    await expect(ss.borderTopLeftRadius).toBe('0px');
     await expect(ss.backgroundColor).toBe(paint('--color-background-page'));
     await expect(ss.overflow).toBe('hidden');
 

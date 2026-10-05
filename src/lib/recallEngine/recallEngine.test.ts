@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Script } from '../../content/scripts';
-import { combine, judgeTake, parseChain, parseTake, verdictFor } from './index';
+import { combine, feedbackFor, fillHint, judgeTake, parseChain, parseTake, verdictFor, xpFor } from './index';
 
 const script: Script = {
   firstPass: { 1: '1,2,3', 2: '1,2 > 3', 3: 'slow', 4: '- > -', 5: 'notCaught > idk' },
@@ -78,5 +78,52 @@ describe('combined coverage and the verdict', () => {
   it('stays wrong when no take covers anything', () => {
     const covered = combine(combine([], judgeTake(script, 1, 4, 1)), judgeTake(script, 1, 4, 2));
     expect(verdictFor(covered, 3)).toBe('wrong');
+  });
+});
+
+describe('hints and the nudge', () => {
+  it('gives the first uncovered key point’s hint', () => {
+    expect(feedbackFor('partial', [1], [], 3)).toEqual({ kind: 'hint', keyPoint: 2 });
+    expect(feedbackFor('wrong', [], [], 3)).toEqual({ kind: 'hint', keyPoint: 1 });
+  });
+
+  it('moves on to the next unused hint', () => {
+    expect(feedbackFor('wrong', [], [1], 3)).toEqual({ kind: 'hint', keyPoint: 2 });
+  });
+
+  it('shows the nudge after two hints', () => {
+    expect(feedbackFor('wrong', [], [1, 2], 3)).toEqual({ kind: 'nudge' });
+  });
+
+  it('shows the nudge when no uncovered key point has a hint left', () => {
+    expect(feedbackFor('partial', [1, 2], [3], 3)).toEqual({ kind: 'nudge' });
+  });
+
+  it('needs no hint for correct or didn’t-catch-that', () => {
+    expect(feedbackFor('correct', [1, 2, 3], [], 3)).toEqual({ kind: 'correct' });
+    expect(feedbackFor('notCaught', [], [], 3)).toEqual({ kind: 'notCaught' });
+  });
+
+  it('fills in the covered count', () => {
+    expect(fillHint('You’ve got {covered} of {total} key ideas.', [1, 2], 3)).toBe('You’ve got 2 of 3 key ideas.');
+  });
+});
+
+describe('XP', () => {
+  it('gives 10 for a first-try correct', () => {
+    expect(xpFor({ kind: 'correct', firstTry: true, revealed: false })).toBe(10);
+  });
+
+  it('gives 5 for a correct after a hint or retry', () => {
+    expect(xpFor({ kind: 'correct', firstTry: false, revealed: false })).toBe(5);
+  });
+
+  it('gives 1 once the answer was revealed, even for a correct retry', () => {
+    expect(xpFor({ kind: 'correct', firstTry: false, revealed: true })).toBe(1);
+  });
+
+  it('gives 1 for needs practice and 0 for a skip', () => {
+    expect(xpFor({ kind: 'needsPractice' })).toBe(1);
+    expect(xpFor({ kind: 'skipped' })).toBe(0);
   });
 });

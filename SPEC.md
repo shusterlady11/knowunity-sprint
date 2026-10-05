@@ -188,7 +188,9 @@ A different code starts a new session for it. An unknown code shows "This link d
 
 **The student's transcript isn't shown on this screen.** It appears in the Results rows (screen 8), including exactly what a typed take said.
 
-**Sheets.** "Reveal answer" and "More info" open a `BottomSheet` M with `BottomSheetAppBar` `dismissOnly`. The sheet holds the answer and context, an X, and no buttons. Closing it returns to the same result.
+**Sheets.** "Reveal answer" and "More info" open a `BottomSheet` M with `BottomSheetAppBar` `dismissOnly`. The sheet holds the answer and context, an X ("Close answer" for screen readers), and no buttons. Closing it returns to the same result. After a reveal, the hint over the mic reads "Tap to try again".
+
+**Bottom bar.** `BottomCTA`'s drawer runs to the screen's edges and bottom, with its buttons 28px from the bottom as in Figma's component; the 24px bottom-button rule is for plain full-width buttons (decided 2026-10-04). On the live states, `InputModeToggle` sits at the left edge beside the mic.
 
 **Actions:**
 

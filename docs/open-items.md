@@ -7,7 +7,7 @@ Everything still waiting on a decision or on content, in one place. Each item na
 The designer supplies these, stored in a new file under `src/content/` (SPEC.md › How the mocked recall behaves).
 
 - **The 5 questions,** from what the participants just studied, with their topic. Placeholders stand in until then (`src/content/questions.ts`).
-- **For each question:** 2–4 key points, one hint per key point, a correct-feedback line, the More info / Reveal context, and a canned transcript for each verdict it can get.
+- **For each question:** 2–4 key points, one hint per key point, a correct-feedback line, the More info / Reveal context, and a canned transcript for each verdict it can get. Placeholders stand in for all but the transcripts (`src/content/questions.ts`).
 - **The participant scripts:** a first-pass and a later-pass chain per question, and the role-play tasks that match them.
 - **The `tour` reference script** used in SPEC.md › Verification.
 
@@ -37,4 +37,4 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 
 Not decisions, just things that won't work yet:
 
-- **XP stays at 0** until the result screen (7) awards it.
+- None right now.

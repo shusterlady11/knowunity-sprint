@@ -1,9 +1,7 @@
 // The mocked recall engine (SPEC.md › How the mocked recall behaves › The engine). Given a take, it says
 // which key points the take covered, the same shape a real engine (speech recognition + an AI judge) would
 // return, so a real one can replace `judgeTake` later without touching the screens. Everything else, the
-// verdict and the covered count, is worked out from that.
-//
-// Hints and XP are added with the result screen.
+// verdict, the covered count, the hint and XP, is worked out from that.
 
 import type { Script } from '../../content/scripts';
 
@@ -51,4 +49,41 @@ export function combine(covered: number[], take: Take): number[] {
 export function verdictFor(covered: number[], keyPointCount: number): Verdict {
   if (covered.length >= keyPointCount) return 'correct';
   return covered.length > 0 ? 'partial' : 'wrong';
+}
+
+/** What the result card says, chosen when the take is judged. */
+export type Feedback =
+  | { kind: 'correct' }
+  | { kind: 'hint'; keyPoint: number }
+  | { kind: 'nudge' }
+  | { kind: 'notCaught' };
+
+/** After this many hints, a partial or wrong shows the nudge toward Reveal answer instead (SPEC.md › 7). */
+export const hintLimit = 2;
+
+/**
+ * The card's feedback for a verdict. A partial or wrong gets the next unused hint, in key-point order,
+ * for a key point the student hasn't covered yet; after `hintLimit` hints, or when none is left, the nudge.
+ */
+export function feedbackFor(verdict: Verdict, covered: number[], hintsUsed: number[], keyPointCount: number): Feedback {
+  if (verdict === 'correct') return { kind: 'correct' };
+  if (verdict === 'notCaught') return { kind: 'notCaught' };
+  if (hintsUsed.length >= hintLimit) return { kind: 'nudge' };
+  for (let keyPoint = 1; keyPoint <= keyPointCount; keyPoint++) {
+    if (!covered.includes(keyPoint) && !hintsUsed.includes(keyPoint)) return { kind: 'hint', keyPoint };
+  }
+  return { kind: 'nudge' };
+}
+
+/** Fills a hint's {covered} and {total} with the covered count. */
+export function fillHint(hint: string, covered: number[], keyPointCount: number): string {
+  return hint.replace('{covered}', String(covered.length)).replace('{total}', String(keyPointCount));
+}
+
+/** XP for how a question ended (SPEC.md › How the mocked recall behaves › XP). */
+export function xpFor(outcome: { kind: 'correct'; firstTry: boolean; revealed: boolean } | { kind: 'needsPractice' } | { kind: 'skipped' }): number {
+  if (outcome.kind === 'skipped') return 0;
+  if (outcome.kind === 'needsPractice') return 1;
+  if (outcome.revealed) return 1;
+  return outcome.firstTry ? 10 : 5;
 }

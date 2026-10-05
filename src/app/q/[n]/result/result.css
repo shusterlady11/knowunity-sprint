@@ -1,0 +1,115 @@
+/* Result, as in Figma's "Answering" frames. */
+
+/* The question, then Knowie's reply Space/400 below it, laid out from the top like the question screen. */
+.result__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-400);
+  width: 100%;
+}
+
+/* "Tap to dictate", the mic Space/600 below it (Figma: 21), then the bottom bar Space/400 below the mic. */
+.result__answer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.result__answer > .tapToAnswer + .result__mic {
+  margin-top: var(--space-600);
+}
+
+/* The mic, centered, with the voice/keyboard toggle at the left edge, its bottom Space/200 below the mic's
+   (as in Figma). The toggle takes no room, so the mic stays centered. */
+.result__mic {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.result__toggle {
+  position: absolute;
+  bottom: var(--space-negative-200);
+  left: var(--space-0);
+}
+
+/* The drawer runs to the screen's edges and bottom, past Scaffold's Space/400 margin, as in Figma. Its
+   own panel keeps the buttons Space/400 from the sides and Space/700 from the bottom. */
+.result__bar {
+  align-self: stretch;
+  margin: var(--space-0) var(--space-negative-400) var(--space-negative-400);
+}
+
+.result__mic + .result__bar {
+  margin-top: var(--space-400);
+}
+
+/* The Reveal answer and More info sheet, as in Figma's "Reveal answer": the content inset Space/400 more
+   than the sheet's own Space/400 (Figma centers a 320px block, about 35px in), the heading, then the
+   answer Space/300 below it. */
+.answerSheet {
+  display: contents;
+}
+
+.answerSheet__content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-300);
+  width: 100%;
+  padding-inline: var(--space-400);
+  /* Room below the answer: Figma leaves 43px under the text; the sheet's Space/200 plus Space/800 here is
+     40px. On an iPhone it grows to clear the home bar when that's taller. */
+  padding-bottom: max(var(--space-800), env(safe-area-inset-bottom));
+}
+
+/* The heading hugs its words, so the underline is as wide as the dot and the heading together. */
+.answerSheet__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-100);
+}
+
+/* A dot, then the heading in Body M Bold, Space/200 apart. */
+.answerSheet__title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-200);
+  margin: var(--space-0);
+  color: var(--color-text-primary);
+  font-family: var(--type-body-m-bold-fontFamily);
+  font-weight: var(--type-body-m-bold-fontWeight);
+  font-size: var(--type-body-m-bold-fontSize);
+  line-height: var(--type-body-m-bold-lineHeight);
+  letter-spacing: var(--type-body-m-bold-letterSpacing);
+}
+
+.answerSheet__dot {
+  flex: none;
+  width: var(--indicator-dot);
+  height: var(--indicator-dot);
+  border-radius: var(--radius-full);
+  background-color: var(--color-text-primary);
+}
+
+/* The underline in accent/brand/bold. Figma draws it 3px tall with no token; Stroke/Heavy border (2px) is
+   the nearest. */
+.answerSheet__underline {
+  height: var(--stroke-heavy-border);
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-brand-bold);
+}
+
+.answerSheet__body {
+  margin: var(--space-0);
+  color: var(--color-text-primary);
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+  letter-spacing: var(--type-body-m-regular-letterSpacing);
+}

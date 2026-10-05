@@ -6,7 +6,7 @@
 // still works, just without resuming.
 
 import { useMemo, useSyncExternalStore } from 'react';
-import type { Verdict } from './recallEngine';
+import type { Feedback, Verdict } from './recallEngine';
 
 export type InputMode = 'voice' | 'keyboard';
 
@@ -17,8 +17,17 @@ export type QuestionRecord = {
   covered?: number[];
   /** The latest take's verdict, for the result screen. */
   verdict?: Verdict;
-  /** Set when the student skipped the question, or said they don't know. */
-  outcome?: 'skipped';
+  /** What the result card says for the latest take, chosen when it was judged. */
+  feedback?: Feedback;
+  /** Key points whose hints the student has seen, in order. */
+  hintsUsed?: number[];
+  /** Set once the student has opened Reveal answer. */
+  revealed?: boolean;
+  /**
+   * How the question ended, for Results: correct (any attempt, never revealed), needs practice (Next after
+   * a partial or wrong, or the answer was revealed) or skipped. Set once, along with its XP.
+   */
+  outcome?: 'correct' | 'needsPractice' | 'skipped';
 };
 
 export type Session = {

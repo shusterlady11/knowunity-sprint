@@ -1,5 +1,7 @@
 /* One screen: a column that fills the space it's given, with the content in the middle taking what the
-   other parts leave. Rounded corners and a clipped edge, as in Figma's frame. */
+   other parts leave, with a clipped edge. Square corners: Figma's frame rounds them (Radius/600) to draw the
+   phone, but the iPhone's screen has its own, and rounding them again showed dark wedges under a sheet
+   or bottom bar (decided 2026-10-04). */
 .scaffold {
   position: relative;
   box-sizing: border-box;
@@ -10,7 +12,6 @@
   width: 100%;
   height: 100dvh;
   overflow: hidden;
-  border-radius: var(--radius-600);
   background-color: var(--color-background-page);
 }
 

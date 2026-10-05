@@ -11,7 +11,7 @@ import { LoadingDots } from '../../../../components/loadingDots/LoadingDots';
 import { questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { defaultCode, scripts } from '../../../../content/scripts';
-import { combine, judgeTake, verdictFor, type Verdict } from '../../../../lib/recallEngine';
+import { combine, feedbackFor, judgeTake, verdictFor, xpFor, type Verdict } from '../../../../lib/recallEngine';
 import { announce } from '../../../../lib/announcer';
 import { durationMs } from '../../../../lib/motion';
 import { getSession, questionRecord, updateSession, useSession } from '../../../../lib/session';
@@ -63,13 +63,24 @@ export function ThinkingScreen({ n }: { n: number }) {
     const takeNumber = (session?.questions[n]?.takes ?? 0) + 1;
     const take = judgeTake(script, session?.pass ?? 1, n, takeNumber);
 
-    // Saves the verdict for the result screen, then goes there.
+    // Saves the verdict and the card's feedback for the result screen, then goes there. Choosing the hint
+    // here, once per take, means reopening the result doesn't use up another. A correct answer ends the
+    // question, so its XP is awarded now and the counter shows it on the result.
+    const keyPointCount = questions[n - 1].keyPoints.length;
     const finish = (verdict: Verdict, covered: number[]) => {
       updateSession((s) => {
         const record = questionRecord(s, n);
         record.takes = takeNumber;
         record.covered = covered;
         record.verdict = verdict;
+        const hintsUsed = record.hintsUsed ?? [];
+        record.feedback = feedbackFor(verdict, covered, hintsUsed, keyPointCount);
+        if (record.feedback.kind === 'hint') record.hintsUsed = [...hintsUsed, record.feedback.keyPoint];
+        if (verdict === 'correct' && !record.outcome) {
+          const revealed = record.revealed === true;
+          record.outcome = revealed ? 'needsPractice' : 'correct';
+          s.xp += xpFor({ kind: 'correct', firstTry: takeNumber === 1, revealed });
+        }
       });
       goTo(`/q/${n}/result`);
     };
@@ -97,7 +108,7 @@ export function ThinkingScreen({ n }: { n: number }) {
           }
           if (take.kind === 'notCaught') return finish('notCaught', session?.questions[n]?.covered ?? []);
           const covered = combine(session?.questions[n]?.covered ?? [], take);
-          finish(verdictFor(covered, questions[n - 1].keyPoints.length), covered);
+          finish(verdictFor(covered, keyPointCount), covered);
         }, durationMs('--motion-duration-thinkingMin')),
       );
     }
