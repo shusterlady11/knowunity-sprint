@@ -43,6 +43,8 @@ export type Session = {
   xp: number;
   /** Keyed by question number, 1 to 5, for the current pass. */
   questions: Record<number, QuestionRecord>;
+  /** Set once the student starts answering question 1 for the first time; the "Welcome!" card never shows again. */
+  introSeen?: boolean;
 };
 
 const SESSION_KEY = 'knowie.session';

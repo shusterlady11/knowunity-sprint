@@ -10,7 +10,7 @@ import { RecordingGlow } from '../../../../components/recordingGlow/RecordingGlo
 import { MicButton } from '../../../../components/micButton/MicButton';
 import { ButtonIcon } from '../../../../components/buttonIcon/ButtonIcon';
 import { XIcon } from '../../../../icons/XIcon';
-import { intro, questions, topic } from '../../../../content/questions';
+import { questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { announce } from '../../../../lib/announcer';
 import { durationMs } from '../../../../lib/motion';
@@ -71,7 +71,8 @@ export function RecordingScreen({ n }: { n: number }) {
       }
       middleContent={
         <div className="recording__content" inert={leaving}>
-          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={n === 1} />
+          {/* The welcome card is gone once the student starts dictating (decided 2026-10-05). */}
+          <MiddleSection topic={topic} question={bold(questions[n - 1].prompt)} showIntro={false} />
         </div>
       }
       bottomContent={

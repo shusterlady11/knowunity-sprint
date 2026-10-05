@@ -10,7 +10,7 @@ import { MicButton } from '../../../components/micButton/MicButton';
 import { ToggleGroup } from '../../../components/toggleGroup/ToggleGroup';
 import { intro, questions, topic } from '../../../content/questions';
 import { bold } from '../../../content/bold';
-import { getSession, questionRecord, rememberRoute, updateSession, useSession } from '../../../lib/session';
+import { getSession, questionRecord, rememberRoute, updateSession, useSession, type Session } from '../../../lib/session';
 import { ExitConfirm } from '../ExitConfirm';
 import '../exitConfirm.css';
 import './question.css';
@@ -20,7 +20,11 @@ export function QuestionScreen({ n }: { n: number }) {
   const router = useRouter();
   const [leaving, setLeaving] = useState(false);
   const keepGoing = useCallback(() => setLeaving(false), []);
-  const xp = useSession()?.xp ?? 0;
+  const session = useSession();
+  const xp = session?.xp ?? 0;
+  // The "Welcome!" card shows only the very first time on question 1, until the student starts answering
+  // (decided 2026-10-05). The question card stays.
+  const showIntro = n === 1 && session?.introSeen !== true;
   const isLast = n === questions.length;
 
   // A student in keyboard mode answers on the typing screen; otherwise remember this question.
@@ -29,16 +33,23 @@ export function QuestionScreen({ n }: { n: number }) {
     rememberRoute(`/q/${n}`);
   }, [n, router]);
 
+  // Starting to answer, or moving on, retires the welcome card for good.
+  const leaveQuestion = (change?: (s: Session) => void) =>
+    updateSession((s) => {
+      if (n === 1) s.introSeen = true;
+      change?.(s);
+    });
+
   const skip = () => {
-    updateSession((session) => {
-      questionRecord(session, n).outcome = 'skipped';
+    leaveQuestion((s) => {
+      questionRecord(s, n).outcome = 'skipped';
     });
     router.push(isLast ? '/results' : `/q/${n + 1}`);
   };
 
   const toKeyboard = () => {
-    updateSession((session) => {
-      session.inputMode = 'keyboard';
+    leaveQuestion((s) => {
+      s.inputMode = 'keyboard';
     });
     router.push(`/q/${n}/type`);
   };
@@ -53,13 +64,18 @@ export function QuestionScreen({ n }: { n: number }) {
       }
       middleContent={
         <div className="question__content" inert={leaving}>
-          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={n === 1} />
+          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} />
         </div>
       }
       bottomContent={
         <div className="question__answer" inert={leaving}>
           <TapToAnswer text="Tap to dictate" />
-          <MicButton onClick={() => router.push(`/q/${n}/recording`)} />
+          <MicButton
+            onClick={() => {
+              leaveQuestion();
+              router.push(`/q/${n}/recording`);
+            }}
+          />
           <ToggleGroup
             inputMode="voice"
             micBlocked={false}

@@ -73,7 +73,7 @@ When working on UI, use the storybook tools to read the component library before
 - `.claude/skills/interactive-prototype/SKILL.md` — high-fidelity interactive React-artifact prototyping workflow; read before prototyping a flow in an artifact.
 - `src/content/*` — the questions, topic, key points, hints, correct lines, answers, transcripts and Results copy the screens show. PLACEHOLDER until the designer supplies the real content (D12).
 - `src/lib/session.ts` — the saved session on the phone (script code, route, input mode, takes, XP) and the "splash seen" flag; `/reset` clears both.
-- `src/content/scripts.ts` — the scripts the entry link `/s/[code]` picks. PLACEHOLDER: only `tour` so far.
+- `src/content/scripts.ts` — the scripts the entry link `/s/[code]` picks. PLACEHOLDER: `tour` and one sample participant script, `k7`.
 - `src/app/MessageScreen.tsx` — the plain centered message page (install steps, unknown link, reset).
 - `src/lib/recallEngine/` — the mocked recall engine: reads a script's take for a question and works out coverage, the verdict, the hint or nudge, and XP. Unit tests run with `npm run test:unit`.
 - `src/lib/motion.ts` — `durationMs()`, for reading a motion duration token in code (timers).

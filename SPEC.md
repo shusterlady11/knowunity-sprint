@@ -95,7 +95,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - The screen opens in whichever input mode the student last used, voice or keyboard. A student in keyboard mode lands on `/q/[n]/type` instead.
 - **Components:**
   - `AppBar` (close `ButtonIcon`, `ProgressIndicator`, `XpCounter`)
-  - `MiddleSection`: `TopicPill`, `MascotSlot` 2XL and the `AnswerCard` `question`, with the "Welcome!" intro card (`AnswerCard` `Default`) on question 1 only, until the student answers: it shows on the question and dictating screens, and is gone from processing on, so Knowie's reply fits (decided 2026-10-04)
+  - `MiddleSection`: `TopicPill`, `MascotSlot` 2XL and the `AnswerCard` `question`, with the "Welcome!" intro card (`AnswerCard` `Default`) only the very first time the student sees question 1, until they start answering (tap the mic, switch to the keyboard or skip); the dictating screen and every later screen show the question alone (decided 2026-10-05)
   - `TapToAnswer` "Tap to dictate"
   - `MicButton` `idle` / `ready`
   - `ToggleGroup` `voice`, `micBlocked=false` (it holds the `Button` Tertiary S "Skip")
@@ -240,6 +240,8 @@ A different code starts a new session for it. An unknown code shows "This link d
   | Finishing (Results → Continue) | "Nice work. You're done." |
   | Leaving mid-session (exit confirm → Leave) | "Progress saved. Come back any time." |
   | Opting out (`/mic-off` → No thanks) | "No problem. Maybe next time." |
+
+  **How it knows the way in** (was D3, decided 2026-10-05): the button that leads here saves it in the session (finished, left or opted out) before going to `/done`, so reopening the app from the Home Screen shows the same message. With nothing saved, it shows the finished message.
 
 - **Components:**
   - `Scaffold` with no top navigation
