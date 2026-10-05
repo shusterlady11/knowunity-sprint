@@ -1,7 +1,7 @@
 // PLACEHOLDER content (D12, decided 2026-10-01): stands in until the designer supplies the real questions
 // from what the participants studied. Question 1 is Figma's; the other four are written to fit its topic.
-// The key points, hints, correct lines and answers are placeholders too; question 1's correct line and
-// answer are Figma's. Transcripts are added with the Results screen (SPEC.md › How the mocked recall behaves).
+// The key points, hints, correct lines, answers and transcripts are placeholders too; question 1's correct
+// line and answer are Figma's (SPEC.md › How the mocked recall behaves).
 //
 // Words between ** are shown in bold, as Figma bolds "Q:" and the key terms.
 
@@ -22,7 +22,15 @@ export type Question = {
    * answer and context.
    */
   answer: { title: string; heading: string; body: string };
+  /**
+   * What the student "said", canned for each kind of take (participants are told the words are
+   * placeholders). Shown only in the Results rows, every take joined.
+   */
+  transcripts: { correct: string; partial: string; wrong: string };
 };
+
+/** The transcript for an "I don't know" take. */
+export const idkTranscript = 'I don’t know.';
 
 /** The card's text after both hints are used, the same for every question (SPEC.md › 7). */
 export const nudge = 'You’re close. Want to see the full answer?';
@@ -51,6 +59,11 @@ export const questions: Question[] = [
       heading: 'Web of life',
       body: 'Producers make their own food, while consumers get energy by eating producers or other consumers.',
     },
+    transcripts: {
+      correct: 'Producers make their own food from sunlight, and consumers eat other things to get energy, so they depend on producers.',
+      partial: 'Producers make their own food and consumers eat other living things.',
+      wrong: 'Producers are the animals that make the most food in an ecosystem.',
+    },
   },
   {
     prompt: '**Q:** Why is **energy lost** at each step up a **food chain**?',
@@ -69,6 +82,11 @@ export const questions: Question[] = [
       title: 'Energy loss',
       heading: 'The 10% rule',
       body: 'Organisms use most of their energy to live, and much of it leaves as heat. Only about a tenth passes to the next level.',
+    },
+    transcripts: {
+      correct: 'Living things use most of their energy just to live, a lot is lost as heat, and only about a tenth moves up.',
+      partial: 'A lot of the energy is used up moving around and keeping warm.',
+      wrong: 'The energy gets eaten by the predators at the top.',
     },
   },
   {
@@ -89,6 +107,11 @@ export const questions: Question[] = [
       heading: 'Nature’s recyclers',
       body: 'Decomposers break down dead plants and animals and return their nutrients to the soil, where producers use them to grow.',
     },
+    transcripts: {
+      correct: 'Decomposers break down dead things and put the nutrients back in the soil for plants to use.',
+      partial: 'They break down dead plants and animals.',
+      wrong: 'Decomposers are the biggest predators in the food chain.',
+    },
   },
   {
     prompt: '**Q:** What’s the difference between a **food chain** and a **food web**?',
@@ -108,6 +131,11 @@ export const questions: Question[] = [
       heading: 'One path or many',
       body: 'A food chain shows one path of energy. A food web shows many connected chains, since most animals eat, and are eaten by, more than one thing.',
     },
+    transcripts: {
+      correct: 'A food chain is one path of energy, but a food web connects lots of chains because animals eat many things.',
+      partial: 'A food chain is just one line of who eats who.',
+      wrong: 'A food web is a longer food chain.',
+    },
   },
   {
     prompt: '**Q:** Why are there usually fewer **top predators** than **herbivores**?',
@@ -126,6 +154,11 @@ export const questions: Question[] = [
       title: 'Top predators',
       heading: 'Energy at the top',
       body: 'Energy shrinks at each step up a food chain, so top predators need lots of prey to get enough. That means fewer of them can be supported.',
+    },
+    transcripts: {
+      correct: 'Energy gets smaller at each level, so top predators need lots of prey and there can only be a few of them.',
+      partial: 'There’s less energy as you go up the food chain.',
+      wrong: 'Top predators are bigger, so there’s less room for them.',
     },
   },
 ];

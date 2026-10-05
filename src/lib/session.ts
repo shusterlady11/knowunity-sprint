@@ -21,6 +21,8 @@ export type QuestionRecord = {
   feedback?: Feedback;
   /** Key points whose hints the student has seen, in order. */
   hintsUsed?: number[];
+  /** What the student said, one entry per take, in order (for the Results rows). */
+  transcripts?: string[];
   /** Set once the student has opened Reveal answer. */
   revealed?: boolean;
   /**
@@ -126,6 +128,19 @@ export function hasSeenSplash(): boolean {
 
 export function markSplashSeen() {
   write(SPLASH_KEY, true);
+}
+
+/**
+ * "Review all" on Results: a new pass of all the questions, in voice mode from question 1. XP carries over;
+ * the questions start fresh, so Results show only the latest pass (SPEC.md › 8).
+ */
+export function startNextPass() {
+  updateSession((session) => {
+    session.pass += 1;
+    session.questions = {};
+    session.inputMode = 'voice';
+    session.route = '/q/1';
+  });
 }
 
 /** Clears the session and the "splash seen" flag (/reset). */

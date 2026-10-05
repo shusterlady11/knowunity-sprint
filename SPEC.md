@@ -174,7 +174,7 @@ A different code starts a new session for it. An unknown code shows "This link d
 | Correct | `answer-correct` | `StatusPill` `correct` | `BottomCTA` "Two button drawer": Secondary "More info", Primary "Next" ("Finish" on the last question) | none, and no voice/keyboard toggle: there's nothing left to answer |
 | Partial | `answer-partial` | `StatusPill` `partial` | `BottomCTA` "Two button drawer / Secondary": Tertiary "Reveal answer", Secondary "Next" | live: `MicButton` `idle` / `ready` + `InputModeToggle` `voice` |
 | Wrong | `answer-error` | `StatusPill` `wrong` | same as Partial | live |
-| Partial or wrong, after both hints are used | as above | as above | `BottomCTA` "Two button drawer": Primary "Reveal answer", Secondary "Next" | live |
+| Partial or wrong, after both hints are used | as above | as above | same as Partial: only the card's text changes, to the nudge. Reveal answer stays Tertiary on the left (decided 2026-10-05). | live |
 | Didn't catch that | `answer-notcaught` | `StatusPill` `notCaught` | Tertiary "Reveal answer", Secondary "Skip" | live |
 
 **The answer card shows Knowie's feedback, passed as `AnswerCard`'s `message`,** as in Figma's answerCard variants. No component change is needed.
@@ -212,7 +212,11 @@ A different code starts a new session for it. An unknown code shows "This link d
   - Mixed.
   - Mostly skipped.
 
-  The copy changes with each state. Results show only the latest pass.
+  The copy changes with each state (Figma's Results frames; placeholders in `src/content/results.ts`). Results show only the latest pass.
+  - **Which state:** perfect when all 5 are correct ("5 out of 5!"); mixed with 1–4 ("You got N of 5 concepts", naming the first correct concept as the strongest area); "Here's how it went" with none correct, when the score ring is hidden. With none correct, the skipped card comes first, as in Figma's frame; otherwise good explanations, needs practice, skipped.
+  - **Transcripts:** each take's canned transcript is stored when it's judged (none for a take that wasn't caught). Identical canned lines show once, in order.
+  - **XP isn't shown here:** there's no app bar, and the XP card is out of scope.
+  - **The `tour` script's later pass** answers every question fully, so "Review all" then a full pass reaches the perfect state (decided 2026-10-05).
 - **Components:**
   - `ProgressMeter` score 1–5. It's hidden when nothing is correct.
   - `ResultsSummary` `good-explanations`, `needs-practice` and `skipped-questions`
@@ -341,7 +345,7 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 - **Covered count:** "N of M key ideas", filled into the hint's copy.
 - **Hints:**
   - A partial or wrong shows the next unused hint, in key-point order.
-  - After 2 hints, "Reveal answer" becomes the primary button, the card shows the fixed nudge, and the mic stays live.
+  - After 2 hints, the card shows the fixed nudge and the mic stays live. "Reveal answer" stays Tertiary on the left (decided 2026-10-05).
 - **Timing:**
   - "Thinking..." lasts at least 1.2s.
   - A `slow` take shows "Taking a moment…" at ~4s and becomes "didn't catch that" at ~10s.
@@ -425,8 +429,8 @@ Run this after any change. It should take about five minutes, most of it the wal
 | 5 | Tap mic, tap it again to stop | Partial, with hint 1 (including the covered count) on the card |
 | 6 | Tap mic, stop | Correct. XP shows 15. |
 | 7 | Next. On question 3: tap mic, stop | "Taking a moment…" at ~4s, "didn't catch that" at ~10s |
-| 8 | Skip. On question 4: record and stop three times | Wrong with hint 1, then hint 2, then the nudge with "Reveal answer" as the primary button |
-| 9 | Reveal answer (now the primary button), close the sheet, Next | question 5. XP shows 16. |
+| 8 | Skip. On question 4: record and stop three times | Wrong with hint 1, then hint 2, then the nudge, with "Reveal answer" still on the left |
+| 9 | Reveal answer, close the sheet, Next | question 5. XP shows 16. |
 | 10 | Close the app and reopen it from its icon | still on `/q/5` |
 | 11 | Record and stop, then "Finish" | Correct, then `/results` |
 | 12 | Check Results | Good explanations: questions 1, 2, 5. Needs practice: 4. Skipped: 3. `ProgressMeter` shows 3. XP is 26. Question 1's row shows what was typed. The bottom bar shows "Review all" + "Continue". |

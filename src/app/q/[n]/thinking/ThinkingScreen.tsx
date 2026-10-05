@@ -8,7 +8,7 @@ import { MiddleSection } from '../../../../components/middleSection/MiddleSectio
 import { AnswerCard } from '../../../../components/answerCard/AnswerCard';
 import { MicButton } from '../../../../components/micButton/MicButton';
 import { LoadingDots } from '../../../../components/loadingDots/LoadingDots';
-import { questions, topic } from '../../../../content/questions';
+import { idkTranscript, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { defaultCode, scripts } from '../../../../content/scripts';
 import { combine, feedbackFor, judgeTake, verdictFor, xpFor, type Verdict } from '../../../../lib/recallEngine';
@@ -67,10 +67,23 @@ export function ThinkingScreen({ n }: { n: number }) {
     // here, once per take, means reopening the result doesn't use up another. A correct answer ends the
     // question, so its XP is awarded now and the counter shows it on the result.
     const keyPointCount = questions[n - 1].keyPoints.length;
+    // The take's canned transcript, by how much this take covered on its own; nothing for a take that
+    // wasn't caught, since nothing was heard.
+    const transcriptFor = (): string | null => {
+      if (take.kind === 'idk') return idkTranscript;
+      if (take.kind !== 'points') return null;
+      const own = verdictFor(take.points, keyPointCount);
+      return questions[n - 1].transcripts[own === 'notCaught' ? 'wrong' : own];
+    };
+    const addTranscript = (record: { transcripts?: string[] }) => {
+      const transcript = transcriptFor();
+      if (transcript) record.transcripts = [...(record.transcripts ?? []), transcript];
+    };
     const finish = (verdict: Verdict, covered: number[]) => {
       updateSession((s) => {
         const record = questionRecord(s, n);
         record.takes = takeNumber;
+        addTranscript(record);
         record.covered = covered;
         record.verdict = verdict;
         const hintsUsed = record.hintsUsed ?? [];
@@ -102,6 +115,7 @@ export function ThinkingScreen({ n }: { n: number }) {
             updateSession((s) => {
               const record = questionRecord(s, n);
               record.takes = takeNumber;
+              addTranscript(record);
               record.outcome = 'skipped';
             });
             return goTo(isLast ? '/results' : `/q/${n + 1}`);

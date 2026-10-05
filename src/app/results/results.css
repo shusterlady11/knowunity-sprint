@@ -1,0 +1,64 @@
+/* Results, as in Figma's three Results frames. */
+
+/* Laid out from the top and scrolls with the rest of the content: Space/400 above (with Scaffold's
+   Space/200, 24px under the status area, as in Figma), then the header and the cards Space/800 apart. */
+.results__content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-800);
+  width: 100%;
+  padding-top: var(--space-400);
+}
+
+/* The score ring, centered, then the headline Space/400 below it. */
+.results__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-400);
+}
+
+/* The headline and the line under it, centered, Space/150 apart (Figma: 6). */
+.results__title {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-150);
+  width: 100%;
+  text-align: center;
+}
+
+.results__headline {
+  margin: var(--space-0);
+  color: var(--color-text-primary);
+  font-family: var(--type-headline-l-fontFamily);
+  font-weight: var(--type-headline-l-fontWeight);
+  font-size: var(--type-headline-l-fontSize);
+  line-height: var(--type-headline-l-lineHeight);
+  letter-spacing: var(--type-headline-l-letterSpacing);
+}
+
+.results__line {
+  margin: var(--space-0);
+  color: var(--color-text-secondary);
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+  letter-spacing: var(--type-body-m-regular-letterSpacing);
+}
+
+/* The cards, Space/200 apart; a card with no rows isn't drawn. */
+.results__cards {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-200);
+  width: 100%;
+}
+
+/* The drawer runs to the screen's edges and bottom, past Scaffold's Space/400 margin, as on the result
+   screen. */
+.results__bar {
+  align-self: stretch;
+  margin: var(--space-negative-400);
+}

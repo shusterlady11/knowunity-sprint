@@ -102,7 +102,9 @@ export function ResultScreen({ n }: { n: number }) {
   const blocked = sheet !== 'none';
   const live = verdict !== 'correct';
 
-  // The bottom bar for each state (SPEC.md › 7). Two button drawer is Secondary left, Primary right.
+  // The bottom bar for each state (SPEC.md › 7). Reveal answer is always on the left (decided 2026-10-05):
+  // on a correct answer the left button is More info and Primary Next is on the right; on every other
+  // verdict, including after two hints, Reveal answer stays Tertiary on the left.
   const bottomBar =
     verdict === 'correct' ? (
       <BottomCTA
@@ -119,14 +121,6 @@ export function ResultScreen({ n }: { n: number }) {
         rightCTA="Skip"
         onLeftClick={reveal}
         onRightClick={() => endQuestion('skipped')}
-      />
-    ) : feedback.kind === 'nudge' ? (
-      <BottomCTA
-        layout="Two button drawer"
-        leftCTA="Next"
-        rightCTA="Reveal answer"
-        onLeftClick={() => endQuestion('needsPractice')}
-        onRightClick={reveal}
       />
     ) : (
       <BottomCTA

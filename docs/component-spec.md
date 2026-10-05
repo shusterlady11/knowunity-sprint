@@ -201,6 +201,7 @@ Component set `15808:41818`, page "New components". Documented in Figma.
 | Correct | Two button drawer | "More info" + "Next" ("Finish" on last question) | none |
 | Partial / wrong, before reveal | Two button drawer / Secondary | "Reveal answer" + "Next" | mic, "Tap to dictate" |
 | Partial / wrong, after reveal | Two button drawer / Secondary | "Reveal answer" + "Next" | mic, "Tap to try again" |
+| Partial / wrong, after both hints (the nudge) | Two button drawer / Secondary | "Reveal answer" + "Next" (only the card's text changes; Reveal answer stays Tertiary on the left, decided 2026-10-05) | mic, "Tap to dictate" |
 | Didn't catch, before reveal | Two button drawer / Secondary | "Reveal answer" + "Skip" | mic, "Tap to dictate" |
 | Didn't catch, after reveal | Two button drawer / Secondary | "Reveal answer" + "Skip" | mic, "Tap to try again" |
 

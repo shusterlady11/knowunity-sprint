@@ -22,8 +22,11 @@ const tourChain: Chain = {
   5: '1,2,3',
 };
 
+// After "Review all", every question is answered fully, so a second pass reaches the perfect Results.
+const tourLaterChain: Chain = { 1: '1,2,3', 2: '1,2,3', 3: '1,2,3', 4: '1,2,3', 5: '1,2,3' };
+
 export const scripts: Record<string, Script> = {
-  tour: { firstPass: tourChain, laterPass: tourChain },
+  tour: { firstPass: tourChain, laterPass: tourLaterChain },
 };
 
 /** Used when a session has no script, e.g. one started from the app's home address. */
