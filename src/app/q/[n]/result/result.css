@@ -42,8 +42,23 @@
   margin: var(--space-0) var(--space-negative-400) var(--space-negative-400);
 }
 
-.result__mic + .result__bar {
+.result__mic + .result__bar,
+.result__typing + .result__bar {
   margin-top: var(--space-400);
+}
+
+/* Keyboard mode: the toggle at the left, then the empty typing bar Space/150 below it, as on the typing
+   screen. */
+.result__typing {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-150);
+  width: 100%;
+}
+
+.result__bar-input {
+  align-self: stretch;
 }
 
 /* The Reveal answer and More info sheet, as in Figma's "Reveal answer": the content inset Space/400 more

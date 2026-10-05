@@ -22,6 +22,11 @@ export type ChatInputProps = {
   longAnswer?: string;
   /** Figma's "showLeadingButton": the Secondary button on the left. Off on the typing route. */
   showLeadingButton?: boolean;
+  /**
+   * Draw the mic in the empty field. Code-only: Figma always draws it. It isn't a button, so the typing route
+   * turns it off; the voice/keyboard toggle is the way back to voice (D14, decided 2026-10-05).
+   */
+  showMic?: boolean;
   /** The field's name for screen readers. */
   label?: string;
   /** Called with the text when the student taps send. */
@@ -46,6 +51,7 @@ export function ChatInput({
   answer = 'Short answer',
   longAnswer = 'Producers make their own food from sunlight, like plants. Consumers get energy by eating producers or other consumers.',
   showLeadingButton = true,
+  showMic = true,
   label = 'Your answer',
   onSend,
   onStatusChange,
@@ -120,13 +126,15 @@ export function ChatInput({
             onClick={() => onSend?.(text)}
           />
         ) : (
-          // The in-field mic is drawn but does nothing yet: whether it leads back to voice or starts
-          // dictation is still undecided, so it isn't a button.
-          <span className="chatInput__mic">
-            <IconSlot size="300">
-              <Microphone01Icon />
-            </IconSlot>
-          </span>
+          showMic && (
+            // The in-field mic is drawn but isn't a button: the typing route hides it, and the toggle is the
+            // way back to voice (D14).
+            <span className="chatInput__mic">
+              <IconSlot size="300">
+                <Microphone01Icon />
+              </IconSlot>
+            </span>
+          )
         )}
       </div>
     </div>

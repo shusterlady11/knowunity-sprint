@@ -88,6 +88,14 @@
           "unit": "ms"
         },
         "$description": "10000ms into a slow judgment, it gives up and shows \"didn't catch that\", so the student can try again instead of waiting forever. USE: the processing screen, slow takes only. PAIR: motion.duration.slowNotice."
+      },
+      "introExit": {
+        "$type": "duration",
+        "$value": {
+          "value": 600,
+          "unit": "ms"
+        },
+        "$description": "600ms for the welcome card to fade out while its space collapses, so the question card slides up into its place. Slower than a usual card collapse (200–300ms) so the change is easy to follow as the student starts speaking (decided 2026-10-05). USE: middleSection's intro card leaving, when Knowie starts listening. PAIR: motion.easing.inOut (a gentle start, so the move is easy to follow). RULE: under prefers-reduced-motion, remove the card with no fade or slide."
       }
     },
     "easing": {

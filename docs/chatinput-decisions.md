@@ -12,5 +12,5 @@ Figma: `chatInput` set, Mascot & components page (Chat frame), file 1fSfWxZSPoaF
 - **Growth:** the bar grows upward from just above the keyboard, one line at a time, up to 6 lines of answer text (6 x 26px). Past that it stops growing and scrolls inside the field so the question stays visible. The keyboard never moves. Figma shows this as a static Long input on "keyboard open"; the scaffold can't reflow live.
 - **Emptying the field:** deleting all text returns the bar to Typing (empty, caret, keyboard still up, no send button), and the toggleGroup row reappears above it: inputModeToggle to switch back to the mic, and Skip. While the field has text, that row is hidden. The screen goes back to Inactive and "keyboard option selected" only when the keyboard is dismissed.
 
-## Still open
-- What the mic inside the field does (way back to voice vs dictation). If the toggle is the way back to voice, the in-field mic may be redundant.
+## Decided later
+- **The mic inside the field (D14, 2026-10-05):** hidden on the typing route with the code-only prop `showMic={false}`. The voice/keyboard toggle is the way back to voice, and there's no real mic for dictation. Figma's component still draws it.

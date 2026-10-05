@@ -95,7 +95,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - The screen opens in whichever input mode the student last used, voice or keyboard. A student in keyboard mode lands on `/q/[n]/type` instead.
 - **Components:**
   - `AppBar` (close `ButtonIcon`, `ProgressIndicator`, `XpCounter`)
-  - `MiddleSection`: `TopicPill`, `MascotSlot` 2XL and the `AnswerCard` `question`, with the "Welcome!" intro card (`AnswerCard` `Default`) only the very first time the student sees question 1, until they start answering (tap the mic, switch to the keyboard or skip); the dictating screen and every later screen show the question alone (decided 2026-10-05)
+  - `MiddleSection`: `TopicPill`, `MascotSlot` 2XL and the `AnswerCard` `question`, with the "Welcome!" intro card (`AnswerCard` `Default`) only the very first time the student sees question 1, after the mic primer: it stays until they tap the mic, and the dictating screen opens with it still showing, then fades it out while the question card slides up into its place, once Knowie is listening (`motion.duration.introExit`, 600ms; instant under reduced motion). Switching to the keyboard or skipping also retires it. It never comes back after that in the session; "Turn on" or "Not now" on the mic primer brings it back, since they lead to a fresh first question (decided 2026-10-05)
   - `TapToAnswer` "Tap to dictate"
   - `MicButton` `idle` / `ready`
   - `ToggleGroup` `voice`, `micBlocked=false` (it holds the `Button` Tertiary S "Skip")
@@ -251,7 +251,7 @@ A different code starts a new session for it. An unknown code shows "This link d
 
 ### 10. Typing: `/q/[n]/type`
 
-Built around `chatInput`, a new Storybook component made from the Figma set `chatInput` (16075:17758, "Mascot & components" page). The typing route uses `showLeadingButton={false}`. Don't use the "Chat Input (legacy)" set on "Module 6 component work". Its rules are in `docs/chatinput-decisions.md` and the Figma set's description.
+Built around `chatInput`, a new Storybook component made from the Figma set `chatInput` (16075:17758, "Mascot & components" page). The typing route uses `showLeadingButton={false}` and `showMic={false}`: the mic Figma draws in the empty field isn't a button, and the voice/keyboard toggle is the way back to voice (was D14, decided 2026-10-05). Don't use the "Chat Input (legacy)" set on "Module 6 component work". Its rules are in `docs/chatinput-decisions.md` and the Figma set's description.
 
 - **States** (`chatInput` `Status`, plus what surrounds it):
 
@@ -278,6 +278,9 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 | `InputModeToggle` to voice (field empty, or keyboard down) | `/q/[n]`. Voice becomes the mode for later questions. |
 | Skip (field empty, or keyboard down) | counts as skipped, then the next question |
 | Dismiss the keyboard | "Keyboard option selected" |
+
+- **A typed answer's transcript** is exactly what was typed, shown in its Results row.
+- **Result screen in keyboard mode** (decided 2026-10-05): on partial, wrong and "didn't catch that", the typing bar (`chatInput`, empty) and the `InputModeToggle` take the place of "Tap to dictate" and the mic. Tapping the bar opens this screen with the field focused (`/q/[n]/type?focus`); the toggle switches the result back to the mic.
 | Close X | exit confirm sheet |
 
 ### 11. Mic skipped: `/mic-off`
@@ -464,8 +467,7 @@ Run this after any change. It should take about five minutes, most of it the wal
 
 All other open items were decided on 2026-09-29 and are written into the sections above and into `docs/sprint-context.md`. Everything still waiting, including the build decisions for each screen, is collected in `docs/open-items.md`. What's left here:
 
-1. **The mic inside `chatInput`'s field:** is it the way back to voice, or dictation? If `InputModeToggle` is the way back, the in-field mic may be redundant (`docs/chatinput-decisions.md` › Still open).
-2. **Content:**
+1. **Content:**
    - the 5 questions, their key points, hints and correct-feedback lines
    - the canned transcripts and the More info / Reveal context
    - the participant scripts, each with a first-pass and a later-pass chain per question, and the role-play tasks that match them

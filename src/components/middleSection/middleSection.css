@@ -10,14 +10,46 @@
   padding: var(--space-400) var(--space-0) var(--space-0);
 }
 
-/* The cards, Space/200 apart. Knowie is placed against them rather than in the column, as in Figma. */
+/* The cards. Knowie is placed against them rather than in the column, as in Figma. */
 .middleSection__conversation {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: var(--space-200);
   width: 100%;
+}
+
+/* The intro card, with Space/200 under it before the question. Its row can collapse to nothing:
+   grid-template-rows goes from 1fr to 0fr while the card fades, so the question card slides up into its
+   place (motion.duration.introExit, motion.easing.inOut). */
+.middleSection__intro {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows var(--motion-duration-introExit) var(--motion-easing-inOut),
+    opacity var(--motion-duration-introExit) var(--motion-easing-inOut);
+}
+
+.middleSection__intro[data-hidden] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+.middleSection__introInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The Space/200 under the card sits inside the collapsing box, so it collapses with the card. */
+.middleSection__introCard {
+  padding-bottom: var(--space-200);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .middleSection__intro {
+    transition: none;
+  }
 }
 
 /* Knowie, centered, with the cards over its lower 44px (Figma: 43). No spacing step is near 44, so it's

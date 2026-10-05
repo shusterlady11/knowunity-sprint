@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect } from 'storybook/test';
+import { useState } from 'react';
+import { expect, waitFor } from 'storybook/test';
 import { MiddleSection } from './MiddleSection';
 
 const figmaDescription = `Figma has no description for this component, so this is written from its layers. It's the top of a question screen: the topic pill, then Knowie peeking out from behind two answer cards, an intro message ("Welcome! Let’s test your knowledge on energy flow in ecosystems.") and the question. It has no properties; the pill's label and the cards' text are set on the nested instances.
 
-**In code:** \`topic\` is the nested topicPill's "Label", and \`intro\` and \`question\` are the two cards' text (answerCard Default and question; Figma has no text property on them). \`showIntro\` is added in code, since Figma always draws the intro card: the question screen shows it only the very first time on question 1, until the student starts answering (decided 2026-10-05). Knowie is \`mascotSlot\` 2XL, \`standby\`.
+**In code:** \`topic\` is the nested topicPill's "Label", and \`intro\` and \`question\` are the two cards' text (answerCard Default and question; Figma has no text property on them). \`showIntro\` is added in code, since Figma always draws the intro card: the question screen shows it only the very first time on question 1, until the student starts answering (decided 2026-10-05). Knowie is \`mascotSlot\` 2XL, \`standby\`. When \`showIntro\` turns off after the card was shown, the card fades out while its space collapses, so the question card slides up into its place (\`motion.duration.introExit\`, 600ms, \`motion.easing.inOut\`; instant under reduced motion). The question screen does this when the student starts dictating (decided 2026-10-05).
 
 **Built from:** \`topicPill\`, \`mascotSlot\` and two \`answerCard\`s.
 
@@ -73,3 +74,37 @@ export const Default: Story = { name: 'middleSection' };
 
 // Not a Figma variant: the intro card hidden, as on questions 2 to 5.
 export const NoIntro: Story = { name: 'middleSection, showIntro=false', args: { showIntro: false } };
+
+// Not a Figma variant: the intro card leaving, as when the student taps the mic. The question card slides up
+// into the intro card's place.
+function IntroLeaves() {
+  const [showIntro, setShowIntro] = useState(true);
+  return (
+    <div>
+      <MiddleSection topic={meta.args.topic} intro={meta.args.intro} question={question} showIntro={showIntro} />
+      <button type="button" onClick={() => setShowIntro(false)}>Start dictating</button>
+    </div>
+  );
+}
+
+export const IntroLeavesStory: Story = {
+  name: 'middleSection, intro card leaves',
+  render: () => <IntroLeaves />,
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const intro = canvasElement.querySelector('.middleSection__intro') as HTMLElement;
+    const questionCard = canvasElement.querySelector('.answerCard[data-state="question"]') as HTMLElement;
+    const introTop = intro.getBoundingClientRect().top;
+    await userEvent.click(canvas.getByRole('button', { name: 'Start dictating' }));
+
+    // The card is hidden from screen readers at once, then fades and collapses; the question ends up where the
+    // intro card started.
+    await expect(intro).toHaveAttribute('aria-hidden', 'true');
+    await waitFor(
+      async () => {
+        await expect(Math.round(questionCard.getBoundingClientRect().top)).toBe(Math.round(introTop));
+        await expect(getComputedStyle(intro).opacity).toBe('0');
+      },
+      { timeout: 2000 },
+    );
+  },
+};

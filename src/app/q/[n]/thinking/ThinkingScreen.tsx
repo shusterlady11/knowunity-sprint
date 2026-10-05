@@ -69,15 +69,19 @@ export function ThinkingScreen({ n }: { n: number }) {
     const keyPointCount = questions[n - 1].keyPoints.length;
     // The take's canned transcript, by how much this take covered on its own; nothing for a take that
     // wasn't caught, since nothing was heard.
+    const typed = session?.questions[n]?.typed;
     const transcriptFor = (): string | null => {
+      // A typed take shows exactly what was typed (SPEC.md › 8).
+      if (typed) return typed;
       if (take.kind === 'idk') return idkTranscript;
       if (take.kind !== 'points') return null;
       const own = verdictFor(take.points, keyPointCount);
       return questions[n - 1].transcripts[own === 'notCaught' ? 'wrong' : own];
     };
-    const addTranscript = (record: { transcripts?: string[] }) => {
+    const addTranscript = (record: { transcripts?: string[]; typed?: string }) => {
       const transcript = transcriptFor();
       if (transcript) record.transcripts = [...(record.transcripts ?? []), transcript];
+      delete record.typed;
     };
     const finish = (verdict: Verdict, covered: number[]) => {
       updateSession((s) => {

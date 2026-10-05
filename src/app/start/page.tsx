@@ -10,16 +10,20 @@ import { AnswerCard } from '../../components/answerCard/AnswerCard';
 import { Button } from '../../components/button/Button';
 import { ArrowLeftIcon } from '../../icons/ArrowLeftIcon';
 import { SpeechBubbleTailIcon } from '../../icons/SpeechBubbleTailIcon';
-import { markSplashSeen, rememberRoute } from '../../lib/session';
+import { defaultCode } from '../../content/scripts';
+import { getSession, markSplashSeen, rememberRoute, startSession } from '../../lib/session';
 import './start.css';
 
 /** First-run splash (SPEC.md › 1): Knowie explains why answering out loud helps, then the mic primer. */
 export default function StartPage() {
   const router = useRouter();
 
-  // Shown once per phone: the entry link skips it from now on.
+  // Shown once per phone: the entry link skips it from now on. Opened without the entry link, there's no
+  // session yet, so one starts on the tour script, as the home address does, so what the student does from
+  // here is remembered.
   useEffect(() => {
     markSplashSeen();
+    if (!getSession()) startSession(defaultCode, '/start');
     rememberRoute('/start');
   }, []);
 

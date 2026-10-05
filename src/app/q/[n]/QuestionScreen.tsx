@@ -23,8 +23,11 @@ export function QuestionScreen({ n }: { n: number }) {
   const session = useSession();
   const xp = session?.xp ?? 0;
   // The "Welcome!" card shows only the very first time on question 1, until the student starts answering
-  // (decided 2026-10-05). The question card stays.
-  const showIntro = n === 1 && session?.introSeen !== true;
+  // (decided 2026-10-05). The question card stays. Tapping the mic hands it to the dictating screen, which
+  // fades it out once Knowie is listening; switching to the keyboard or skipping retires it here.
+  // Only once the saved session has been read: the server can't see it, so a page that's already retired the
+  // card would otherwise draw it for a moment and fade it out again.
+  const showIntro = n === 1 && session !== null && session.introSeen !== true;
   const isLast = n === questions.length;
 
   // A student in keyboard mode answers on the typing screen; otherwise remember this question.
@@ -70,12 +73,8 @@ export function QuestionScreen({ n }: { n: number }) {
       bottomContent={
         <div className="question__answer" inert={leaving}>
           <TapToAnswer text="Tap to dictate" />
-          <MicButton
-            onClick={() => {
-              leaveQuestion();
-              router.push(`/q/${n}/recording`);
-            }}
-          />
+          {/* The welcome card stays until Knowie is listening: the dictating screen fades it out. */}
+          <MicButton onClick={() => router.push(`/q/${n}/recording`)} />
           <ToggleGroup
             inputMode="voice"
             micBlocked={false}

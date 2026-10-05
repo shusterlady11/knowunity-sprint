@@ -1,0 +1,22 @@
+/* Typing, as in Figma's "Question / activeState keyboard option selected" and "keyboard open". */
+
+/* The question, laid out from the top like the question screen. */
+.type__content {
+  width: 100%;
+}
+
+/* The toggle row, then the typing bar Space/150 below it (Figma: 6), 24px from the bottom edge (Scaffold's
+   Space/400 plus Space/200), like every bottom button. When the iPhone keyboard is open, the area moves up
+   by the keyboard's height (--type-keyboard, measured from the visible area in TypeScreen.tsx). */
+.type__answer {
+  --type-keyboard: var(--space-0);
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-150);
+  width: 100%;
+  padding-bottom: var(--space-200);
+  transform: translateY(calc(-1 * var(--type-keyboard)));
+}

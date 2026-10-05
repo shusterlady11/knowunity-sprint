@@ -10,6 +10,7 @@ import { TapToAnswer } from '../../../../components/tapToAnswer/TapToAnswer';
 import { MicButton } from '../../../../components/micButton/MicButton';
 import { InputModeToggle } from '../../../../components/inputModeToggle/InputModeToggle';
 import { BottomCTA } from '../../../../components/bottomCTA/BottomCTA';
+import { ChatInput } from '../../../../components/chatInput/ChatInput';
 import { nudge, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { fillHint, xpFor, type Verdict } from '../../../../lib/recallEngine';
@@ -92,12 +93,12 @@ export function ResultScreen({ n }: { n: number }) {
     setSheet('answer');
   };
 
-  const toKeyboard = () => {
+  // Switching modes here keeps the student on this result; the retry control below changes to match.
+  const setMode = (mode: 'voice' | 'keyboard') =>
     updateSession((s) => {
-      s.inputMode = 'keyboard';
+      s.inputMode = mode;
     });
-    router.push(`/q/${n}/type`);
-  };
+  const typing = session?.inputMode === 'keyboard';
 
   const blocked = sheet !== 'none';
   const live = verdict !== 'correct';
@@ -147,16 +148,26 @@ export function ResultScreen({ n }: { n: number }) {
       }
       bottomContent={
         <div className="result__answer" inert={blocked}>
-          {live && (
+          {live && !typing && (
             <>
               <TapToAnswer text={record.revealed ? 'Tap to try again' : 'Tap to dictate'} />
               <div className="result__mic">
                 <div className="result__toggle">
-                  <InputModeToggle inputMode="voice" micBlocked={false} onInputModeChange={(mode) => mode === 'keyboard' && toKeyboard()} />
+                  <InputModeToggle inputMode="voice" micBlocked={false} onInputModeChange={(mode) => mode === 'keyboard' && setMode('keyboard')} />
                 </div>
                 <MicButton listeningState="idle" interactionState="ready" onClick={() => router.push(`/q/${n}/recording`)} />
               </div>
             </>
+          )}
+          {live && typing && (
+            // In keyboard mode, the typing bar takes the mic's place (decided 2026-10-05): tapping it opens the
+            // typing screen, ready to type. The toggle switches back to the mic here.
+            <div className="result__typing">
+              <InputModeToggle inputMode="keyboard" micBlocked={false} onInputModeChange={(mode) => mode === 'voice' && setMode('voice')} />
+              <div className="result__bar-input" onFocusCapture={() => router.push(`/q/${n}/type?focus`)}>
+                <ChatInput status="Inactive" showLeadingButton={false} showMic={false} />
+              </div>
+            </div>
           )}
           <div className="result__bar">{bottomBar}</div>
         </div>

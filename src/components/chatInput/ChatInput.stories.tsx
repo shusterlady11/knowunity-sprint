@@ -20,7 +20,7 @@ EMPTYING THE FIELD (build rule). If the student deletes all text, the bar goes t
 
 OPEN. The mic inside the field could be the way back to voice, which is not decided.
 
-**In code:** the props use Figma's names: \`status\` (Figma's "Status"), \`placeholder\`, \`answer\`, \`longAnswer\` and \`showLeadingButton\`. \`status\` is only where the bar starts. After that, what the student does sets it: an empty field is Typing while it has the caret and Inactive once it loses it (the keyboard is dismissed), one line of text is Ready to send, and more than one line is Long input. \`onStatusChange\` reports each change, so the typing screen can hide the toggleGroup row while there's text. \`onSend\` gets the text when send is tapped. \`label\` names the field for screen readers ("Your answer" by default). The leading and send buttons are the library's \`buttonIcon\` (Secondary L with \`plus\`, Primary S with \`send-03\`), and the icons are exported from Figma.
+**In code:** the props use Figma's names: \`status\` (Figma's "Status"), \`placeholder\`, \`answer\`, \`longAnswer\` and \`showLeadingButton\`. \`showMic\` is code-only: Figma always draws the mic in the empty field, but it isn't a button, so the typing route turns it off and the voice/keyboard toggle is the way back to voice (D14, decided 2026-10-05). \`status\` is only where the bar starts. After that, what the student does sets it: an empty field is Typing while it has the caret and Inactive once it loses it (the keyboard is dismissed), one line of text is Ready to send, and more than one line is Long input. \`onStatusChange\` reports each change, so the typing screen can hide the toggleGroup row while there's text. \`onSend\` gets the text when send is tapped. \`label\` names the field for screen readers ("Your answer" by default). The leading and send buttons are the library's \`buttonIcon\` (Secondary L with \`plus\`, Primary S with \`send-03\`), and the icons are exported from Figma.
 
 **Not built yet:** Recording and Loading. The typing route moves to the processing screen on send, and there's no real mic in this build.
 
@@ -136,6 +136,21 @@ export const NoLeadingButton: Story = {
     const { bar, field } = parts(canvasElement);
     await expect(canvas.queryByRole('button', { name: 'Add' })).toBeNull();
     await expect(field.getBoundingClientRect().width).toBeCloseTo(bar.getBoundingClientRect().width, 0);
+  },
+};
+
+// Not a Figma variant: the typing route, with the in-field mic hidden (D14). The field is empty and has no send
+// button or mic; typing still brings up send.
+export const NoMic: Story = {
+  name: 'showMic=false (typing route)',
+  args: { status: 'Inactive', showLeadingButton: false, showMic: false },
+  play: async ({ canvasElement, canvas, userEvent }) => {
+    const { field } = parts(canvasElement);
+    await expect(field.querySelector('.chatInput__mic')).toBeNull();
+    await expect(canvas.queryByRole('button', { name: 'Send' })).toBeNull();
+    await userEvent.type(canvas.getByRole('textbox', { name: 'Your answer' }), 'Producers make food.');
+    await expect(canvas.getByRole('button', { name: 'Send' })).toBeVisible();
+    await expect(field.querySelector('.chatInput__mic')).toBeNull();
   },
 };
 

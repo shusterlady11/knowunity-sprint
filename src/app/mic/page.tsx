@@ -22,9 +22,12 @@ export default function MicPage() {
 
   useEffect(() => rememberRoute('/mic'), []);
 
+  // Either answer leads to the first question, so the welcome card shows there again, until the student first
+  // taps the mic; a leftover "intro seen" from an earlier run can't hide it.
   const answer = (inputMode: 'voice' | 'keyboard', route: string) => {
     updateSession((session) => {
       session.inputMode = inputMode;
+      session.introSeen = false;
     });
     router.push(route);
   };

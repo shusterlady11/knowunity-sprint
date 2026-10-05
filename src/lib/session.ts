@@ -23,6 +23,8 @@ export type QuestionRecord = {
   hintsUsed?: number[];
   /** What the student said, one entry per take, in order (for the Results rows). */
   transcripts?: string[];
+  /** A typed take on its way to be judged: exactly what the student typed, used as its transcript. */
+  typed?: string;
   /** Set once the student has opened Reveal answer. */
   revealed?: boolean;
   /**

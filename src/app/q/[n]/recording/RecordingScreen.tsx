@@ -10,11 +10,11 @@ import { RecordingGlow } from '../../../../components/recordingGlow/RecordingGlo
 import { MicButton } from '../../../../components/micButton/MicButton';
 import { ButtonIcon } from '../../../../components/buttonIcon/ButtonIcon';
 import { XIcon } from '../../../../icons/XIcon';
-import { questions, topic } from '../../../../content/questions';
+import { intro, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { announce } from '../../../../lib/announcer';
 import { durationMs } from '../../../../lib/motion';
-import { rememberRoute, useSession } from '../../../../lib/session';
+import { questionRecord, rememberRoute, updateSession, useSession } from '../../../../lib/session';
 import { ExitConfirm } from '../../ExitConfirm';
 import { sendBackOnLoad } from '../../sendBackOnLoad';
 import '../../exitConfirm.css';
@@ -26,7 +26,11 @@ export function RecordingScreen({ n }: { n: number }) {
   const [leaving, setLeaving] = useState(false);
   const [hint, setHint] = useState('Listening…');
   const [hintFading, setHintFading] = useState(false);
-  const xp = useSession()?.xp ?? 0;
+  const session = useSession();
+  const xp = session?.xp ?? 0;
+  // The welcome card, if the student hasn't started answering before: it opens here still showing, then fades
+  // while the question card slides up, once Knowie is listening (decided 2026-10-05).
+  const showIntro = n === 1 && session !== null && session.introSeen !== true;
   const keepGoing = useCallback(() => setLeaving(false), []);
 
   // "Listening…" first, then "Tap to submit…" once the student has had time to start speaking. The mic is
@@ -52,11 +56,26 @@ export function RecordingScreen({ n }: { n: number }) {
     // Saved as the question itself: reopening the app mid-take returns there.
     rememberRoute(`/q/${n}`);
     announce('Listening for your answer.');
+    // Let the card draw once, then retire it, so it animates out rather than vanishing.
+    let frame = requestAnimationFrame(() => {
+      frame = requestAnimationFrame(() =>
+        updateSession((s) => {
+          if (n === 1) s.introSeen = true;
+        }),
+      );
+    });
+    return () => cancelAnimationFrame(frame);
   }, [n, router]);
 
   // Stopping submits the take to the processing screen, which judges and counts it. Both taps replace this
   // route, so going back never lands on a recording that has ended.
-  const stop = () => router.replace(`/q/${n}/thinking`);
+  const stop = () => {
+    // A spoken take: clear any typed text left from a dropped typed take, so it isn't used as this one's words.
+    updateSession((s) => {
+      delete questionRecord(s, n).typed;
+    });
+    router.replace(`/q/${n}/thinking`);
+  };
   const cancel = () => {
     announce('Recording cancelled.');
     router.replace(`/q/${n}`);
@@ -71,8 +90,7 @@ export function RecordingScreen({ n }: { n: number }) {
       }
       middleContent={
         <div className="recording__content" inert={leaving}>
-          {/* The welcome card is gone once the student starts dictating (decided 2026-10-05). */}
-          <MiddleSection topic={topic} question={bold(questions[n - 1].prompt)} showIntro={false} />
+          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} />
         </div>
       }
       bottomContent={
