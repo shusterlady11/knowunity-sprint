@@ -4,7 +4,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../components/scaffold/Scaffold';
 import { MascotSlot } from '../../components/mascotSlot/MascotSlot';
-import { TextBlock } from '../../components/textBlock/TextBlock';
 import { BottomCTA } from '../../components/bottomCTA/BottomCTA';
 import { endSession, rememberRoute, updateSession } from '../../lib/session';
 import './micOff.css';
@@ -38,13 +37,14 @@ export default function MicOffPage() {
         <div className="micOff__content">
           {/* No shadow under Knowie: Figma's is a loose layer, dropped (was D8). */}
           <MascotSlot size="3XL" expression="approving" />
-          {/* TextBlock as it is: its L caption is Headline XS, where Figma uses Headline S (was D13). */}
-          <div role="heading" aria-level={1}>
-            <TextBlock
-              variant="L"
-              title="Let’s switch it up."
-              caption="Your mic is off, so you have the option to keep learning without speaking out loud. Improving your comprehension with recall also works when you type!"
-            />
+          {/* Built here: Figma's text is loose layers, a Headline L title and a Headline S line Space/200 apart,
+              which no TextBlock size matches (docs/component-gaps.md). */}
+          <div className="micOff__text">
+            <h1 className="micOff__title">Let’s switch it up.</h1>
+            <p className="micOff__body">
+              Your mic is off, so you have the option to keep learning without speaking out loud. Improving your
+              comprehension with recall also works when you type!
+            </p>
           </div>
         </div>
       }
