@@ -10,7 +10,7 @@ import { MicButton } from '../../../components/micButton/MicButton';
 import { ToggleGroup } from '../../../components/toggleGroup/ToggleGroup';
 import { intro, questions, topic } from '../../../content/questions';
 import { bold } from '../../../content/bold';
-import { getSession, questionRecord, rememberRoute, updateSession, useSession, type Session } from '../../../lib/session';
+import { endQuestion, getSession, rememberRoute, updateSession, useSession, type Session } from '../../../lib/session';
 import { ExitConfirm } from '../ExitConfirm';
 import '../exitConfirm.css';
 import './question.css';
@@ -44,9 +44,7 @@ export function QuestionScreen({ n }: { n: number }) {
     });
 
   const skip = () => {
-    leaveQuestion((s) => {
-      questionRecord(s, n).outcome = 'skipped';
-    });
+    leaveQuestion((s) => endQuestion(s, n, 'skipped'));
     router.push(isLast ? '/results' : `/q/${n + 1}`);
   };
 

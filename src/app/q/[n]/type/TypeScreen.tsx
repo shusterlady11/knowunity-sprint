@@ -9,7 +9,7 @@ import { ToggleGroup } from '../../../../components/toggleGroup/ToggleGroup';
 import { ChatInput } from '../../../../components/chatInput/ChatInput';
 import { intro, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
-import { questionRecord, rememberRoute, updateSession, useSession, type Session } from '../../../../lib/session';
+import { endQuestion, questionRecord, questionRoute, rememberRoute, updateSession, useSession, type Session } from '../../../../lib/session';
 import { ExitConfirm } from '../../ExitConfirm';
 import '../../exitConfirm.css';
 import './type.css';
@@ -18,7 +18,7 @@ type Status = 'Inactive' | 'Typing' | 'Ready to send' | 'Long input';
 
 /**
  * Typing: the keyboard way to answer, built around chatInput. The toggle row (back to voice, and Skip)
- * shows while the field is empty and hides while it has text. A sent answer goes to the same mock engine as
+ * shows while the keyboard is down and hides while it's up. A sent answer goes to the same mock engine as
  * a spoken one, and its exact words become the take's transcript.
  */
 export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean }) {
@@ -26,7 +26,6 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
   const session = useSession();
   const [leaving, setLeaving] = useState(false);
   const keepGoing = useCallback(() => setLeaving(false), []);
-  const [status, setStatus] = useState<Status>(startTyping ? 'Typing' : 'Inactive');
   const answerRef = useRef<HTMLDivElement>(null);
   const isLast = n === questions.length;
   const showIntro = n === 1 && session !== null && session.introSeen !== true;
@@ -62,7 +61,6 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
     });
 
   const onStatusChange = (next: Status) => {
-    setStatus(next);
     if (next !== 'Inactive') change(() => {});
   };
 
@@ -82,14 +80,15 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
   };
 
   const skip = () => {
-    change((s) => {
-      questionRecord(s, n).outcome = 'skipped';
-    });
-    router.push(isLast ? '/results' : `/q/${n + 1}`);
+    change((s) => endQuestion(s, n, 'skipped'));
+    router.push(isLast ? '/results' : questionRoute(n + 1));
   };
 
-  // The row is there while the field is empty; it hides while there's text (SPEC.md › 10).
-  const showRow = status === 'Inactive' || status === 'Typing';
+  // The row shows only while the keyboard is down, whatever is in the field (decided 2026-10-06): with the
+  // keyboard up it would sit on the question card, and with it down the student can always get back to voice
+  // or skip. The keyboard is up while the field has focus.
+  const [keyboardUp, setKeyboardUp] = useState(startTyping);
+  const showRow = !keyboardUp;
 
   return (
     <Scaffold
@@ -104,7 +103,13 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
         </div>
       }
       bottomContent={
-        <div ref={answerRef} className="type__answer" inert={leaving}>
+        <div
+          ref={answerRef}
+          className="type__answer"
+          inert={leaving}
+          onFocus={(e) => setKeyboardUp(e.target instanceof HTMLTextAreaElement)}
+          onBlur={(e) => e.target instanceof HTMLTextAreaElement && setKeyboardUp(false)}
+        >
           {showRow && (
             <ToggleGroup
               inputMode="keyboard"

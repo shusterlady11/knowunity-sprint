@@ -3,12 +3,10 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../components/scaffold/Scaffold';
-import { ButtonIcon } from '../../components/buttonIcon/ButtonIcon';
 import { TextBlock } from '../../components/textBlock/TextBlock';
 import { MascotSlot } from '../../components/mascotSlot/MascotSlot';
 import { AnswerCard } from '../../components/answerCard/AnswerCard';
 import { Button } from '../../components/button/Button';
-import { ArrowLeftIcon } from '../../icons/ArrowLeftIcon';
 import { SpeechBubbleTailIcon } from '../../icons/SpeechBubbleTailIcon';
 import { defaultCode } from '../../content/scripts';
 import { getSession, markSplashSeen, rememberRoute, startSession } from '../../lib/session';
@@ -29,19 +27,8 @@ export default function StartPage() {
 
   return (
     <Scaffold
-      topNavigation={
-        // Built here: AppBar always draws progress and XP, and this bar has only a back button
-        // (docs/component-gaps.md). It leaves the test, standing in for the launching screen.
-        <nav className="start__topBar">
-          <ButtonIcon
-            variant="Tertiary"
-            size="L"
-            icon={<ArrowLeftIcon />}
-            aria-label="Back"
-            onClick={() => router.push('/done')}
-          />
-        </nav>
-      }
+      // No top bar: the splash has no close or back button (was D1). "Let's go!" is the only way on.
+      showTopNavSlot={false}
       middleContent={
         <div className="start__content">
           {/* TextBlock doesn't choose a heading level, so the screen marks its title as the page heading. */}

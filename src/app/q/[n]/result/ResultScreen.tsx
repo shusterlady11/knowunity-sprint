@@ -13,9 +13,9 @@ import { BottomCTA } from '../../../../components/bottomCTA/BottomCTA';
 import { ChatInput } from '../../../../components/chatInput/ChatInput';
 import { nudge, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
-import { fillHint, xpFor, type Verdict } from '../../../../lib/recallEngine';
+import { fillHint, type Verdict } from '../../../../lib/recallEngine';
 import { announce } from '../../../../lib/announcer';
-import { getSession, questionRecord, rememberRoute, updateSession, useSession } from '../../../../lib/session';
+import { endQuestion, getSession, questionRecord, questionRoute, rememberRoute, updateSession, useSession } from '../../../../lib/session';
 import { ExitConfirm } from '../../ExitConfirm';
 import { AnswerSheet } from './AnswerSheet';
 import '../../exitConfirm.css';
@@ -47,7 +47,8 @@ export function ResultScreen({ n }: { n: number }) {
   const question = questions[n - 1];
   const total = question.keyPoints.length;
   const isLast = n === questions.length;
-  const nextRoute = isLast ? '/results' : `/q/${n + 1}`;
+  // Worked out at the tap, so it follows the input mode the student is in by then.
+  const nextRoute = () => (isLast ? '/results' : questionRoute(n + 1));
 
   const [sheet, setSheet] = useState<'none' | 'exit' | 'answer'>('none');
   const closeSheet = useCallback(() => setSheet('none'), []);
@@ -75,15 +76,9 @@ export function ResultScreen({ n }: { n: number }) {
           : undefined; // "didn't catch that": the card's own default line.
 
   // Ends the question with an outcome and its XP, once, then moves on.
-  const endQuestion = (outcome: 'needsPractice' | 'skipped') => {
-    updateSession((s) => {
-      const r = questionRecord(s, n);
-      if (!r.outcome) {
-        r.outcome = outcome;
-        s.xp += xpFor({ kind: outcome });
-      }
-    });
-    router.push(nextRoute);
+  const finish = (outcome: 'needsPractice' | 'skipped') => {
+    updateSession((s) => endQuestion(s, n, outcome));
+    router.push(nextRoute());
   };
 
   const reveal = () => {
@@ -113,7 +108,7 @@ export function ResultScreen({ n }: { n: number }) {
         leftCTA="More info"
         rightCTA={isLast ? 'Finish' : 'Next'}
         onLeftClick={() => setSheet('answer')}
-        onRightClick={() => router.push(nextRoute)}
+        onRightClick={() => router.push(nextRoute())}
       />
     ) : verdict === 'notCaught' ? (
       <BottomCTA
@@ -121,7 +116,7 @@ export function ResultScreen({ n }: { n: number }) {
         leftCTA="Reveal answer"
         rightCTA="Skip"
         onLeftClick={reveal}
-        onRightClick={() => endQuestion('skipped')}
+        onRightClick={() => finish('skipped')}
       />
     ) : (
       <BottomCTA
@@ -129,7 +124,7 @@ export function ResultScreen({ n }: { n: number }) {
         leftCTA="Reveal answer"
         rightCTA="Next"
         onLeftClick={reveal}
-        onRightClick={() => endQuestion('needsPractice')}
+        onRightClick={() => finish('needsPractice')}
       />
     );
 

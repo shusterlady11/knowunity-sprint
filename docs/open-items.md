@@ -17,7 +17,6 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 
 | # | Decision | Blocks |
 |---|---|---|
-| D1 | Does the splash get a close button, and where does it lead? Figma's frame has a top bar of loose layers; `AppBar` can't stand in because it always draws progress and XP. If it gets one: `ButtonIcon` Tertiary M with `XCloseIcon`. | 1 First-run splash |
 | D7 | Is `AnswerCard` `Default` Figma's splash speech bubble (a `background/surface` box with radius 16 and a tail)? Checked side by side at build time. | 1 First-run splash |
 | D9 | Page headings for screen readers. `TextBlock` doesn't choose a heading level, so no screen has a real `<h1>` to jump to. | All screens |
 | D10 | `themeColor` in the page's `viewport`: leave it out, or read it from `tokens/tokens.json` (it can't be a CSS variable). | App shell |

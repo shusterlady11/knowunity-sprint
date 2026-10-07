@@ -7,6 +7,7 @@ import { TextBlock } from '../../components/textBlock/TextBlock';
 import { ButtonGroup } from '../../components/buttonGroup/ButtonGroup';
 import { Button } from '../../components/button/Button';
 import { endSession } from '../../lib/session';
+import { focusQuietly } from '../../lib/focusQuietly';
 
 /**
  * The exit confirm that the close X opens on every /q/... route (SPEC.md › Exit confirm). No Figma frame;
@@ -18,12 +19,12 @@ export function ExitConfirm({ onKeepGoing }: { onKeepGoing: () => void }) {
 
   // Focus moves into the sheet and Escape closes it; closing hands focus back to the X.
   useEffect(() => {
-    ref.current?.querySelector('button')?.focus();
+    focusQuietly(ref.current?.querySelector('button'));
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onKeepGoing();
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('keydown', onKey);
-      document.querySelector<HTMLElement>('.appBar .buttonIcon')?.focus();
+      focusQuietly(document.querySelector<HTMLElement>('.appBar .buttonIcon'));
     };
   }, [onKeepGoing]);
 

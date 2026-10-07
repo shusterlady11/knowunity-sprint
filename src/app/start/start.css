@@ -1,13 +1,5 @@
 /* First-run splash, as in Figma's SPLASH-FIRST-TIME. */
 
-/* The top bar: one back button on the left, in a 56px row. buttonIcon L is Figma's 56px button frame with
-   a 24px arrow 16px from the edge. */
-.start__topBar {
-  display: flex;
-  align-items: center;
-  min-height: var(--control-l);
-}
-
 /* The content is centered in the middle slot, with Space/1200 between the headline and Knowie. It sits 24px
    higher than true center (decided 2026-10-01): Space/1200 of extra space below moves the centered block
    up by half that. */

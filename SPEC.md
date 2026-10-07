@@ -66,7 +66,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - `MascotSlot` 2XL, `standby`
   - a speech bubble holding the body text "When you can explain a concept to someone else…". In Figma it's loose layers (a `background/surface` box with radius 16, plus a tail). `AnswerCard` `Default` may cover it; this is checked side by side at build time (`docs/open-items.md`, D7).
   - `Button` Primary L "Let's go!"
-- **Top navigation:** Figma's frame has a top bar built from loose layers: an icon button on the left and a hidden Skip. `AppBar` can't stand in, since it always draws progress and XP. Whether the splash gets a close button, and where it leads, is D1 in `docs/open-items.md`.
+- **Top navigation:** none (`showTopNavSlot={false}`; was D1, decided 2026-10-06). Figma's frame has a top bar of loose layers, an icon button on the left and a hidden Skip; it isn't built. "Let's go!" is the only way on.
 - **Actions:**
 
 | Action | Leads to |
@@ -197,11 +197,11 @@ A different code starts a new session for it. An unknown code shows "This link d
 | Action | Leads to |
 |---|---|
 | Tap mic (partial, wrong, didn't catch that) | `/q/[n]/recording` to retry. The next take is judged together with the earlier ones. |
-| Toggle to keyboard | `/q/[n]/type` |
+| Toggle to keyboard | stays on the result; the typing bar takes the mic's place (see Typing › Result screen in keyboard mode) |
 | Next after a correct | `/q/[n+1]`, or `/results` after the last question |
 | Next after a partial or wrong, or after a reveal | counts as needs practice (1 XP), then the next question |
 | Finish | `/results` |
-| Skip (didn't catch that) | counts as skipped, then the next question |
+| Skip (didn't catch that) | counts as skipped, then the next question. After a reveal it counts as needs practice (1 XP) instead. |
 | Reveal answer / More info | the sheet |
 | Close X | exit confirm sheet |
 
@@ -258,12 +258,12 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 | State | Keyboard | `chatInput` | Above the bar |
 |---|---|---|---|
 | Keyboard option selected | down | `Inactive`, with its placeholder | `ToggleGroup` `keyboard` (`micBlocked=false`) + `Button` Tertiary S "Skip" |
-| Typing, field empty | up | `Typing`: a caret, no send button | the same `ToggleGroup` + Skip row |
-| Ready to send | up | `Ready to send`: text, with a send `ButtonIcon` Primary S | nothing: the row is hidden while the field has text |
+| Typing, field empty | up | `Typing`: a caret, no send button | nothing: the row is hidden while the keyboard is up (decided 2026-10-06), so it can't sit on the question card |
+| Ready to send | up | `Ready to send`: text, with a send `ButtonIcon` Primary S | nothing |
 | Long input | up | `Long input`: grows upward one line (26px) at a time, up to 6 lines, then scrolls inside the field | nothing |
 
-  - **Emptying the field:** deleting all the text goes back to Typing, and the row reappears.
-  - **Dismissing the keyboard:** only this returns the screen to "Keyboard option selected".
+  - **Emptying the field:** deleting all the text goes back to Typing. The row stays hidden until the keyboard is dismissed.
+  - **Dismissing the keyboard:** brings the row back, whatever is in the field. With the field empty, this is "Keyboard option selected".
   - **The keyboard never moves,** and the question above stays visible.
   - **Unused on this route:** `chatInput`'s `Loading` and `Recording` states. The screen moves to `/q/[n]/thinking` on send, and there's no real mic.
 
@@ -275,13 +275,13 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 | Action | Leads to |
 |---|---|
 | Send | `/q/[n]/thinking`. The typed answer goes to the same mock as a spoken one. |
-| `InputModeToggle` to voice (field empty, or keyboard down) | `/q/[n]`. Voice becomes the mode for later questions. |
-| Skip (field empty, or keyboard down) | counts as skipped, then the next question |
-| Dismiss the keyboard | "Keyboard option selected" |
+| `InputModeToggle` to voice (keyboard down) | `/q/[n]`. Voice becomes the mode for later questions. |
+| Skip (keyboard down) | counts as skipped (needs practice after a reveal), then the next question |
+| Dismiss the keyboard | the row comes back |
+| Close X | exit confirm sheet |
 
 - **A typed answer's transcript** is exactly what was typed, shown in its Results row.
 - **Result screen in keyboard mode** (decided 2026-10-05): on partial, wrong and "didn't catch that", the typing bar (`chatInput`, empty) and the `InputModeToggle` take the place of "Tap to dictate" and the mic. Tapping the bar opens this screen with the field focused (`/q/[n]/type?focus`); the toggle switches the result back to the mic.
-| Close X | exit confirm sheet |
 
 ### 11. Mic skipped: `/mic-off`
 
@@ -289,7 +289,6 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 - **Components:**
   - `Scaffold` with no top navigation
   - `MascotSlot` 3XL, `approving`, with no shadow under it: Figma's oval is a loose layer, dropped (was D8, decided 2026-10-05)
-  - `TextBlock` L as it is: "Let's switch it up." in Headline L, and the paragraph as its caption in Headline XS, smaller than Figma's Headline S (was D13, decided 2026-10-05)
   - `BottomCTA` layout "Two button no drawer": `Button` Secondary L "No thanks", `Button` Primary L "Continue"
 - **Actions:**
 
@@ -371,7 +370,7 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
   |---|---|
   | Good explanations | correct, at any attempt |
   | Needs practice | Next tapped after a partial or wrong, and any concept whose answer was revealed |
-  | Skipped | Skip, `idk`, or Skip after "didn't catch that" |
+  | Skipped | Skip, `idk`, or Skip after "didn't catch that", unless the answer was revealed |
 
 **Screen-reader announcements.** One visually hidden live region (the pattern in `docs/recordingglow-listening-spec.md` §7) announces every state change in a full sentence:
 - "Listening for your answer."

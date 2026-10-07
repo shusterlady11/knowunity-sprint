@@ -4,7 +4,7 @@ import { TextBlock } from './TextBlock';
 
 const figmaDescription = `A title plus optional caption text pairing, in four sizes (XL/L/M/S). USE: as a section or screen heading with an optional supporting caption line beneath it. DON'T: turn on showCaption without actually filling in caption text — the property exists to hide/show the line, not to reserve empty space. NOTE: this component has zero instances in the Example Screens page, so this guidance is based on its structure and naming alone, not observed usage.
 
-**In code:** \`variant\`, \`showCaption\`, \`title\` and \`caption\` use Figma's names, options and defaults (XL, caption on, "Header", "Caption"). The block hugs its text, and the title and caption both fill its width so they line up. XL and L are centered with \`Space/100\` between the lines, a Headline XL (76px) or Headline L (44px) title and a Headline XS caption; M and S are left-aligned with \`Space/050\` between the lines, a Body M Bold or Body S Bold title and a Caption M or Caption S caption. Colors are \`text/primary\` for the title and \`text/secondary\` for the caption. With \`showCaption\` off the caption isn't drawn and takes no space. The text is a pair of paragraphs; it doesn't choose a heading level, so when a real heading is needed, use the right heading around it.
+**In code:** \`variant\`, \`showCaption\`, \`title\` and \`caption\` use Figma's names, options and defaults (XL, caption on, "Header", "Caption"). The block hugs its text, and the title and caption both fill its width so they line up. XL and L are centered, with \`Space/100\` between the lines on XL and \`Space/300\` on L (decided 2026-10-06, Figma has \`Space/100\`: Headline L's letters are taller than its line-height, so 4px let the title's descenders touch the caption), a Headline XL (76px) or Headline L (44px) title and a Headline XS caption; M and S are left-aligned with \`Space/050\` between the lines, a Body M Bold or Body S Bold title and a Caption M or Caption S caption. Colors are \`text/primary\` for the title and \`text/secondary\` for the caption. With \`showCaption\` off the caption isn't drawn and takes no space. The text is a pair of paragraphs; it doesn't choose a heading level, so when a real heading is needed, use the right heading around it.
 
 **Fonts:** Figma sets the XL and L titles in Greed Condensed, an unlicensed trial font that can't be published, so code uses Inter for them, as everywhere else. Inter is wider, so long XL and L titles need more room than in Figma.
 
@@ -36,7 +36,7 @@ const meta = {
     // Which type style each variant uses, for the title and for the caption.
     const styles = {
       XL: { title: 'headline-xl', caption: 'headline-xs-regular', gap: '--space-100', align: 'center' },
-      L: { title: 'headline-l', caption: 'headline-xs-regular', gap: '--space-100', align: 'center' },
+      L: { title: 'headline-l', caption: 'headline-xs-regular', gap: '--space-300', align: 'center' },
       M: { title: 'body-m-bold', caption: 'caption-m-regular', gap: '--space-050', align: 'left' },
       S: { title: 'body-s-bold', caption: 'caption-s-regular', gap: '--space-050', align: 'left' },
     }[variant];
@@ -67,7 +67,7 @@ const meta = {
       const t = title.getBoundingClientRect();
       const c = caption!.getBoundingClientRect();
       await expect(c.top).toBe(t.bottom + px(styles.gap));
-      // The block's height is the two lines and the gap (100, 60, 44 and 36 with the default text).
+      // The block's height is the two lines and the gap (100, 68, 44 and 36 with the default text).
       await expect(block.getBoundingClientRect().height).toBe(px(`--type-${styles.title}-lineHeight`) + px(styles.gap) + px(`--type-${styles.caption}-lineHeight`));
       // Both lines fill the block's width, so they line up.
       await expect(c.width).toBe(block.getBoundingClientRect().width);

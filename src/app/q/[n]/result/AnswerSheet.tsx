@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { BottomSheet } from '../../../../components/bottomSheet/BottomSheet';
 import type { Question } from '../../../../content/questions';
+import { focusQuietly } from '../../../../lib/focusQuietly';
 
 /**
  * The Reveal answer and More info sheet (SPEC.md › 7): the concept's name in the bar, a bulleted and
@@ -15,12 +16,12 @@ export function AnswerSheet({ answer, onClose }: { answer: Question['answer']; o
   // Focus moves into the sheet and Escape closes it; closing hands focus back to what opened it.
   useEffect(() => {
     const opener = document.activeElement as HTMLElement | null;
-    ref.current?.querySelector('button')?.focus();
+    focusQuietly(ref.current?.querySelector('button'));
     const onKey = (e: KeyboardEvent) => e.key === 'Escape' && onClose();
     document.addEventListener('keydown', onKey);
     return () => {
       document.removeEventListener('keydown', onKey);
-      opener?.focus();
+      focusQuietly(opener);
     };
   }, [onClose]);
 

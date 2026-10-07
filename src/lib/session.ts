@@ -6,7 +6,7 @@
 // still works, just without resuming.
 
 import { useMemo, useSyncExternalStore } from 'react';
-import type { Feedback, Verdict } from './recallEngine';
+import { xpFor, type Feedback, type Verdict } from './recallEngine';
 
 export type InputMode = 'voice' | 'keyboard';
 
@@ -122,6 +122,27 @@ export function rememberRoute(pathname: string) {
   updateSession((session) => {
     session.route = route;
   });
+}
+
+/**
+ * Where question n opens in the current input mode: the typing screen in keyboard mode, the question screen
+ * otherwise. Going straight there avoids the question screen showing the mic for a moment before it sends a
+ * keyboard-mode student on to typing.
+ */
+export function questionRoute(n: number): string {
+  return getSession()?.inputMode === 'keyboard' ? `/q/${n}/type` : `/q/${n}`;
+}
+
+/**
+ * Ends question n with the outcome the student chose, once, adding its XP. A skip after the answer was
+ * revealed counts as needs practice (1 XP), since any concept whose answer was revealed goes there (decided
+ * 2026-10-06). Used by every Skip and Next that ends a question without a correct answer.
+ */
+export function endQuestion(session: Session, n: number, outcome: 'needsPractice' | 'skipped') {
+  const record = questionRecord(session, n);
+  if (record.outcome) return;
+  record.outcome = record.revealed ? 'needsPractice' : outcome;
+  session.xp += xpFor({ kind: record.outcome });
 }
 
 /** The record for one question, created when first needed. */

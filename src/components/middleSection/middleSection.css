@@ -1,5 +1,7 @@
 /* A column that fills the width it's given: the topic pill, then the cards Space/2400 below it, as in Figma.
-   Space/400 above the pill. Figma's 16px at the sides is left out: Scaffold's middleContent already gives it. */
+   Nothing above the pill (decided 2026-10-06; Figma has Space/400): with the app bar's and Scaffold's padding,
+   that left 32px under the progress bar, and 16px reads as one group. Figma's 16px at the sides is left out:
+   Scaffold's middleContent already gives it. */
 .middleSection {
   box-sizing: border-box;
   display: flex;
@@ -7,7 +9,7 @@
   align-items: center;
   gap: var(--space-2400);
   width: 100%;
-  padding: var(--space-400) var(--space-0) var(--space-0);
+  padding: var(--space-0);
 }
 
 /* The cards. Knowie is placed against them rather than in the column, as in Figma. */
