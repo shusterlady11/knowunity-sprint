@@ -172,6 +172,17 @@ export function endSession(endedBy: EndedBy) {
 }
 
 /**
+ * Undoes an ending from the end screen (decided 2026-10-07): back in the same session, at the given route.
+ * "Keep going" after leaving returns to the saved question; "Go back" after opting out returns to Mic skipped.
+ */
+export function reopenSession(route: string) {
+  updateSession((session) => {
+    delete session.endedBy;
+    session.route = route;
+  });
+}
+
+/**
  * "Review all" on Results: a new pass of all the questions, in voice mode from question 1. XP carries over;
  * the questions start fresh, so Results show only the latest pass (SPEC.md › 8).
  */

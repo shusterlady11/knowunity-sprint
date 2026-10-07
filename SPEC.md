@@ -140,8 +140,8 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 A different code starts a new session for it. An unknown code shows "This link doesn’t work. Ask the person running the session for a new link." and goes nowhere.
 
 - **Home Screen:** the student adds this page to their Home Screen. The saved icon has to open `/s/[code]` with its code. On iOS, Home Screen web apps don't share storage with Safari, so the code can't be passed along any other way. So, opened in Safari, `/s/[code]` stays on its address and shows "Add to Home Screen" with the steps ("Tap Share, then Add to Home Screen. Open Knowie from your Home Screen to start."), and a Secondary "Continue in browser" button for testing on a computer. Opened from the icon (full screen), it goes straight on (decided 2026-10-02).
-- **`/reset`** clears the saved session and the "splash seen" flag between participants, then shows "All cleared. This phone is ready for the next participant. Open their link to start." It's reached by typing the address and never appears in the student's flow.
-- **`/`, the app's home address,** resumes a session in progress; with none, it starts one on the `tour` script at `/start` (was D5, decided 2026-10-02).
+- **`/reset`** clears the saved session and the "splash seen" flag between participants, then shows "All cleared. This phone is ready for the next participant. Open their link to start." with a `Button` Primary L **Start**, which begins the `tour` script at `/start`, so a moderator doesn't have to type anything (decided 2026-10-07). It's reached by typing the address and never appears in the student's flow.
+- **`/`, the app's home address,** resumes a session in progress, including one the student left, so progress is kept (was D5, decided 2026-10-02). A finished or opted-out session, or none, starts fresh at `/start`, on the same script if there was one, else `tour` (decided 2026-10-07).
 - **Full-screen mode:** an app manifest (`src/app/manifest.ts`, the Next.js file convention) and the page metadata make the Home Screen icon open full screen, with no Safari toolbars.
 
 ### 6. Processing: `/q/[n]/thinking`
@@ -248,7 +248,13 @@ A different code starts a new session for it. An unknown code shows "This link d
   - `Scaffold` with no top navigation
   - `MascotSlot`, `approving`
   - `TextBlock`
-- **Student actions:** none. The session is over, and the moderator resets from `/reset`.
+- **Student actions** (decided 2026-10-07), a `Button` Primary L in the message screen's bottom slot:
+
+  | Arrived by | Button | Leads to |
+  |---|---|---|
+  | Finishing | none | The session is over; the moderator resets from `/reset`. |
+  | Leaving mid-session | Keep going | the question they left, with their progress |
+  | Opting out | Go back | `/mic-off`, where they can choose to type instead |
 
 ### 10. Typing: `/q/[n]/type`
 
