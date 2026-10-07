@@ -4,12 +4,7 @@ Everything still waiting on a decision or on content, in one place. Each item na
 
 ## Waiting on content
 
-The designer supplies these, stored in a new file under `src/content/` (SPEC.md › How the mocked recall behaves).
-
-- **The 5 questions,** from what the participants just studied, with their topic. Placeholders stand in until then (`src/content/questions.ts`).
-- **For each question:** 2–4 key points, one hint per key point, a correct-feedback line, the More info / Reveal context, and a canned transcript for each verdict it can get. Placeholders stand in for all of these (`src/content/questions.ts`), and for the Results copy (`src/content/results.ts`).
-- **The participant scripts:** a first-pass and a later-pass chain per question, and the role-play tasks that match them.
-- **The `tour` reference script** used in SPEC.md › Verification.
+- **More participant scripts, if needed.** The content is in (AP Biology, Unit 3: Cellular energetics, 2026-10-07), with the `tour` reference script and one participant script, `k7`, and its role-play tasks (`src/content/scripts.ts`). Each extra participant who should get different verdicts needs their own script and tasks.
 
 ## Waiting on a decision
 

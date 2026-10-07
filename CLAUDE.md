@@ -71,7 +71,7 @@ When working on UI, use the storybook tools to read the component library before
 - `.claude/skills/ui-designer/SKILL.md` — visual craft, styling, tokens-to-CSS; read before styling any screen.
 - `.claude/skills/ux-motion/SKILL.md` — animation/transition implementation; read before building the mic, recording glow, or loading states.
 - `.claude/skills/interactive-prototype/SKILL.md` — high-fidelity interactive React-artifact prototyping workflow; read before prototyping a flow in an artifact.
-- `src/content/*` — the questions, topic, key points, hints, correct lines, answers, transcripts and Results copy the screens show. PLACEHOLDER until the designer supplies the real content (D12).
+- `src/content/*` — the questions, topic, key points, hints, correct lines, answers, transcripts and Results copy the screens show: AP Biology, Unit 3 (Cellular energetics), approved 2026-10-07. The transcripts stay canned.
 - `src/lib/session.ts` — the saved session on the phone (script code, route, input mode, takes, XP) and the "splash seen" flag; `/reset` clears both.
 - `src/content/scripts.ts` — the scripts the entry link `/s/[code]` picks. PLACEHOLDER: `tour` and one sample participant script, `k7`.
 - `src/app/MessageScreen.tsx` — the plain centered message page (install steps, unknown link, reset, end screen).

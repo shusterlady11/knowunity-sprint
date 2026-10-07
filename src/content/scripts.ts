@@ -3,8 +3,8 @@
 // ">", and the special takes are notCaught, idk and slow (SPEC.md › How the mocked recall behaves › Scripts).
 // "-" is a take that covers nothing. The engine that reads these is built with the processing screen.
 //
-// PLACEHOLDER: the `tour` reference script (SPEC.md › Verification) and one sample participant script, `k7`.
-// Real participant scripts come with the real content, with short codes that mean nothing to the student.
+// The `tour` reference script (SPEC.md › Verification) and one participant script, `k7`. Add a script per
+// participant who should get different verdicts, with a short code that means nothing to the student.
 
 export type Chain = Record<number, string>;
 
@@ -13,7 +13,7 @@ export type Script = {
   laterPass: Chain;
 };
 
-// Reaches every route in one pass: placeholder questions have 3 key points each.
+// Reaches every route in one pass: every question has 3 key points.
 const tourChain: Chain = {
   1: '1,2,3',
   2: '1,2 > 3',
@@ -26,7 +26,10 @@ const tourChain: Chain = {
 const tourLaterChain: Chain = { 1: '1,2,3', 2: '1,2,3', 3: '1,2,3', 4: '1,2,3', 5: '1,2,3' };
 
 // A participant who knows question 1, half-knows question 2, gets question 3 wrong, isn't heard on
-// question 4 and knows the rest (2026-10-05). Retries cover nothing new, so 2 and 3 stay partial and wrong.
+// question 4 and knows the rest (2026-10-05). Their role-play tasks (2026-10-07): 1 Enzymes, explain it
+// fully; 2 Enzyme activity, give the ideal range and the shape change but not the substrate, then try again
+// after the hint; 3 Photosynthesis, mix up the two stages; 4 Cellular respiration, mumble or cover the mic;
+// 5 Fermentation, explain it fully. Retries cover nothing new, so 2 and 3 stay partial and wrong.
 // "Review all" then answers everything fully.
 const k7Chain: Chain = { 1: '1,2,3', 2: '1,2', 3: '-', 4: 'notCaught', 5: '1,2,3' };
 
