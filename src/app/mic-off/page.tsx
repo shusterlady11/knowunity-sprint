@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Scaffold } from '../../components/scaffold/Scaffold';
 import { MascotSlot } from '../../components/mascotSlot/MascotSlot';
 import { BottomCTA } from '../../components/bottomCTA/BottomCTA';
+import { HeadlineBlock } from '../../components/headlineBlock/HeadlineBlock';
 import { endSession, rememberRoute, updateSession } from '../../lib/session';
 import './micOff.css';
 
@@ -37,14 +38,12 @@ export default function MicOffPage() {
         <div className="micOff__content">
           {/* No shadow under Knowie: Figma's is a loose layer, dropped (was D8). */}
           <MascotSlot size="3XL" expression="approving" />
-          {/* Built here: Figma's text is loose layers, a Headline L title and a Headline S line Space/200 apart,
-              which no TextBlock size matches (docs/component-gaps.md). */}
-          <div className="micOff__text">
-            <h1 className="micOff__title">Let’s switch it up.</h1>
-            <p className="micOff__body">
-              Your mic is off, so you have the option to keep learning without speaking out loud. Improving your
-              comprehension with recall also works when you type!
-            </p>
+          {/* HeadlineBlock doesn't choose a heading level, so the screen marks it as the page heading. */}
+          <div role="heading" aria-level={1} className="micOff__heading">
+            <HeadlineBlock
+              title="Let’s switch it up."
+              body="Your mic is off, so you have the option to keep learning without speaking out loud. Improving your comprehension with recall also works when you type!"
+            />
           </div>
         </div>
       }

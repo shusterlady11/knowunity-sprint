@@ -1,0 +1,53 @@
+/* A centered column that fills the width it's given, with no side padding and Space/300 between the title
+   and the body, as in Figma. */
+.headlineBlock {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-300);
+  width: 100%;
+  padding: var(--space-0);
+  text-align: center;
+}
+
+.headlineBlock p {
+  margin: var(--space-0);
+}
+
+/* The title: Headline L, text/primary. */
+.headlineBlock__title {
+  color: var(--color-text-primary);
+  font-family: var(--type-headline-l-fontFamily);
+  font-weight: var(--type-headline-l-fontWeight);
+  font-size: var(--type-headline-l-fontSize);
+  line-height: var(--type-headline-l-lineHeight);
+  letter-spacing: var(--type-headline-l-letterSpacing);
+}
+
+/* The body: text/secondary, or text/primary with bodyEmphasis=primary. */
+.headlineBlock__body {
+  color: var(--color-text-secondary);
+}
+
+.headlineBlock[data-body-emphasis='primary'] .headlineBlock__body {
+  color: var(--color-text-primary);
+}
+
+/* bodyStyle=headlineS: Headline S. */
+.headlineBlock[data-body-style='headlineS'] .headlineBlock__body {
+  font-family: var(--type-headline-s-fontFamily);
+  font-weight: var(--type-headline-s-fontWeight);
+  font-size: var(--type-headline-s-fontSize);
+  line-height: var(--type-headline-s-lineHeight);
+  letter-spacing: var(--type-headline-s-letterSpacing);
+}
+
+/* bodyStyle=bodyM: Body M Regular. */
+.headlineBlock[data-body-style='bodyM'] .headlineBlock__body {
+  font-family: var(--type-body-m-regular-fontFamily);
+  font-weight: var(--type-body-m-regular-fontWeight);
+  font-size: var(--type-body-m-regular-fontSize);
+  line-height: var(--type-body-m-regular-lineHeight);
+  letter-spacing: var(--type-body-m-regular-letterSpacing);
+}

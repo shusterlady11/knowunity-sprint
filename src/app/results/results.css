@@ -19,33 +19,9 @@
   gap: var(--space-400);
 }
 
-/* The headline and the line under it, centered, Space/150 apart (Figma: 6). */
-.results__title {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-150);
+/* The heading wrapper fills the width, so headlineBlock does. */
+.results__heading {
   width: 100%;
-  text-align: center;
-}
-
-.results__headline {
-  margin: var(--space-0);
-  color: var(--color-text-primary);
-  font-family: var(--type-headline-l-fontFamily);
-  font-weight: var(--type-headline-l-fontWeight);
-  font-size: var(--type-headline-l-fontSize);
-  line-height: var(--type-headline-l-lineHeight);
-  letter-spacing: var(--type-headline-l-letterSpacing);
-}
-
-.results__line {
-  margin: var(--space-0);
-  color: var(--color-text-secondary);
-  font-family: var(--type-body-m-regular-fontFamily);
-  font-weight: var(--type-body-m-regular-fontWeight);
-  font-size: var(--type-body-m-regular-fontSize);
-  line-height: var(--type-body-m-regular-lineHeight);
-  letter-spacing: var(--type-body-m-regular-letterSpacing);
 }
 
 /* The cards, Space/200 apart; a card with no rows isn't drawn. */

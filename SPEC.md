@@ -78,7 +78,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 - **States:** one. The question screen sits behind a scrim, with a sheet over it.
 - **Components:**
   - `Scaffold` with `showBottomSheetBackground`
-  - `BottomSheet` M holding `BottomSheetAppBar` Default, `MascotSlot` 3XL `approving`, and `ButtonGroup` Vertical L with two `Button`s
+  - `BottomSheet` M holding `BottomSheetAppBar` Default, `MascotSlot` 3XL `approving`, `HeadlineBlock` (`showTitle` off, `headlineS`, `primary`) for "Turn on your microphone settings to start practicing.", and `ButtonGroup` Vertical L with two `Button`s
 - **Reference:** the Storybook story "Scaffold › Mic permission (sheet over scrim)".
 - **Actions:**
 
@@ -219,6 +219,7 @@ A different code starts a new session for it. An unknown code shows "This link d
   - **The `tour` script's later pass** answers every question fully, so "Review all" then a full pass reaches the perfect state (decided 2026-10-05).
 - **Components:**
   - `ProgressMeter` score 1–5. It's hidden when nothing is correct.
+  - `HeadlineBlock` `bodyM`, `secondary` for the headline and the line under it
   - `ResultsSummary` `good-explanations`, `needs-practice` and `skipped-questions`
   - `ExpandableResultRow`, with tone `success`, `error` or `neutral`. A row's transcript is every take for that concept, joined: the canned transcript for a spoken take, and exactly what was typed for a typed one. This is the only place the student sees their transcript.
   - `BottomCTA` "Two button drawer": Secondary "Review all", Primary "Continue"
@@ -289,7 +290,7 @@ Built around `chatInput`, a new Storybook component made from the Figma set `cha
 - **Components:**
   - `Scaffold` with no top navigation
   - `MascotSlot` 3XL, `approving`, with no shadow under it: Figma's oval is a loose layer, dropped (was D8, decided 2026-10-05)
-  - The text built on the screen, as in Figma: "Let's switch it up." in Headline L, and the paragraph in Headline S (text/secondary), Space/200 apart. `TextBlock` L's caption is Headline XS, 4px under the title (D13, revised 2026-10-05)
+  - `HeadlineBlock` (`headlineS`, `secondary`): "Let's switch it up." over the paragraph (D13, settled 2026-10-06 by the new Figma component)
   - `BottomCTA` layout "Two button no drawer": `Button` Secondary L "No thanks", `Button` Primary L "Continue"
 - **Actions:**
 

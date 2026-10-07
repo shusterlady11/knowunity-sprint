@@ -6,6 +6,7 @@ import { Scaffold } from '../../components/scaffold/Scaffold';
 import { ProgressMeter } from '../../components/progressMeter/ProgressMeter';
 import { ResultsSummary, type ResultsSummaryProps } from '../../components/resultsSummary/ResultsSummary';
 import { BottomCTA } from '../../components/bottomCTA/BottomCTA';
+import { HeadlineBlock } from '../../components/headlineBlock/HeadlineBlock';
 import { questions } from '../../content/questions';
 import { resultsCopy } from '../../content/results';
 import { endSession, rememberRoute, startNextPass, useSession } from '../../lib/session';
@@ -74,9 +75,9 @@ export default function ResultsPage() {
           <div className="results__header">
             {/* Hidden at 0 correct, so the results stay encouraging. */}
             {correct > 0 && <ProgressMeter score={correct as 1 | 2 | 3 | 4 | 5} />}
-            <div className="results__title">
-              <h1 className="results__headline">{copy.headline}</h1>
-              <p className="results__line">{copy.line}</p>
+            {/* HeadlineBlock doesn't choose a heading level, so the screen marks it as the page heading. */}
+            <div role="heading" aria-level={1} className="results__heading">
+              <HeadlineBlock title={copy.headline} body={copy.line} bodyStyle="bodyM" />
             </div>
           </div>
           <div className="results__cards">

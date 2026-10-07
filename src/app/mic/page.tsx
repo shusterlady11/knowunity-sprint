@@ -11,6 +11,7 @@ import { MicButton } from '../../components/micButton/MicButton';
 import { BottomSheet } from '../../components/bottomSheet/BottomSheet';
 import { ButtonGroup } from '../../components/buttonGroup/ButtonGroup';
 import { Button } from '../../components/button/Button';
+import { HeadlineBlock } from '../../components/headlineBlock/HeadlineBlock';
 import { intro, questions, topic } from '../../content/questions';
 import { bold } from '../../content/bold';
 import { rememberRoute, updateSession } from '../../lib/session';
@@ -60,8 +61,12 @@ export default function MicPage() {
           middleSection={
             <>
               <MascotSlot size="3XL" expression="approving" />
-              {/* Built here: no TextBlock size uses Headline S, Figma's style for this line (docs/component-gaps.md). */}
-              <p className="mic__primerText">Turn on your microphone settings to start practicing.</p>
+              <HeadlineBlock
+                showTitle={false}
+                body="Turn on your microphone settings to start practicing."
+                bodyStyle="headlineS"
+                bodyEmphasis="primary"
+              />
             </>
           }
           bottomSection={

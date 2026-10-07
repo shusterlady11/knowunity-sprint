@@ -13,15 +13,3 @@
   gap: var(--space-400);
   width: 100%;
 }
-
-/* The primer line: Headline S, centered, text/primary, as in Figma. */
-.mic__primerText {
-  margin: var(--space-0);
-  text-align: center;
-  color: var(--color-text-primary);
-  font-family: var(--type-headline-s-fontFamily);
-  font-weight: var(--type-headline-s-fontWeight);
-  font-size: var(--type-headline-s-fontSize);
-  line-height: var(--type-headline-s-lineHeight);
-  letter-spacing: var(--type-headline-s-letterSpacing);
-}

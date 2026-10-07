@@ -14,36 +14,9 @@
   padding-bottom: var(--space-1200);
 }
 
-/* The title and the line under it, centered, Space/200 apart, as in Figma. */
-.micOff__text {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-200);
+/* The heading wrapper fills the width, so headlineBlock does. */
+.micOff__heading {
   width: 100%;
-  text-align: center;
-}
-
-.micOff__title {
-  margin: var(--space-0);
-  color: var(--color-text-primary);
-  font-family: var(--type-headline-l-fontFamily);
-  font-weight: var(--type-headline-l-fontWeight);
-  font-size: var(--type-headline-l-fontSize);
-  line-height: var(--type-headline-l-lineHeight);
-  letter-spacing: var(--type-headline-l-letterSpacing);
-}
-
-/* Inset Space/400 more than Scaffold's margin, as Figma centers a 320px block. The title keeps the full
-   width: in Inter it's wider than Figma's condensed font, and would wrap at 320. */
-.micOff__body {
-  margin: var(--space-0);
-  padding-inline: var(--space-400);
-  color: var(--color-text-secondary);
-  font-family: var(--type-headline-s-fontFamily);
-  font-weight: var(--type-headline-s-fontWeight);
-  font-size: var(--type-headline-s-fontSize);
-  line-height: var(--type-headline-s-lineHeight);
-  letter-spacing: var(--type-headline-s-letterSpacing);
 }
 
 /* BottomCTA's no-drawer layout brings its own Space/400 sides and Space/600 bottom, so the bar cancels
