@@ -36,10 +36,10 @@
 }
 
 /* The drawer runs to the screen's edges and bottom, past Scaffold's Space/400 margin, as in Figma. Its
-   own panel keeps the buttons Space/400 from the sides and Space/700 from the bottom. */
+   own panel keeps the buttons Space/400 from the sides and Space/700 above the home bar. */
 .result__bar {
   align-self: stretch;
-  margin: var(--space-0) var(--space-negative-400) var(--space-negative-400);
+  margin: var(--space-0) var(--space-negative-400) calc(var(--space-negative-400) - env(safe-area-inset-bottom));
 }
 
 .result__mic + .result__bar,

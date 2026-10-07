@@ -20,9 +20,9 @@
 }
 
 /* BottomCTA's no-drawer layout brings its own Space/400 sides and Space/600 bottom, so the bar cancels
-   Scaffold's Space/400 margin: the buttons end up 16px from the sides and 24px from the bottom, like every
+   Scaffold's Space/400 margin (and its home-bar padding, which BottomCTA adds back inside): the buttons end up 16px from the sides and 24px from the bottom, like every
    bottom button. */
 .micOff__bar {
   align-self: stretch;
-  margin: var(--space-negative-400);
+  margin: var(--space-negative-400) var(--space-negative-400) calc(var(--space-negative-400) - env(safe-area-inset-bottom));
 }

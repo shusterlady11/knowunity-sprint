@@ -13,23 +13,10 @@ The designer supplies these, stored in a new file under `src/content/` (SPEC.md 
 
 ## Waiting on a decision
 
-### Before the first three screens
+None. All decisions are settled; see `docs/sprint-context.md` › Decisions.
 
-| # | Decision | Blocks |
-|---|---|---|
-| D7 | Is `AnswerCard` `Default` Figma's splash speech bubble (a `background/surface` box with radius 16 and a tail)? Checked side by side at build time. | 1 First-run splash |
-| D9 | Page headings for screen readers. `TextBlock` doesn't choose a heading level, so no screen has a real `<h1>` to jump to. | All screens |
-| D10 | `themeColor` in the page's `viewport`: leave it out, or read it from `tokens/tokens.json` (it can't be a CSS variable). | App shell |
-| D11 | Which build step owns scaling the 390×844 design to the phone's width and growing `Scaffold`'s 48px top strip to the Dynamic Island's safe area. Neither shows in a 390×844 browser check; both are needed on the iPhone 17. | Device test |
-
-### For later screens
-
-| # | Decision | Blocks |
-|---|---|---|
-| D4 | Where a screen with no Figma frame gets reviewed: in the dev server at 390, or as an extra `Scaffold` story in Storybook. | 5 Entry link, 9 End screen |
-
-## Known limits until later screens exist
+## Known limits
 
 Not decisions, just things that won't work yet:
 
-- None right now.
+- **Question screens have no page heading** for screen readers to jump to (Question, Dictating, Processing, Result, Typing). Left as is for the usability test, which is run with students looking at the screen; the announcer still reads every state change (was D9, 2026-10-07).

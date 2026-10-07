@@ -3,14 +3,16 @@
   width: 100%;
 }
 
+/* Both layouts add the iPhone's home-bar height (env(safe-area-inset-bottom), 0 in a desktop browser) under
+   their buttons, since a screen runs the bar to its bottom edge. */
 .bottomCTA[data-layout='Two button no drawer'] {
-  padding: var(--space-600) var(--space-400);
+  padding: var(--space-600) var(--space-400) calc(var(--space-600) + env(safe-area-inset-bottom));
 }
 
 /* Drawer panel: 28px above and below the 56px buttons (112px in all), full-bleed, rounded top */
 .bottomCTA__panel {
   box-sizing: border-box;
-  padding: var(--space-700) var(--space-400);
+  padding: var(--space-700) var(--space-400) calc(var(--space-700) + env(safe-area-inset-bottom));
   border-radius: var(--radius-900) var(--radius-900) 0 0;
   background-color: var(--color-background-surface);
   box-shadow: inset 0 var(--stroke-border) 0 0 var(--color-border-default);

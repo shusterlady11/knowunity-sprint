@@ -64,7 +64,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
   - `Scaffold`
   - `TextBlock` for the headline "Now, let's build some muscle memory."
   - `MascotSlot` 2XL, `standby`
-  - a speech bubble holding the body text "When you can explain a concept to someone else…". In Figma it's loose layers (a `background/surface` box with radius 16, plus a tail). `AnswerCard` `Default` may cover it; this is checked side by side at build time (`docs/open-items.md`, D7).
+  - a speech bubble holding the body text "When you can explain a concept to someone else…". In Figma it's loose layers (a `background/surface` box with radius 16, plus a tail). It's `AnswerCard` `Default`, which matches the box exactly, with the tail drawn on the screen (was D7, decided 2026-10-07).
   - `Button` Primary L "Let's go!"
 - **Top navigation:** none (`showTopNavSlot={false}`; was D1, decided 2026-10-06). Figma's frame has a top bar of loose layers, an icon button on the left and a hidden Skip; it isn't built. "Let's go!" is the only way on.
 - **Actions:**
@@ -399,7 +399,7 @@ The blur values (20px halo, 2px core) are treated as part of the animation, so t
 
 Reopening the app resumes where the student was, except mid-take: on `/recording` or `/thinking` it returns to `/q/[n]` and drops that take. `/reset` clears the session.
 
-**Screen size.** The 390×844 design scales to the phone's width. The first remote participant has an iPhone 17 (402×874), where it scales to about 103%, or about 870 tall. `Scaffold`'s top strip for the status bar is fixed at 48px (`src/components/scaffold/scaffold.css`). It must grow to the phone's safe area when that's larger, which it is on Dynamic Island phones. The bottom content must stay clear of the home bar.
+**Screen size** (was D11, decided 2026-10-07). The design isn't scaled: every component fills the width it's given, so on a wider phone such as the iPhone 17 (402×874) the screens are 12px wider and the scrolling middle gets the extra height. `Scaffold` keeps clear of the phone's edges using the safe-area heights the iPhone reports (`env(safe-area-inset-…)`, 0 in a desktop browser): its top strip is 48px or the status bar's safe area, whichever is more, and the bottom actions get the home bar's height below them. Bars that run to the bottom edge (`BottomCTA`, `BottomSheet`'s actions) add it inside instead. Check it from the Home Screen icon on the phone.
 
 ## Verification
 

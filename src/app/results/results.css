@@ -36,5 +36,5 @@
    screen. */
 .results__bar {
   align-self: stretch;
-  margin: var(--space-negative-400);
+  margin: var(--space-negative-400) var(--space-negative-400) calc(var(--space-negative-400) - env(safe-area-inset-bottom));
 }

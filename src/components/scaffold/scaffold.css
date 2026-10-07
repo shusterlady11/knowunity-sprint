@@ -15,10 +15,12 @@
   background-color: var(--color-background-page);
 }
 
-/* The status bar's place: kept empty, 48px tall. */
+/* The status bar's place: kept empty, 48px tall, or as tall as the iPhone reserves for its status bar and
+   Dynamic Island, whichever is more (was D11, decided 2026-10-07). The phone reports that height as
+   env(safe-area-inset-top); it's 0 in a desktop browser, so 390x844 checks and Storybook are unchanged. */
 .scaffold__statusArea {
   flex: none;
-  height: var(--space-1200);
+  height: var(--scaffold-status-height);
 }
 
 .scaffold__topNavigation {
@@ -43,7 +45,10 @@
   overflow-y: auto;
 }
 
-/* The actions: pinned to the bottom, Space/400 all round. */
+/* The actions: pinned to the bottom, Space/400 all round, plus the height the iPhone reserves for its home
+   bar below them (env(safe-area-inset-bottom), 0 in a desktop browser), so a tap near a button's bottom
+   edge can't start the swipe home. Bars that run to the screen's edge cancel this padding and clear the
+   home bar themselves (BottomCTA). */
 .scaffold__bottomContent {
   box-sizing: border-box;
   display: flex;
@@ -52,7 +57,7 @@
   align-items: flex-start;
   justify-content: flex-end;
   gap: var(--space-100);
-  padding: var(--space-400);
+  padding: var(--space-400) var(--space-400) calc(var(--space-400) + env(safe-area-inset-bottom));
 }
 
 /* The scrim covers the whole screen; the sheet sits above it at the bottom. */
@@ -80,11 +85,12 @@
    Space/200), or below the status area when there's no top navigation. It's see-through and lets taps
    through, except on the sheet itself. */
 .scaffold {
-  --scaffold-sheet-top: calc(var(--space-1200) + var(--control-touch-target) + var(--space-200));
+  --scaffold-status-height: max(var(--space-1200), env(safe-area-inset-top));
+  --scaffold-sheet-top: calc(var(--scaffold-status-height) + var(--control-touch-target) + var(--space-200));
 }
 
 .scaffold[data-top-nav='false'] {
-  --scaffold-sheet-top: var(--space-1200);
+  --scaffold-sheet-top: var(--scaffold-status-height);
 }
 
 .scaffold__bottomSheetOnly > * {

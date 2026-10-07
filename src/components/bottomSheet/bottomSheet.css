@@ -28,7 +28,8 @@
   padding: var(--space-0) var(--space-400) var(--space-200);
 }
 
-/* Actions: Space/400 all round. */
+/* Actions: Space/400 all round, plus the iPhone's home-bar height below (env(safe-area-inset-bottom), 0 in a
+   desktop browser), since the sheet sits on the screen's bottom edge. */
 .bottomSheet__bottom {
   flex: none;
   box-sizing: border-box;
@@ -37,7 +38,7 @@
   align-items: center;
   justify-content: flex-start;
   gap: var(--space-600);
-  padding: var(--space-400);
+  padding: var(--space-400) var(--space-400) calc(var(--space-400) + env(safe-area-inset-bottom));
 }
 
 /* A Secondary button fills with background/surface, the sheet's own color, so it would vanish here. Figma

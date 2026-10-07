@@ -12,11 +12,14 @@ export const metadata: Metadata = {
 
 // viewportFit 'cover' lets the screen run under the iPhone's status bar and home bar, so Scaffold can
 // keep its content clear of them. No themeColor: it would need a literal color, and the app runs full
-// screen from the Home Screen on a dark page (docs/open-items.md, D10).
+// screen from the Home Screen on a dark page (was D10).
+// colorScheme 'dark' tells the iPhone the page is dark-only, so the keyboard and other system controls draw
+// dark even when the phone is in light mode. The CSS color-scheme in globals.css alone didn't do it.
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
+  colorScheme: 'dark',
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
