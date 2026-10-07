@@ -16,10 +16,16 @@ export type MiddleSectionProps = {
    * after it was shown, the card fades out while its space collapses, so the question card slides up.
    */
   showIntro?: boolean;
+  /**
+   * Knowie and the cards rise Space/600 into place together while they fade in, when the section first appears.
+   * Figma has no property for this; code adds one, for a new question opening. Leave it off when the same
+   * question is shown again (dictating, processing, result), so the card doesn't jump.
+   */
+  animateIn?: boolean;
 };
 
 /** The top of a question screen: the topic pill, then Knowie peeking out from behind the intro and question cards. */
-export function MiddleSection({ topic, question, intro, showIntro = true }: MiddleSectionProps) {
+export function MiddleSection({ topic, question, intro, showIntro = true, animateIn = false }: MiddleSectionProps) {
   // Once shown, the intro card stays in the page so it can animate out; one that was never shown isn't drawn.
   const [introDrawn, setIntroDrawn] = useState(showIntro);
   if (showIntro && !introDrawn) setIntroDrawn(true);
@@ -27,7 +33,7 @@ export function MiddleSection({ topic, question, intro, showIntro = true }: Midd
   return (
     <div className="middleSection">
       <TopicPill label={topic} />
-      <div className="middleSection__conversation">
+      <div className="middleSection__conversation" data-animate-in={animateIn || undefined}>
         <div className="middleSection__mascot">
           <MascotSlot size="2XL" expression="standby" />
         </div>

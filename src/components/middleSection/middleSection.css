@@ -48,9 +48,35 @@
   padding-bottom: var(--space-200);
 }
 
+/* animateIn: Knowie and the cards rise Space/600 into place together while they fade in, at the same pace and
+   curve as the question card sliding up when the intro card leaves, so arriving and leaving read as one
+   motion (motion.duration.questionEnter, which is introExit; motion.easing.inOut). Knowie moves with the card
+   (decided 2026-10-07, after trying it still). Runs once, when the section first appears. */
+.middleSection__conversation[data-animate-in] {
+  animation: middleSection-enter var(--motion-duration-questionEnter) var(--motion-easing-inOut) both;
+}
+
+@keyframes middleSection-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-600));
+  }
+}
+
+/* Reduced motion: the intro card goes with no fade or slide, and a new question fades in without rising. */
+@keyframes middleSection-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .middleSection__intro {
     transition: none;
+  }
+
+  .middleSection__conversation[data-animate-in] {
+    animation-name: middleSection-fade-in;
   }
 }
 

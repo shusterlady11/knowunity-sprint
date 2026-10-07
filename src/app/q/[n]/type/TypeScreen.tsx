@@ -10,6 +10,7 @@ import { ChatInput } from '../../../../components/chatInput/ChatInput';
 import { intro, questions, topic } from '../../../../content/questions';
 import { bold } from '../../../../content/bold';
 import { endQuestion, questionRecord, questionRoute, rememberRoute, updateSession, useSession, type Session } from '../../../../lib/session';
+import { useQuestionEnter } from '../../../../lib/questionEnter';
 import { ExitConfirm } from '../../ExitConfirm';
 import '../../exitConfirm.css';
 import './type.css';
@@ -31,7 +32,12 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
   const showIntro = n === 1 && session !== null && session.introSeen !== true;
 
   // Remember the question: in keyboard mode, reopening it comes back here.
-  useEffect(() => rememberRoute(`/q/${n}`), [n]);
+  // A new question rises into place; the same one shown again doesn't.
+  const { animateIn, markShown } = useQuestionEnter(n);
+  useEffect(() => {
+    rememberRoute(`/q/${n}`);
+    markShown();
+  }, [n, markShown]);
 
   // Keep the bar above the iPhone keyboard. iOS doesn't shrink the page when the keyboard opens, so the bar
   // follows the visible area (visualViewport) up by the keyboard's height, and the page is kept from
@@ -99,7 +105,7 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
       }
       middleContent={
         <div className="type__content" inert={leaving}>
-          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} />
+          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} animateIn={animateIn} />
         </div>
       }
       bottomContent={

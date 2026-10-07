@@ -15,6 +15,7 @@ import { combine, feedbackFor, judgeTake, verdictFor, xpFor, type Verdict } from
 import { announce } from '../../../../lib/announcer';
 import { durationMs } from '../../../../lib/motion';
 import { getSession, questionRecord, updateSession, useSession } from '../../../../lib/session';
+import { useQuestionEnter } from '../../../../lib/questionEnter';
 import { ExitConfirm } from '../../ExitConfirm';
 import { sendBackOnLoad } from '../../sendBackOnLoad';
 import '../../exitConfirm.css';
@@ -27,6 +28,8 @@ import './thinking.css';
  */
 export function ThinkingScreen({ n }: { n: number }) {
   const router = useRouter();
+  // The same question as the screen before, so it stays put; it rises in only when opened fresh.
+  const { animateIn, markShown } = useQuestionEnter(n);
   const xp = useSession()?.xp ?? 0;
   const [leaving, setLeaving] = useState(false);
   const [message, setMessage] = useState<string | undefined>(undefined);
@@ -54,6 +57,7 @@ export function ThinkingScreen({ n }: { n: number }) {
 
   useEffect(() => {
     if (sendBackOnLoad(n, (route) => router.replace(route))) return;
+    markShown();
     announce('Thinking.');
 
     const session = getSession();
@@ -131,7 +135,7 @@ export function ThinkingScreen({ n }: { n: number }) {
       );
     }
     return () => timers.forEach(clearTimeout);
-  }, [n, isLast, router, goTo]);
+  }, [n, isLast, router, goTo, markShown]);
 
   return (
     <Scaffold
@@ -143,7 +147,7 @@ export function ThinkingScreen({ n }: { n: number }) {
       middleContent={
         <div className="thinking__content" inert={leaving}>
           {/* No intro card once the student has answered, so Knowie's reply fits (decided 2026-10-04). */}
-          <MiddleSection topic={topic} question={bold(questions[n - 1].prompt)} showIntro={false} />
+          <MiddleSection topic={topic} question={bold(questions[n - 1].prompt)} showIntro={false} animateIn={animateIn} />
           <AnswerCard state="processing" message={message} />
         </div>
       }

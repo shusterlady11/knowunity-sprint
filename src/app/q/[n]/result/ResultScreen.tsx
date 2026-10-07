@@ -16,6 +16,7 @@ import { bold } from '../../../../content/bold';
 import { fillHint, type Verdict } from '../../../../lib/recallEngine';
 import { announce } from '../../../../lib/announcer';
 import { endQuestion, getSession, questionRecord, questionRoute, rememberRoute, updateSession, useSession } from '../../../../lib/session';
+import { useQuestionEnter } from '../../../../lib/questionEnter';
 import { ExitConfirm } from '../../ExitConfirm';
 import { AnswerSheet } from './AnswerSheet';
 import '../../exitConfirm.css';
@@ -42,6 +43,8 @@ const verdictWord: Record<Verdict, string> = {
  */
 export function ResultScreen({ n }: { n: number }) {
   const router = useRouter();
+  // The same question as the screen before, so it stays put; it rises in only when opened fresh.
+  const { animateIn, markShown } = useQuestionEnter(n);
   const session = useSession();
   const record = session?.questions[n];
   const question = questions[n - 1];
@@ -58,9 +61,10 @@ export function ResultScreen({ n }: { n: number }) {
     const saved = getSession()?.questions[n];
     if (!saved?.verdict) return router.replace(`/q/${n}`);
     rememberRoute(`/q/${n}/result`);
+    markShown();
     const covered = saved.covered?.length ?? 0;
     announce(saved.verdict === 'notCaught' ? verdictWord.notCaught : `${verdictWord[saved.verdict]} You covered ${covered} of ${total} key ideas.`);
-  }, [n, total, router]);
+  }, [n, total, router, markShown]);
 
   if (!record?.verdict || !record.feedback) return null;
   const { verdict, feedback } = record;
@@ -137,7 +141,7 @@ export function ResultScreen({ n }: { n: number }) {
       }
       middleContent={
         <div className="result__content" inert={blocked}>
-          <MiddleSection topic={topic} question={bold(question.prompt)} showIntro={false} />
+          <MiddleSection topic={topic} question={bold(question.prompt)} showIntro={false} animateIn={animateIn} />
           <AnswerCard state={cardState[verdict]} message={message} />
         </div>
       }

@@ -77,6 +77,7 @@ When working on UI, use the storybook tools to read the component library before
 - `src/app/MessageScreen.tsx` — the plain centered message page (install steps, unknown link, reset, end screen).
 - `src/lib/recallEngine/` — the mocked recall engine: reads a script's take for a question and works out coverage, the verdict, the hint or nudge, and XP. Unit tests run with `npm run test:unit`.
 - `src/lib/motion.ts` — `durationMs()`, for reading a motion duration token in code (timers).
+- `src/lib/questionEnter.ts` — `useQuestionEnter()`: whether a question screen's `middleSection` rises in (only when the question changed since the last one shown).
 - `src/app/q/sendBackOnLoad.ts` — sends a reload or reopen on the recording or thinking route back to its question.
 - `src/lib/announcer.tsx` — the one hidden screen-reader live region (in the root layout); call `announce()` for every state change, in a full sentence.
 - `src/app/q/ExitConfirm.tsx` — the exit confirm sheet the close X opens on every `/q/...` route.

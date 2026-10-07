@@ -5,7 +5,7 @@ import { MiddleSection } from './MiddleSection';
 
 const figmaDescription = `Figma has no description for this component, so this is written from its layers. It's the top of a question screen: the topic pill, then Knowie peeking out from behind two answer cards, an intro message ("Welcome! Let’s test your knowledge on energy flow in ecosystems.") and the question. It has no properties; the pill's label and the cards' text are set on the nested instances.
 
-**In code:** \`topic\` is the nested topicPill's "Label", and \`intro\` and \`question\` are the two cards' text (answerCard Default and question; Figma has no text property on them). \`showIntro\` is added in code, since Figma always draws the intro card: the question screen shows it only the very first time on question 1, until the student starts answering (decided 2026-10-05). Knowie is \`mascotSlot\` 2XL, \`standby\`. When \`showIntro\` turns off after the card was shown, the card fades out while its space collapses, so the question card slides up into its place (\`motion.duration.introExit\`, 600ms, \`motion.easing.inOut\`; instant under reduced motion). The question screen does this when the student starts dictating (decided 2026-10-05).
+**In code:** \`topic\` is the nested topicPill's "Label", and \`intro\` and \`question\` are the two cards' text (answerCard Default and question; Figma has no text property on them). \`showIntro\` is added in code, since Figma always draws the intro card: the question screen shows it only the very first time on question 1, until the student starts answering (decided 2026-10-05). Knowie is \`mascotSlot\` 2XL, \`standby\`. When \`showIntro\` turns off after the card was shown, the card fades out while its space collapses, so the question card slides up into its place (\`motion.duration.introExit\`, 600ms, \`motion.easing.inOut\`; instant under reduced motion). The question screen does this when the student starts dictating (decided 2026-10-05). \`animateIn\` is also added in code: when the section first appears, Knowie and the cards rise \`Space/600\` into place together while they fade in, at the same pace and curve as that slide (\`motion.duration.questionEnter\`, a reference to \`introExit\`, and \`motion.easing.inOut\`), so a question arriving and the intro card leaving read as one motion. Under reduced motion they fade in without rising. The screens turn it on only when moving from one question to another, not for the first question shown or when the same question comes back on the dictating, processing or result screen (decided 2026-10-07).
 
 **Built from:** \`topicPill\`, \`mascotSlot\` and two \`answerCard\`s.
 
@@ -103,6 +103,49 @@ export const IntroLeavesStory: Story = {
       async () => {
         await expect(Math.round(questionCard.getBoundingClientRect().top)).toBe(Math.round(introTop));
         await expect(getComputedStyle(intro).opacity).toBe('0');
+      },
+      { timeout: 2000 },
+    );
+  },
+};
+
+// Not a Figma variant: a new question opening. Knowie and the question card rise Space/600 into place while
+// they fade in; the topic pill stays put. "Next question" mounts it again to replay.
+function NewQuestion() {
+  const [n, setN] = useState(2);
+  return (
+    <div>
+      <MiddleSection key={n} topic={meta.args.topic} question={question} showIntro={false} animateIn />
+      <button type="button" onClick={() => setN(n + 1)}>Next question</button>
+    </div>
+  );
+}
+
+export const AnimateInStory: Story = {
+  name: 'middleSection, animateIn',
+  render: () => <NewQuestion />,
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const root = getComputedStyle(document.documentElement);
+    const token = (name: string) => root.getPropertyValue(name).trim();
+    await userEvent.click(canvas.getByRole('button', { name: 'Next question' }));
+    const conversation = canvasElement.querySelector('.middleSection__conversation') as HTMLElement;
+    const cs = getComputedStyle(conversation);
+
+    // The rise and fade, at the intro card's pace and curve, on Knowie and the cards together; the pill stays.
+    await expect(conversation).toHaveAttribute('data-animate-in', 'true');
+    await expect(cs.animationName).toBe('middleSection-enter');
+    // The browser reports seconds (0.6s); the token is in ms.
+    await expect(parseFloat(cs.animationDuration) * 1000).toBe(parseFloat(token('--motion-duration-questionEnter')));
+    await expect(token('--motion-duration-questionEnter')).toBe(token('--motion-duration-introExit'));
+    await expect(cs.animationTimingFunction).toBe(token('--motion-easing-inOut'));
+    await expect(getComputedStyle(canvasElement.querySelector('.middleSection') as HTMLElement).animationName).toBe('none');
+
+    // It settles fully in place and visible.
+    await waitFor(
+      async () => {
+        await expect(getComputedStyle(conversation).opacity).toBe('1');
+        // At rest: no offset (the animation's end state reports as the identity matrix).
+        await expect(['none', 'matrix(1, 0, 0, 1, 0, 0)']).toContain(getComputedStyle(conversation).transform);
       },
       { timeout: 2000 },
     );

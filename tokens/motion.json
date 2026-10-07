@@ -96,6 +96,11 @@
           "unit": "ms"
         },
         "$description": "600ms for the welcome card to fade out while its space collapses, so the question card slides up into its place. Slower than a usual card collapse (200–300ms) so the change is easy to follow as the student starts speaking (decided 2026-10-05). USE: middleSection's intro card leaving, when Knowie starts listening. PAIR: motion.easing.inOut (a gentle start, so the move is easy to follow). RULE: under prefers-reduced-motion, remove the card with no fade or slide."
+      },
+      "questionEnter": {
+        "$type": "duration",
+        "$value": "{motion.duration.introExit}",
+        "$description": "The same 600ms as motion.duration.introExit, as a reference so the two always match: the next question rising into place while it fades in, the same pace as the question card sliding up when the welcome card leaves, so arriving and leaving read as one motion (decided 2026-10-07). USE: middleSection's question card and Knowie entering when a new question opens (animateIn). PAIR: motion.easing.inOut and Space/600 of rise. RULE: under prefers-reduced-motion, fade in with no rise."
       }
     },
     "easing": {
@@ -127,7 +132,7 @@
           0.6,
           1
         ],
-        "$description": "Gentle start and gentle stop. USE: pulses that fade up and back down, such as loadingDots. DON'T: position changes (use motion.easing.standard) or constant-speed loops (use motion.easing.linear). PAIR: motion.duration.pulse."
+        "$description": "Gentle start and gentle stop. USE: pulses that fade up and back down, such as loadingDots; and the question card's two moves, sliding up as the welcome card leaves and rising in as a new question opens (motion.duration.introExit, motion.duration.questionEnter), where a gentle start makes the move easy to follow. DON'T: other position changes (use motion.easing.standard) or constant-speed loops (use motion.easing.linear). PAIR: motion.duration.pulse."
       }
     },
     "opacity": {

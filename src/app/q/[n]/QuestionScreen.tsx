@@ -11,6 +11,7 @@ import { ToggleGroup } from '../../../components/toggleGroup/ToggleGroup';
 import { intro, questions, topic } from '../../../content/questions';
 import { bold } from '../../../content/bold';
 import { endQuestion, getSession, rememberRoute, updateSession, useSession, type Session } from '../../../lib/session';
+import { useQuestionEnter } from '../../../lib/questionEnter';
 import { ExitConfirm } from '../ExitConfirm';
 import '../exitConfirm.css';
 import './question.css';
@@ -30,11 +31,16 @@ export function QuestionScreen({ n }: { n: number }) {
   const showIntro = n === 1 && session !== null && session.introSeen !== true;
   const isLast = n === questions.length;
 
-  // A student in keyboard mode answers on the typing screen; otherwise remember this question.
+  // A new question rises into place; the same one shown again doesn't.
+  const { animateIn, markShown } = useQuestionEnter(n);
+
+  // A student in keyboard mode answers on the typing screen, which then rises in; otherwise remember this
+  // question.
   useEffect(() => {
     if (getSession()?.inputMode === 'keyboard') return router.replace(`/q/${n}/type`);
     rememberRoute(`/q/${n}`);
-  }, [n, router]);
+    markShown();
+  }, [n, router, markShown]);
 
   // Starting to answer, or moving on, retires the welcome card for good.
   const leaveQuestion = (change?: (s: Session) => void) =>
@@ -65,7 +71,7 @@ export function QuestionScreen({ n }: { n: number }) {
       }
       middleContent={
         <div className="question__content" inert={leaving}>
-          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} />
+          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} animateIn={animateIn} />
         </div>
       }
       bottomContent={

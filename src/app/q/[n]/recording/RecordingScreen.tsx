@@ -15,6 +15,7 @@ import { bold } from '../../../../content/bold';
 import { announce } from '../../../../lib/announcer';
 import { durationMs } from '../../../../lib/motion';
 import { questionRecord, rememberRoute, updateSession, useSession } from '../../../../lib/session';
+import { useQuestionEnter } from '../../../../lib/questionEnter';
 import { ExitConfirm } from '../../ExitConfirm';
 import { sendBackOnLoad } from '../../sendBackOnLoad';
 import '../../exitConfirm.css';
@@ -23,6 +24,8 @@ import './recording.css';
 /** Dictating: the question stays on screen while the mic listens; no transcript, no toggle, no Skip. */
 export function RecordingScreen({ n }: { n: number }) {
   const router = useRouter();
+  // The same question as the screen before, so it stays put; it rises in only when opened fresh.
+  const { animateIn, markShown } = useQuestionEnter(n);
   const [leaving, setLeaving] = useState(false);
   const [hint, setHint] = useState('Listening…');
   const [hintFading, setHintFading] = useState(false);
@@ -53,6 +56,7 @@ export function RecordingScreen({ n }: { n: number }) {
 
   useEffect(() => {
     if (sendBackOnLoad(n, (route) => router.replace(route))) return;
+    markShown();
     // Saved as the question itself: reopening the app mid-take returns there.
     rememberRoute(`/q/${n}`);
     announce('Listening for your answer.');
@@ -65,7 +69,7 @@ export function RecordingScreen({ n }: { n: number }) {
       );
     });
     return () => cancelAnimationFrame(frame);
-  }, [n, router]);
+  }, [n, router, markShown]);
 
   // Stopping submits the take to the processing screen, which judges and counts it. Both taps replace this
   // route, so going back never lands on a recording that has ended.
@@ -90,7 +94,7 @@ export function RecordingScreen({ n }: { n: number }) {
       }
       middleContent={
         <div className="recording__content" inert={leaving}>
-          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} />
+          <MiddleSection topic={topic} intro={intro} question={bold(questions[n - 1].prompt)} showIntro={showIntro} animateIn={animateIn} />
         </div>
       }
       bottomContent={
