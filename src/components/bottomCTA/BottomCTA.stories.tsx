@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect, fn } from 'storybook/test';
+import { expect, fn, waitFor } from 'storybook/test';
 import { BottomCTA } from './BottomCTA';
 
 const figmaDescription = `The bottom action bar anchored to the base of the answer screens, Results and SPLASH-SKIP-MIC. Question screens use toggleGroup instead.
@@ -111,9 +111,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// Waits for the font, then retries until the widths settle: on Chromatic the buttons were still resizing
+// when this ran (167 vs 155), although the snapshot shows them equal.
 const equalWidths = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-  const [a, b] = [...canvasElement.querySelectorAll('.bottomCTA__row > .button')] as HTMLElement[];
-  await expect(Math.round(a.getBoundingClientRect().width)).toBe(Math.round(b.getBoundingClientRect().width));
+  await document.fonts.ready;
+  await waitFor(
+    async () => {
+      const [a, b] = [...canvasElement.querySelectorAll('.bottomCTA__row > .button')] as HTMLElement[];
+      await expect(Math.round(a.getBoundingClientRect().width)).toBe(Math.round(b.getBoundingClientRect().width));
+    },
+    { timeout: 2000 },
+  );
 };
 
 export const TwoButtonNoDrawer: Story = {
