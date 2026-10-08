@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "tokens": "style-dictionary build --config style-dictionary.config.mjs",
+    "check:tokens": "! grep -rnE --include='*.css' --include='*.ts' --include='*.tsx' '#[0-9a-fA-F]{3,8}\\b' src/components src/app",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "dotenv -e .env.local -- chromatic",
