@@ -48,3 +48,4 @@ storybook-static
 
 # Claude Code local settings
 .claude/settings.local.json
+chromatic.log
