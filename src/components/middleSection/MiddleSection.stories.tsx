@@ -138,7 +138,13 @@ export const AnimateInStory: Story = {
     // The browser reports seconds (0.6s); the token may be 600ms or .6s, since the production CSS build rewrites it.
     await expect(parseFloat(cs.animationDuration) * 1000).toBe(durationMs('--motion-duration-questionEnter'));
     await expect(token('--motion-duration-questionEnter')).toBe(token('--motion-duration-introExit'));
-    await expect(cs.animationTimingFunction).toBe(token('--motion-easing-inOut'));
+    // The production CSS build writes 0.4 as .4 in the token, so read it back through the browser, as the animation does.
+    const probe = document.createElement('span');
+    probe.style.animationTimingFunction = 'var(--motion-easing-inOut)';
+    document.body.appendChild(probe);
+    const easing = getComputedStyle(probe).animationTimingFunction;
+    probe.remove();
+    await expect(cs.animationTimingFunction).toBe(easing);
     await expect(getComputedStyle(canvasElement.querySelector('.middleSection') as HTMLElement).animationName).toBe('none');
 
     // It settles fully in place and visible.
