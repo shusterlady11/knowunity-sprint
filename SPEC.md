@@ -62,7 +62,7 @@ It follows the same pattern as the Storybook story "BottomSheet › Mic permissi
 - **States:** one. It shows once per phone; later visits skip it (see Mocked recall › Storage).
 - **Components** (as in the Figma frame SPLASH-FIRST-TIME):
   - `Scaffold`
-  - `TextBlock` for the headline "Now, let's build some muscle memory."
+  - `TextBlock` for the headline "Now, let's get verbal"
   - `MascotSlot` 2XL, `standby`
   - a speech bubble holding the body text "When you can explain a concept to someone else…". In Figma it's loose layers (a `background/surface` box with radius 16, plus a tail). It's `AnswerCard` `Default`, which matches the box exactly, with the tail drawn on the screen (was D7, decided 2026-10-07).
   - `Button` Primary L "Let's go!"

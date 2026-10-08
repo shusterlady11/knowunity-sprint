@@ -33,7 +33,7 @@ export default function StartPage() {
         <div className="start__content">
           {/* TextBlock doesn't choose a heading level, so the screen marks its title as the page heading. */}
           <div role="heading" aria-level={1} className="start__heading">
-            <TextBlock variant="L" showCaption={false} title="Now, let’s build some muscle memory." />
+            <TextBlock variant="L" showCaption={false} title="Now, let’s get verbal" />
           </div>
           <div className="start__speaker">
             <div className="start__mascot">
