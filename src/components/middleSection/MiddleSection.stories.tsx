@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
+import { durationMs } from '../../lib/motion';
 import { MiddleSection } from './MiddleSection';
 
 const figmaDescription = `Figma has no description for this component, so this is written from its layers. It's the top of a question screen: the topic pill, then Knowie peeking out from behind two answer cards, an intro message ("Welcome! Let’s test your knowledge on energy flow in ecosystems.") and the question. It has no properties; the pill's label and the cards' text are set on the nested instances.
@@ -134,8 +135,8 @@ export const AnimateInStory: Story = {
     // The rise and fade, at the intro card's pace and curve, on Knowie and the cards together; the pill stays.
     await expect(conversation).toHaveAttribute('data-animate-in', 'true');
     await expect(cs.animationName).toBe('middleSection-enter');
-    // The browser reports seconds (0.6s); the token is in ms.
-    await expect(parseFloat(cs.animationDuration) * 1000).toBe(parseFloat(token('--motion-duration-questionEnter')));
+    // The browser reports seconds (0.6s); the token may be 600ms or .6s, since the production CSS build rewrites it.
+    await expect(parseFloat(cs.animationDuration) * 1000).toBe(durationMs('--motion-duration-questionEnter'));
     await expect(token('--motion-duration-questionEnter')).toBe(token('--motion-duration-introExit'));
     await expect(cs.animationTimingFunction).toBe(token('--motion-easing-inOut'));
     await expect(getComputedStyle(canvasElement.querySelector('.middleSection') as HTMLElement).animationName).toBe('none');

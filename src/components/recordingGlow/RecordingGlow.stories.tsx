@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { expect } from 'storybook/test';
+import { durationMs } from '../../lib/motion';
 import { MicButton } from '../micButton/MicButton';
 import { RecordingGlow } from './RecordingGlow';
 
@@ -55,7 +56,7 @@ const meta = {
       // Breathing, unless the viewer asked for reduced motion.
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         await expect(cs.animationName).toBe(expected[i].name);
-        await expect(cs.animationDuration).toBe(`${parseFloat(token('--motion-duration-breathe')) / 1000}s`);
+        await expect(cs.animationDuration).toBe(`${durationMs('--motion-duration-breathe') / 1000}s`);
         await expect(cs.animationIterationCount).toBe('infinite');
       }
     }
