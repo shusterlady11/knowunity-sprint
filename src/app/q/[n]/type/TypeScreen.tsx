@@ -15,7 +15,7 @@ import { ExitConfirm } from '../../ExitConfirm';
 import '../../exitConfirm.css';
 import './type.css';
 
-type Status = 'Inactive' | 'Typing' | 'Ready to send' | 'Long input';
+type Status = 'Inactive' | 'Ready to send' | 'Long input';
 
 /**
  * Typing: the keyboard way to answer, built around chatInput. The toggle row (back to voice, and Skip)
@@ -96,6 +96,14 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
   const [keyboardUp, setKeyboardUp] = useState(startTyping);
   const showRow = !keyboardUp;
 
+  // Arriving from a tap into the field puts the caret straight in it. That first focus isn't the student
+  // starting to answer, so only focus after this point retires the welcome card.
+  const settled = useRef(false);
+  useEffect(() => {
+    if (startTyping) answerRef.current?.querySelector('textarea')?.focus();
+    settled.current = true;
+  }, [startTyping]);
+
   return (
     <Scaffold
       topNavigation={
@@ -113,7 +121,12 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
           ref={answerRef}
           className="type__answer"
           inert={leaving}
-          onFocus={(e) => setKeyboardUp(e.target instanceof HTMLTextAreaElement)}
+          onFocus={(e) => {
+            const inField = e.target instanceof HTMLTextAreaElement;
+            setKeyboardUp(inField);
+            // Tapping into the empty field starts answering, as it did when chatInput had a Typing status.
+            if (inField && settled.current) change(() => {});
+          }}
           onBlur={(e) => e.target instanceof HTMLTextAreaElement && setKeyboardUp(false)}
         >
           {showRow && (
@@ -124,7 +137,7 @@ export function TypeScreen({ n, startTyping }: { n: number; startTyping: boolean
               onSkip={skip}
             />
           )}
-          <ChatInput status={startTyping ? 'Typing' : 'Inactive'} showLeadingButton={false} showMic={false} onSend={send} onStatusChange={onStatusChange} />
+          <ChatInput status="Inactive" showLeadingButton={false} showMic={false} onSend={send} onStatusChange={onStatusChange} />
         </div>
       }
       showBottomSheetBackground={leaving}

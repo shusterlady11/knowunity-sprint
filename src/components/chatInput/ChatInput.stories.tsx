@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn, waitFor, type within } from 'storybook/test';
+import { durationMs } from '../../lib/motion';
 import { ChatInput } from './ChatInput';
 
 const figmaDescription = `A local copy of Chat Input, whose source component is not in this file. Used for typing an answer when a student can't talk (the typing route in the recall loop), and for chat.
@@ -20,13 +21,17 @@ EMPTYING THE FIELD (build rule). If the student deletes all text, the bar goes t
 
 OPEN. The mic inside the field could be the way back to voice, which is not decided.
 
-**In code:** the props use Figma's names: \`status\` (Figma's "Status"), \`placeholder\`, \`answer\`, \`longAnswer\` and \`showLeadingButton\`. \`showMic\` is code-only: Figma always draws the mic in the empty field, but it isn't a button, so the typing route turns it off and the voice/keyboard toggle is the way back to voice (D14, decided 2026-10-05). \`status\` is only where the bar starts. After that, what the student does sets it: an empty field is Typing while it has the caret and Inactive once it loses it (the keyboard is dismissed), one line of text is Ready to send, and more than one line is Long input. \`onStatusChange\` reports each change, so the typing screen can hide the toggleGroup row while there's text. \`onSend\` gets the text when send is tapped. \`label\` names the field for screen readers ("Your answer" by default). The leading and send buttons are the library's \`buttonIcon\` (Secondary L with \`plus\`, Primary S with \`send-03\`), and the icons are exported from Figma.
+**In code:** the props use Figma's names: \`status\` (Figma's "Status"), \`placeholder\`, \`answer\`, \`longAnswer\` and \`showLeadingButton\`. \`showMic\` is code-only: Figma always draws the mic in the empty field, but it isn't a button, so the typing route turns it off and the voice/keyboard toggle is the way back to voice (D14, decided 2026-10-05). \`status\` is only where the bar starts. After that, what the student does sets it: an empty field is Inactive (with or without the caret), one line of text is Ready to send, more than one line is Long input, and tapping send moves it to Loading. \`onStatusChange\` reports each change, so the typing screen can hide the toggleGroup row while there's text. \`onSend\` gets the text when send is tapped. \`label\` names the field for screen readers ("Your answer" by default). The leading and send buttons are the library's \`buttonIcon\` (Secondary L with \`plus\`, Primary S with \`send-03\`), and the icons are exported from Figma.
 
-**Not built yet:** Recording and Loading. The typing route moves to the processing screen on send, and there's no real mic in this build.
+**Typing is not built (decided 2026-10-09):** Figma's Typing (empty, caret) looks the same as Inactive here, so the bar has no Typing status. An empty field is Inactive, with or without the caret.
+
+**Loading (built 2026-10-09):** the student taps send and the answer is on its way. The text stays in the field but goes dim (\`text/placeholder\`, the color Figma gives Loading's text), there is no caret, and the loading icon (\`interactive/onSecondary\`, as in Figma) turns where the send button was, in a box the send button's size so nothing moves. It turns at the same pace as button's spinner (\`motion.duration.spinner\`); under reduced motion it holds still, and the field is marked busy. The field is read-only, so the answer can't be edited or sent twice. It lasts until the screen changes the bar's props. \`status\` can also start the bar in Loading, using \`answer\` as the text. Figma's Loading frame shows the placeholder, not the sent text; this follows the sprint's flow instead (text, send, dim, loader). The typing screen goes to the processing screen on send, so no screen shows Loading for long.
+
+**Not built yet:** Recording. There's no real mic in this build.
 
 **Differences from Figma, by decision (2026-09-30):**
 - No side padding on the bar. It fills the width it's given, and the screen's 16px margin is the inset, so the field lines up with the cards above it (16..374 on a 390 screen). Figma's bar has Space/300 at the sides only because it sits at x=4.
-- Typing is Control/L (56px) tall, like Inactive and Ready to send. Figma's Typing field hugs to 38px, which would make the bar shrink when the student taps in.
+- Every status is at least Control/L (56px) tall. Figma's Typing and Loading fields hug to 38px, which would make the bar shrink when the student taps in or sends.
 - The in-field mic is drawn but isn't a button: what it does is still open.
 - The mic uses icon/primary and the caret text/primary. Figma binds both to background/inverse, a fill token for tooltips and toasts; the values are the same.
 - There's no focus ring on the field: the caret shows where focus is, as in Figma.
@@ -90,19 +95,6 @@ export const Inactive: Story = {
   },
 };
 
-export const Typing: Story = {
-  name: 'Status=Typing',
-  args: { status: 'Typing' },
-  play: async ({ canvasElement, canvas }) => {
-    const { bar, field, text } = parts(canvasElement);
-    await waitFor(() => expect(text).toHaveFocus());
-    await expect(bar).toHaveAttribute('data-status', 'Typing');
-    await expect(canvas.queryByRole('button', { name: 'Send' })).toBeNull();
-    // Kept at Control/L, like Inactive, so tapping in doesn't shrink the bar.
-    await expect(field.getBoundingClientRect().height).toBeCloseTo(px('--control-l'), 0);
-  },
-};
-
 export const ReadyToSend: Story = {
   name: 'Status=Ready to send',
   args: { status: 'Ready to send', answer: 'Producers make food.' },
@@ -113,6 +105,8 @@ export const ReadyToSend: Story = {
     await expect(getComputedStyle(field).borderTopLeftRadius).toBe(`${px('--radius-full')}px`);
     await userEvent.click(canvas.getByRole('button', { name: 'Send' }));
     await expect(sendSpy).toHaveBeenCalledWith('Producers make food.');
+    // Sent: the bar moves to Loading.
+    await expect(bar).toHaveAttribute('data-status', 'Loading');
   },
 };
 
@@ -125,6 +119,76 @@ export const LongInput: Story = {
     await expect(canvas.getByRole('button', { name: 'Send' })).toBeVisible();
     // More than one line: the corners drop from Radius/Full to Radius/600.
     await expect(getComputedStyle(field).borderTopLeftRadius).toBe(`${px('--radius-600')}px`);
+  },
+};
+
+// Colors are compared as the browser computes them, since a token's own text can differ (0.4 vs .4 once minified).
+const computedColor = (token: string, property: 'color' = 'color') => {
+  const probe = document.createElement('span');
+  probe.style[property] = `var(${token})`;
+  document.body.appendChild(probe);
+  const value = getComputedStyle(probe)[property];
+  probe.remove();
+  return value;
+};
+
+// What Loading looks like, after the student sent an answer: the text stays but goes dim, there is no caret,
+// send or mic, and the loader turns where the send button was.
+const expectLoading = async (canvasElement: HTMLElement, canvas: ReturnType<typeof within>, answer: string) => {
+  const { bar, field, text } = parts(canvasElement);
+  await expect(bar).toHaveAttribute('data-status', 'Loading');
+  await expect(text).toHaveValue(answer);
+  await expect(text).toHaveAttribute('readonly');
+  await expect(text).toHaveAttribute('aria-busy', 'true');
+  await expect(text).not.toHaveFocus();
+  await expect(getComputedStyle(text).color).toBe(computedColor('--color-text-placeholder'));
+  await expect(canvas.queryByRole('button', { name: 'Send' })).toBeNull();
+  await expect(field.querySelector('.chatInput__mic')).toBeNull();
+  await expect(field.getBoundingClientRect().height).toBeGreaterThanOrEqual(px('--control-l') - 1);
+
+  // The loader takes the send button's place, in interactive/onSecondary, and turns unless reduced motion is asked for.
+  const spinner = field.querySelector('.chatInput__spinner') as HTMLElement;
+  const icon = field.querySelector('.chatInput__spinnerIcon') as SVGElement;
+  await expect(spinner).not.toBeNull();
+  await expect(spinner).toHaveAttribute('aria-hidden', 'true');
+  await expect(spinner.getBoundingClientRect().width).toBeCloseTo(px('--control-touch-target'), 0);
+  await expect(getComputedStyle(spinner).color).toBe(computedColor('--color-interactive-onSecondary'));
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cs = getComputedStyle(icon);
+    await expect(cs.animationName).toBe('chatInputSpin');
+    // The browser reports seconds; the token is read by unit, since the production CSS build rewrites 800ms as .8s.
+    await expect(parseFloat(cs.animationDuration) * 1000).toBeCloseTo(durationMs('--motion-duration-spinner'), 0);
+    await expect(cs.animationIterationCount).toBe('infinite');
+  }
+};
+
+export const Loading: Story = {
+  name: 'Status=Loading',
+  args: { status: 'Loading', answer: 'Producers make food.' },
+  play: async ({ canvasElement, canvas }) => {
+    await expectLoading(canvasElement, canvas, 'Producers make food.');
+    await expect(canvas.getByRole('button', { name: 'Add' })).toBeVisible();
+  },
+};
+
+// The flow: text entered, send pressed, the text goes dim and the loader turns. The text and the field's height stay.
+export const SendingMovesToLoading: Story = {
+  name: 'Rule: sending dims the text and starts the loader',
+  args: { status: 'Inactive', showLeadingButton: false },
+  play: async ({ canvasElement, canvas, userEvent }) => {
+    const { field, text } = parts(canvasElement);
+    await userEvent.type(canvas.getByRole('textbox', { name: 'Your answer' }), 'Producers make food.');
+    await expect(getComputedStyle(text).color).toBe(computedColor('--color-text-primary'));
+    const before = field.getBoundingClientRect().height;
+    await userEvent.click(canvas.getByRole('button', { name: 'Send' }));
+    await expect(sendSpy).toHaveBeenCalledWith('Producers make food.');
+    await expectLoading(canvasElement, canvas, 'Producers make food.');
+    // Nothing moves: the loader is the send button's size.
+    await expect(field.getBoundingClientRect().height).toBeCloseTo(before, 0);
+    // No more typing, and no second send.
+    await userEvent.type(text, ' more');
+    await expect(text).toHaveValue('Producers make food.');
+    await expect(sendSpy).toHaveBeenCalledTimes(1);
   },
 };
 
@@ -172,20 +236,17 @@ export const GrowsToSixLinesThenScrolls: Story = {
   },
 };
 
-// Emptying rule: deleting all the text goes back to Typing (caret, no send button); only losing the caret
-// (the keyboard dismissed) goes back to Inactive.
-export const EmptyingReturnsToTyping: Story = {
-  name: 'Rule: emptying the field returns to Typing',
+// Emptying rule: deleting all the text goes back to Inactive (empty, no send button), with the caret still in the
+// field, since Inactive and the old Typing look the same.
+export const EmptyingReturnsToInactive: Story = {
+  name: 'Rule: emptying the field returns to Inactive',
   args: { status: 'Ready to send', showLeadingButton: false, answer: 'Producers make food.' },
   play: async ({ canvasElement, canvas, userEvent }) => {
     const { bar, text } = parts(canvasElement);
     await userEvent.clear(text);
-    await expect(bar).toHaveAttribute('data-status', 'Typing');
+    await expect(bar).toHaveAttribute('data-status', 'Inactive');
     await expect(text).toHaveFocus();
     await expect(canvas.queryByRole('button', { name: 'Send' })).toBeNull();
-    await expect(statusSpy).toHaveBeenLastCalledWith('Typing');
-    text.blur();
-    await waitFor(() => expect(bar).toHaveAttribute('data-status', 'Inactive'));
     await expect(statusSpy).toHaveBeenLastCalledWith('Inactive');
   },
 };

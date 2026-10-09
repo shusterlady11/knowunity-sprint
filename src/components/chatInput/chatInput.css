@@ -26,14 +26,17 @@
   box-shadow: inset 0 0 0 var(--stroke-border) var(--color-border-default);
 }
 
-/* With text, the send button sits inside the right edge: Space/100 top and bottom, Space/200 on the right. */
-.chatInput[data-status='Ready to send'] .chatInput__field {
+/* With text, the send button sits inside the right edge: Space/100 top and bottom, Space/200 on the right.
+   Loading keeps the text and puts the loader where the send button was, so the field doesn't shift. */
+.chatInput[data-status='Ready to send'] .chatInput__field,
+.chatInput[data-status='Loading'] .chatInput__field {
   padding: var(--space-100) var(--space-200) var(--space-100) var(--space-400);
 }
 
-/* More than one line: the corners drop to Radius/600, the field hugs its text, and the send button stays at
-   the bottom. */
-.chatInput[data-status='Long input'] .chatInput__field {
+/* More than one line: the corners drop to Radius/600, the field hugs its text, and the send button (or the
+   loader, once sent) stays at the bottom. */
+.chatInput[data-status='Long input'] .chatInput__field,
+.chatInput[data-status='Loading'][data-multiline] .chatInput__field {
   align-items: flex-end;
   padding: var(--space-150) var(--space-200) var(--space-150) var(--space-400);
   border-radius: var(--radius-600);
@@ -76,4 +79,39 @@
   display: inline-flex;
   flex: none;
   color: var(--color-icon-primary);
+}
+
+/* Loading: the answer is sent and a reply is on its way. The field is read-only, the text stays and goes dim
+   (text/placeholder, the color Figma gives Loading's text), and the loader (interactive/onSecondary, as in
+   Figma) turns where the send button was, in a box the send button's size (--control-touch-target) so nothing
+   moves. The turn is the same motion.duration.spinner as button's; under reduced motion it holds still,
+   still visible. */
+.chatInput[data-status='Loading'] .chatInput__text {
+  color: var(--color-text-placeholder);
+}
+
+.chatInput__spinner {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-touch-target);
+  height: var(--control-touch-target);
+  color: var(--color-interactive-onSecondary);
+}
+
+.chatInput__spinnerIcon {
+  animation: chatInputSpin var(--motion-duration-spinner) var(--motion-easing-linear) infinite;
+}
+
+@keyframes chatInputSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chatInput__spinnerIcon {
+    animation: none;
+  }
 }
