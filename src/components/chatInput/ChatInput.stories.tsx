@@ -98,15 +98,14 @@ export const Inactive: Story = {
 export const ReadyToSend: Story = {
   name: 'Status=Ready to send',
   args: { status: 'Ready to send', answer: 'Producers make food.' },
-  play: async ({ canvasElement, canvas, userEvent }) => {
+  play: async ({ canvasElement, canvas }) => {
     const { bar, field } = parts(canvasElement);
     await expect(bar).toHaveAttribute('data-status', 'Ready to send');
     await expect(field.querySelector('.chatInput__mic')).toBeNull();
     await expect(getComputedStyle(field).borderTopLeftRadius).toBe(`${px('--radius-full')}px`);
-    await userEvent.click(canvas.getByRole('button', { name: 'Send' }));
-    await expect(sendSpy).toHaveBeenCalledWith('Producers make food.');
-    // Sent: the bar moves to Loading.
-    await expect(bar).toHaveAttribute('data-status', 'Loading');
+    // The send button is there; tapping it (and the Loading that follows) is tested in the sending story, so this
+    // one stays at Ready to send for its snapshot.
+    await expect(canvas.getByRole('button', { name: 'Send' })).toBeVisible();
   },
 };
 
@@ -251,21 +250,27 @@ export const EmptyingReturnsToInactive: Story = {
   },
 };
 
-// Width rule: it fills whatever width the screen gives it, never a fixed 358px.
+// Width rule: it fills whatever width the screen gives it, never a fixed 358px. The story shows it at the normal width,
+// like the others; the play function narrows the frame to prove the bar follows it, then puts it back.
 export const FillsGivenWidth: Story = {
   name: 'Rule: fills the width it is given',
-  args: { status: 'Ready to send', showLeadingButton: false },
+  args: { status: 'Ready to send' },
   decorators: [
     (Story) => (
-      <div style={{ width: '50%' }}>
+      <div>
         <Story />
       </div>
     ),
   ],
   play: async ({ canvasElement }) => {
     const { bar } = parts(canvasElement);
-    const parent = bar.parentElement as HTMLElement;
-    await expect(bar.getBoundingClientRect().width).toBeCloseTo(parent.getBoundingClientRect().width, 0);
-    await expect(bar.getBoundingClientRect().width).not.toBeCloseTo(358, 0);
+    const frame = bar.parentElement as HTMLElement;
+    const width = () => bar.getBoundingClientRect().width;
+    await expect(bar).toHaveAttribute('data-status', 'Ready to send');
+    await expect(width()).toBeCloseTo(frame.getBoundingClientRect().width, 0);
+    frame.style.width = '250px';
+    await expect(width()).toBeCloseTo(250, 0);
+    frame.style.width = '';
+    await expect(width()).toBeCloseTo(frame.getBoundingClientRect().width, 0);
   },
 };
