@@ -13,7 +13,7 @@ Next.js web prototype of Knowunity's voice active-recall feature (student speaks
 - Recall engine is mocked: fake transcript, fake verdict, fake-but-present latency. `docs/platform-constraints.md`, `docs/sprint-context.md`.
 - Every screen is built from `scaffold`'s slots. `docs/design-system.md` §2.
 - All color/spacing/radius/type/motion values: `tokens/` (`tokens.json` is synced from Figma; `motion.json` is code-only). Usage rules: `docs/design-system.md`.
-- `npm run check:tokens` fails on any raw hex color in `src/components` or `src/app` and prints the file and line — run it after building or changing anything, and fix what it finds.
+- `npm run check` runs four checks and prints the file and line for each problem — run it after building or changing any component, and report findings before fixing what it finds: `check:tokens` (raw hex color in `src/components` or `src/app`), `check:fallbacks` (`var(--token, fallback)`), `check:generated` (`build/css/tokens.css` matches `npm run tokens`), `check:claude` (this file starts with `@AGENTS.md`).
 - Naming: lowerCamelCase for components/props/tokens. `docs/design-system.md` §3 (legacy exceptions).
 - Contrast, touch-target, reduced-motion requirements. `docs/platform-constraints.md`.
 - Decisions already made: `docs/sprint-context.md` — check before re-deciding.
