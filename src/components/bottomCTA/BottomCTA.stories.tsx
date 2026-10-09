@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn } from 'storybook/test';
 import { BottomCTA } from './BottomCTA';
 
 const figmaDescription = `The bottom action bar anchored to the base of the answer screens, Results and SPLASH-SKIP-MIC. Question screens use toggleGroup instead.
@@ -39,7 +39,9 @@ const meta = {
   tags: ['autodocs'],
   args: { onLeftClick: () => leftSpy(), onRightClick: () => rightSpy() },
   argTypes: { onLeftClick: { control: false }, onRightClick: { control: false } },
-  parameters: { docs: { description: { component: figmaDescription } } },
+  // Fullscreen: the bar runs edge to edge on a screen. The default padding made it 32px narrower than the real 358px row,
+  // where "No thanks" no longer fits in half the row and grows (167 vs 155), as the component is meant to.
+  parameters: { layout: 'fullscreen', docs: { description: { component: figmaDescription } } },
   beforeEach: () => {
     leftSpy.mockClear();
     rightSpy.mockClear();
@@ -111,17 +113,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Waits for the font, then retries until the widths settle: on Chromatic the buttons were still resizing
-// when this ran (167 vs 155), although the snapshot shows them equal.
 const equalWidths = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-  await document.fonts.ready;
-  await waitFor(
-    async () => {
-      const [a, b] = [...canvasElement.querySelectorAll('.bottomCTA__row > .button')] as HTMLElement[];
-      await expect(Math.round(a.getBoundingClientRect().width)).toBe(Math.round(b.getBoundingClientRect().width));
-    },
-    { timeout: 2000 },
-  );
+  const [a, b] = [...canvasElement.querySelectorAll('.bottomCTA__row > .button')] as HTMLElement[];
+  await expect(Math.round(a.getBoundingClientRect().width)).toBe(Math.round(b.getBoundingClientRect().width));
 };
 
 export const TwoButtonNoDrawer: Story = {
